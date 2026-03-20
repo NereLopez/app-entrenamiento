@@ -1,0 +1,54 @@
+
+<div class="search-container">
+  <input #ejercicioInput type="text" placeholder="Exercise name (e.g. Deadlift)">
+  <select #grupoInput>
+    <option value="Chest">Chest</option>
+    <option value="Back">Back</option>
+    <option value="Legs">Legs</option>
+    <option value="Shoulders">Shoulders</option>
+    <option value="Arms">Arms</option>
+    <option value="Core">Core</option>
+  </select>
+  <button type="button" (click)="addExercise(ejercicioInput.value, grupoInput.value); ejercicioInput.value=''">
+    Add Exercise
+  </button>
+</div>
+
+<hr>
+
+<form [formGroup]="workoutForm" ...>
+
+<form [formGroup]="workoutForm" (ngSubmit)="saveWorkout()">
+  
+  <div class="header">
+    <input formControlName="title" placeholder="e.g., Monday - Upper Body">
+    <input type="date" formControlName="date">
+  </div>
+
+  <div formArrayName="exercises">
+    <div *ngFor="let exercise of exercises.controls; let i = index" [formGroupName]="i" class="exercise-card">
+      
+      <h3>{{ exercise.get('name')?.value }}</h3>
+      
+      <div class="sets-table">
+        <div class="table-header">
+          <span>Set</span>
+          <span>Weight (Kg)</span>
+          <span>Reps</span>
+        </div>
+
+        <div formArrayName="sets">
+          <div *ngFor="let set of getSets(i).controls; let j = index" [formGroupName]="j" class="set-row">
+            <span>{{ j + 1 }}</span>
+            <input type="number" formControlName="weight">
+            <input type="number" formControlName="reps">
+          </div>
+        </div>
+      </div>
+      
+      <button type="button" (click)="addSet(i)">+ Add Set</button>
+    </div>
+  </div>
+
+  <button type="submit" [disabled]="workoutForm.invalid">Save Workout</button>
+</form>
