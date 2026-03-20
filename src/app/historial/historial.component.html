@@ -1,0 +1,36 @@
+<div class="container">
+  <h2>Workout History</h2>
+
+  @if (workouts$ | async; as workouts) {
+    <div class="history-list">
+      
+      @for (workout of workouts; track workout.id) {
+        <div class="history-card">
+          <div class="card-header">
+            <h3>{{ workout.title }}</h3>
+            <span>{{ workout.date | date:'dd/MM/yyyy' }}</span>
+          </div>
+          
+          <div class="exercise-summary">
+            @for (ex of workout.exercises; track $index) {
+              <p>
+                <strong>{{ ex.name }}</strong>: 
+                {{ ex.sets.length }} sets 
+                ({{ ex.muscleGroup }})
+              </p>
+            }
+          </div>
+        </div>
+      } @empty {
+        <div class="empty-state">
+          <p>No workouts found yet. Go train! 🏋️‍♂️</p>
+        </div>
+      }
+
+    </div>
+  } @else {
+    <div class="loading">
+      <p>Loading your gains...</p>
+    </div>
+  }
+</div>

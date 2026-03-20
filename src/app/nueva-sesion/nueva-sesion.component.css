@@ -1,57 +1,146 @@
+/* 1. FONDO Y FUENTE */
 :host {
   display: block;
+  background-color: #f4f7f9;
+  min-height: 100vh;
   padding: 20px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  max-width: 600px;
-  margin: 0 auto;
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
 
-.exercise-card {
-  background: #f8f9fa;
-  border-left: 5px solid #007bff;
-  padding: 15px;
-  margin-bottom: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+/* 2. CABECERA PREMIUM (EL DEGRADADO) */
+.header-gradient {
+  background: linear-gradient(135deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
+  border-radius: 24px !important;
+  border: none !important;
+  transition: all 0.3s ease;
 }
 
-.table-header, .set-row {
-  display: grid;
-  grid-template-columns: 40px 1fr 1fr;
-  gap: 10px;
+.fw-extrabold {
+  font-weight: 850 !important;
+  letter-spacing: -1.5px;
+}
+
+.text-white-50 {
+  color: rgba(255, 255, 255, 0.85) !important;
+  text-transform: capitalize;
+}
+
+/* 3. INPUTS Y FORMULARIO */
+.form-control, .form-select {
+  border-radius: 12px !important;
+  border: 1px solid #dee2e6 !important;
+  padding: 12px !important;
+  transition: all 0.2s ease;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: #C850C0 !important;
+  box-shadow: 0 0 0 0.25rem rgba(200, 80, 192, 0.1) !important;
+  outline: none;
+}
+
+/* 4. TARJETAS DE EJERCICIOS */
+.card.border.shadow-sm {
+  border-radius: 20px !important;
+  border: 1px solid rgba(0,0,0,0.05) !important;
+  background: white;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card.border.shadow-sm:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08) !important;
+}
+
+.card-header {
+  border-bottom: 1px solid #f8f9fa !important;
+  background-color: transparent !important;
+  padding: 15px 20px !important;
+}
+
+/* 5. BADGES (MÚSCULOS) */
+.badge {
+  border-radius: 30px !important;
+  padding: 6px 14px !important;
+  font-weight: 700 !important;
+  font-size: 0.7rem !important;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* 6. PÍLDORAS DE SERIES */
+.rounded-pill {
+  background-color: #f8f9fa !important;
+  border: 1px solid #e9ecef !important;
+  padding: 10px 15px !important;
+  transition: all 0.2s ease;
+}
+
+.rounded-pill:hover {
+  background-color: #ffffff !important;
+  border-color: #C850C0 !important;
+  transform: scale(1.02);
+}
+
+/* 7. BOTONES */
+.btn-primary {
+  background-color: #4158D0 !important;
+  border: none !important;
+  border-radius: 12px !important;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #3346a8 !important;
+  transform: translateY(-1px);
+}
+
+.btn-light.hover-scale {
+  border-radius: 15px !important;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.btn-light.hover-scale:hover {
+  transform: scale(1.1);
+  background-color: white !important;
+}
+
+.rounded-circle {
+  width: 32px;
+  height: 32px;
+  display: flex;
   align-items: center;
-  margin-bottom: 8px;
-}
-
-input[type="number"], input[type="text"], input[type="date"] {
-  padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  width: 100%;
-}
-
-button {
-  cursor: pointer;
-  padding: 10px 15px;
-  border-radius: 5px;
+  justify-content: center;
   border: none;
-  transition: 0.3s;
 }
 
-button[type="submit"] {
-  background-color: #28a745;
-  color: white;
-  width: 100%;
-  font-size: 1.1rem;
-  font-weight: bold;
-}
-
-button[type="submit"]:disabled {
-  background-color: #ccc;
-}
-
-.btn-add-set {
-  background: #007bff;
-  color: white;
+h5.text-dark {
+  color: #212529 !important; /* Negro suave pero firme */
   margin-top: 10px;
+}
+
+/* Para que los inputs no se vean tan "gordos" por el padding */
+.form-control, .form-select {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+@keyframes pulse-rocket {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.1); opacity: 0.8; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.badge.bg-white.text-primary {
+  animation: pulse-rocket 2s infinite ease-in-out;
+  display: inline-flex;
+  align-items: center;
+}
+
+.custom-input::first-letter {
+  text-transform: uppercase;
+}
+#nameInput {
+  text-transform: capitalize;
 }
