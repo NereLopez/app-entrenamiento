@@ -24,7 +24,7 @@
 
   <div class="container">
     @if (tab === 'dashboard') {
-      <app-dashboard></app-dashboard>
+      <app-dashboard (changeTab)="tab = $event"></app-dashboard>
     } @else if (tab === 'nueva') {
       <app-nueva-sesion></app-nueva-sesion>
     } @else {

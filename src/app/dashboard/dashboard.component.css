@@ -60,3 +60,57 @@
 .stat-card:hover {
   transform: translateY(-5px);
 }
+
+.quick-card {
+  padding: 20px;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 110px;
+  transition: transform 0.2s;
+}
+.quick-card:active { transform: scale(0.95); }
+.quick-icon {
+  font-size: 1.5rem;
+  margin-bottom: 8px;
+  background: rgba(255, 255, 255, 0.2);
+  width: 45px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+.bg-white .quick-icon { background: #f8f9fa; }
+
+/* Botones Quick Start */
+.btn-exercise-quick {
+  min-width: 100px;
+  padding: 15px;
+  border-radius: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: all 0.2s;
+}
+
+.btn-exercise-quick.active {
+  background: #4f46e5;
+  color: white;
+}
+
+.icon-circle, .icon-circle-alt {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.icon-circle { background: rgba(255,255,255,0.2); }
+.icon-circle-alt { background: #f3f4f6; color: #4f46e5; }
+
+/* Tarjetas de stats */
+.stat-card {
+  transition: transform 0.2s;
+}
+.stat-card:hover { transform: translateY(-5px); }

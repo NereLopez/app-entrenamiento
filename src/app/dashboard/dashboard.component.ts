@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { EntrenamientoService } from '../services/entrenamiento.service';
@@ -12,6 +12,16 @@ import { EntrenamientoService } from '../services/entrenamiento.service';
 })
 export class DashboardComponent {
   public entrenamientoService = inject(EntrenamientoService);
+
+  @Output() changeTab = new EventEmitter<string>();
+  goToTab(tabName: string, exerciseName?: string) {
+    if(exerciseName){
+      this.entrenamientoService.selectedExercise.set(exerciseName);
+    } else {
+      this.entrenamientoService.selectedExercise.set(null);
+    }
+    this.changeTab.emit(tabName);
+  }
 
   getWorkoutsThisWeek(): number {
     const now = Date.now();

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { EntrenamientoService } from '../services/entrenamiento.service';
@@ -10,10 +10,11 @@ import { EntrenamientoService } from '../services/entrenamiento.service';
   templateUrl: './nueva-sesion.component.html',
   styleUrl: './nueva-sesion.component.css',
 })
-export class NuevaSesionComponent {
+export class NuevaSesionComponent implements OnInit {
   private fb = inject(FormBuilder);
   private trainingService = inject(EntrenamientoService);
-  
+  public entrenamientoService = inject(EntrenamientoService);
+
   workoutForm: FormGroup;
 
   constructor() {
@@ -22,6 +23,15 @@ export class NuevaSesionComponent {
       date: [new Date().toISOString().substring(0, 10), Validators.required],
       exercises: this.fb.array([]) 
     });
+  }
+
+  ngOnInit() {
+    const exerciseName = this.entrenamientoService.selectedExercise();
+    if (exerciseName) {
+      this.addExercise(exerciseName, 'Custom');
+      // Importante: lo reseteamos para que no se añada cada vez que entres
+      this.entrenamientoService.selectedExercise.set(null);
+    }
   }
 
   get exercises() {

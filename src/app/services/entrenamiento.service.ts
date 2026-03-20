@@ -21,6 +21,8 @@ export class EntrenamientoService {
   private firestore = inject(Firestore);
   private auth = inject (Auth);
 
+  public selectedExercise = signal<string | null>(null);
+
   // Your original signals
   userSignal = signal<any>(null);
   history = signal<any[]>([]);

@@ -1,25 +1,39 @@
+<div class="row g-3 mb-5">
+  <div class="col-6">
+    <button (click)="goToTab('nueva')" class="quick-card bg-primary text-white border-0 w-100 shadow-sm">
+      <div class="quick-icon"><i class="bi bi-plus-lg"></i></div>
+      <span class="fw-bold">Start Workout</span>
+    </button>
+  </div>
+  <div class="col-6">
+    <button (click)="goToTab('historial')" class="quick-card bg-white text-dark border-0 w-100 shadow-sm">
+      <div class="quick-icon text-primary"><i class="bi bi-bar-chart-fill"></i></div>
+      <span class="fw-bold">View History</span>
+    </button>
+  </div>
+</div>
+
 <div class="container py-4">
   <div class="mb-5">
     <h2 class="fw-bold mb-1 text-dark">Welcome back! 👋</h2>
     <p class="text-muted">Ready to crush your goals today?</p>
   </div>
 
-  <div class="row g-4 mb-5">
-    <div class="col-12">
-      <h5 class="fw-bold mb-3">Quick Start</h5>
-      <div class="d-flex gap-3 overflow-auto pb-2" style="scrollbar-width: none;">
-        <button class="btn-start shadow-sm" routerLink="/entrenar">
-          <div class="icon-circle mb-2"><i class="bi bi-plus-lg"></i></div>
-          <span>New Session</span>
-        </button>
+  <div class="mb-5">
+    <h5 class="fw-bold mb-3">Quick Start</h5>
+    <div class="d-flex gap-3 overflow-auto pb-2" style="scrollbar-width: none;">
+      
+      <button (click)="goToTab('nueva')" class="btn-exercise-quick active shadow-sm border-0">
+        <div class="icon-circle mb-2"><i class="bi bi-plus-lg"></i></div>
+        <span>New Session</span>
+      </button>
 
-        @for (item of ['Bench Press', 'Squat', 'Deadlift']; track item) {
-          <button class="btn-exercise-quick shadow-sm" (click)="startWithExercise(item)">
-            <div class="icon-circle-alt mb-2"><i class="bi bi-lightning-fill"></i></div>
-            <span>{{ item }}</span>
-          </button>
-        }
-      </div>
+      @for (item of ['Bench Press', 'Squat', 'Deadlift']; track item) {
+        <button (click)="goToTab('nueva')" class="btn-exercise-quick shadow-sm border-0 bg-white">
+          <div class="icon-circle-alt mb-2"><i class="bi bi-lightning-fill"></i></div>
+          <span>{{ item }}</span>
+        </button>
+      }
     </div>
   </div>
 
@@ -28,7 +42,7 @@
       <div class="stat-card p-4 shadow-sm border-0 rounded-4 bg-white">
         <h6 class="text-muted small text-uppercase fw-bold">This Week</h6>
         <h3 class="fw-bold mb-0">{{ getWorkoutsThisWeek() }}</h3>
-        <p class="small text-success mb-0 mt-1"><i class="bi bi-arrow-up"></i> Sessions</p>
+        <p class="small text-success mb-0 mt-1">Sessions</p>
       </div>
     </div>
     <div class="col-md-4">
@@ -49,7 +63,7 @@
 
   <div class="d-flex justify-content-between align-items-center mb-3">
     <h5 class="fw-bold mb-0">Last Exercise</h5>
-    <a routerLink="/historial" class="text-primary text-decoration-none small fw-bold">View History</a>
+    <button (click)="goToTab('historial')" class="btn btn-link text-primary text-decoration-none small fw-bold">View History</button>
   </div>
 
   <div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
