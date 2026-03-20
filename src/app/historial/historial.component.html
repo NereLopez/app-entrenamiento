@@ -1,36 +1,81 @@
-<div class="container">
-  <h2>Workout History</h2>
+<div class="container py-4">
+  <div class="d-flex align-items-center mb-5 mt-2">
+    <div class="icon-box bg-primary shadow-sm me-3">
+      <i class="bi bi-graph-up-arrow text-white fs-4"></i>
+    </div>
+    <h2 class="fw-bold m-0 text-dark">My progress</h2>
+  </div>
 
-  @if (workouts$ | async; as workouts) {
-    <div class="history-list">
-      
-      @for (workout of workouts; track workout.id) {
-        <div class="history-card">
-          <div class="card-header">
-            <h3>{{ workout.title }}</h3>
-            <span>{{ workout.date | date:'dd/MM/yyyy' }}</span>
-          </div>
-          
-          <div class="exercise-summary">
-            @for (ex of workout.exercises; track $index) {
-              <p>
-                <strong>{{ ex.name }}</strong>: 
-                {{ ex.sets.length }} sets 
-                ({{ ex.muscleGroup }})
-              </p>
-            }
+  <div class="row g-4 mb-5">
+    <div class="col-lg-8">
+      <div class="card border-0 shadow-lg rounded-4 overflow-hidden bg-white h-100">
+        <div class="card-header bg-white border-0 pt-4 px-4">
+          <h6 class="text-uppercase text-muted fw-bold small ls-1">Volume Evolution (kg)</h6>
+        </div>
+        <div class="card-body px-4 pb-4">
+          <div style="height: 300px; position: relative;">
+            <canvas #statsChart></canvas>
           </div>
         </div>
-      } @empty {
-        <div class="empty-state">
-          <p>No workouts found yet. Go train! 🏋️‍♂️</p>
+      </div>
+    </div>
+    
+    <div class="col-lg-4">
+      <div class="card border-0 shadow-lg rounded-4 pr-card text-white h-100 p-4 d-flex flex-column justify-content-center border-0">
+        <div class="text-center">
+          <h6 class="opacity-75 fw-bold text-uppercase small ls-1 mb-3">Personal Record (PR)</h6>
+          <div class="d-flex align-items-center justify-content-center">
+            <span class="display-1 fw-bold">{{ getPersonalRecord() }}</span>
+            <span class="fs-2 fw-light ms-2">kg</span>
+          </div>
+          <p class="mb-0 mt-3 small bg-white bg-opacity-25 rounded-pill py-1 px-3 d-inline-block">
+            <i class="bi bi-trophy-fill me-1 text-warning"></i> Your best lift!
+          </p>
         </div>
-      }
+      </div>
+    </div>
+  </div>
 
-    </div>
-  } @else {
-    <div class="loading">
-      <p>Loading your gains...</p>
-    </div>
-  }
+  <h5 class="fw-bold mb-4 text-secondary d-flex align-items-center">
+    <i class="bi bi-calendar-check me-2 text-primary"></i> Workout History
+  </h5>
+  
+  <div class="row">
+    @for (workout of entrenamientoService.history(); track workout.id) {
+      <div class="col-12 mb-3">
+        <div class="card border-0 shadow-sm rounded-4 workout-card">
+          <div class="card-body p-4">
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="d-flex align-items-center">
+                <div class="date-badge me-3">
+                  <span class="day">{{ workout.createdAt | date:'dd' }}</span>
+                  <span class="month">{{ workout.createdAt | date:'MMM' }}</span>
+                </div>
+                <div>
+                  <h5 class="fw-bold text-dark mb-0">{{ workout.title || 'Sesión de Pesas' }}</h5>
+                  <div class="text-muted small mt-1">
+                    @for (ex of workout.exercises; track $index) {
+                      <span class="me-2">• {{ ex.name }}</span>
+                    }
+                  </div>
+                </div>
+              </div>
+              <div class="text-end">
+                <div class="volume-badge">
+                  <span class="fw-bold text-primary">{{ calculateVolume(workout) }}</span>
+                  <small class="text-muted ms-1">kg</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    } @empty {
+      <div class="text-center py-5 rounded-4 bg-light border-dashed">
+        <i class="bi bi-journal-x display-4 text-muted"></i>
+        <p class="text-muted mt-3 mb-0">No workouts saved yet.</p>
+        <small class="text-muted text-uppercase fw-bold">Time to hit the gym! 💪</small>
+      </div>
+    }
+  </div>
 </div>

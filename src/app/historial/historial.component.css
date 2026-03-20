@@ -1,30 +1,68 @@
-.container {
-  padding: 20px;
-  max-width: 800px;
-  margin: 0 auto;
-}
+/* Espaciado de letras para títulos profesionales */
+.ls-1 { letter-spacing: 1px; }
 
-.history-card {
-  background: white;
-  border-radius: 12px;
-  padding: 20px;
-  margin-bottom: 15px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-  border-left: 6px solid #28a745; /* Verde para diferenciar del azul de "Nueva Sesión" */
-}
-
-.card-header {
+/* Caja de icono principal */
+.icon-box {
+  width: 45px;
+  height: 45px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #eee;
-  margin-bottom: 10px;
-  padding-bottom: 10px;
+  justify-content: center;
+  border-radius: 12px;
 }
 
-.exercise-summary p {
-  margin: 5px 0;
-  color: #555;
+/* Tarjeta de PR con degradado moderno */
+.pr-card {
+  background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+  position: relative;
+  overflow: hidden;
 }
 
-h3 { margin: 0; color: #333; }
+/* Tarjeta de entrenamiento */
+.workout-card {
+  transition: all 0.3s ease;
+  border-left: 6px solid #6366f1 !important;
+}
+
+.workout-card:hover {
+  transform: translateX(8px);
+  box-shadow: 0 8px 15px rgba(0,0,0,0.08) !important;
+}
+
+/* Badge de fecha tipo calendario */
+.date-badge {
+  background: #f3f4f6;
+  padding: 8px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 55px;
+}
+
+.date-badge .day {
+  font-weight: 800;
+  font-size: 1.2rem;
+  line-height: 1;
+  color: #1f2937;
+}
+
+.date-badge .month {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #6b7280;
+}
+
+/* Badge de volumen total */
+.volume-badge {
+  background: #eef2ff;
+  padding: 10px 18px;
+  border-radius: 15px;
+  font-size: 1.1rem;
+}
+
+/* Estado vacío con borde punteado */
+.border-dashed {
+  border: 2px dashed #d1d5db;
+}

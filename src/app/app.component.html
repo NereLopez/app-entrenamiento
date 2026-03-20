@@ -1,2 +1,43 @@
+@if (entrenamientoService.userSignal()) {
+  <nav class="navbar bg-white border-bottom sticky-top mb-3">
+    <div class="container d-flex justify-content-between">
+      <span class="fw-bold text-primary">WorkoutMaster</span>
+      <button (click)="entrenamientoService.logout()" class="btn btn-sm btn-outline-danger border-0">
+        <i class="bi bi-box-arrow-right"></i>
+      </button>
+    </div>
+  </nav>
 
-  <router-outlet></router-outlet>
+  <div class="container mb-4">
+    <div class="btn-group w-100 shadow-sm rounded-4 overflow-hidden">
+      <button (click)="tab = 'dashboard'" [class.active]="tab === 'dashboard'" class="btn btn-light py-2 fw-bold">
+        🏠 Home
+      </button>
+      <button (click)="tab = 'nueva'" [class.active]="tab === 'nueva'" class="btn btn-light py-2 fw-bold">
+        🏋️‍♂️ Workout
+      </button>
+      <button (click)="tab = 'historial'" [class.active]="tab === 'historial'" class="btn btn-light py-2 fw-bold">
+        📜 History
+      </button>
+    </div>
+  </div>
+
+  <div class="container">
+    @if (tab === 'dashboard') {
+      <app-dashboard></app-dashboard>
+    } @else if (tab === 'nueva') {
+      <app-nueva-sesion></app-nueva-sesion>
+    } @else {
+      <app-historial></app-historial>
+    }
+  </div>
+
+} @else {
+  <app-login></app-login>
+}
+
+<style>
+  .btn-group .btn.active { 
+    background-color: #4f46e5 !important; 
+  }
+</style>

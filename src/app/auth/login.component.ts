@@ -22,7 +22,7 @@ import { EntrenamientoService } from '../services/entrenamiento.service';
 
         <div class="mb-4">
           <label class="form-label small fw-bold text-secondary">PASSWORD</label>
-          <input [(ngModel)]="pass" type="password" class="form-control rounded-3 p-2" placeholder="••••••••">
+          <input [(ngModel)]="pass" type="password" class="form-control rounded-3 p-2" placeholder="Password">
         </div>
 
         <button (click)="onLogin()" class="btn btn-primary w-100 fw-bold py-2 mb-3 shadow-sm" style="border-radius: 12px; background: #4158D0;">
@@ -50,11 +50,19 @@ export class LoginComponent {
   }
 
   async onRegister() {
+
+    const cleanEmail = this.email.trim();
+    const cleanPass = this.pass.trim();
+
+    if (cleanPass.length < 6) {
+    alert('Escribe una contraseña más larga (mínimo 6 caracteres)');
+    return;
+  }
     try {
-      await this.trainingService.signUp(this.email, this.pass);
+      await this.trainingService.signUp(cleanEmail, cleanPass);
       alert('Account created! Now you can login.');
-    } catch (e) {
-      alert('Error: Password should be at least 6 characters.');
+    } catch (e: any) {
+      alert('Error de Firebase:' + e.message);
     }
   }
 }

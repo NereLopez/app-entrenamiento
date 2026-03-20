@@ -1,0 +1,62 @@
+/* Botón principal de inicio */
+.btn-start {
+  background: #4f46e5;
+  color: white;
+  border: none;
+  min-width: 120px;
+  height: 120px;
+  border-radius: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+}
+
+/* Botones de ejercicios rápidos */
+.btn-exercise-quick {
+  background: white;
+  color: #374151;
+  border: 1px solid #f3f4f6;
+  min-width: 120px;
+  height: 120px;
+  border-radius: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+}
+
+.btn-start:active, .btn-exercise-quick:active {
+  transform: scale(0.95);
+}
+
+.icon-circle {
+  background: rgba(255, 255, 255, 0.2);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-circle-alt {
+  background: #eef2ff;
+  color: #4f46e5;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stat-card {
+  transition: transform 0.3s;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+}

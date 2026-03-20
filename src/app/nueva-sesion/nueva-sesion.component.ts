@@ -16,20 +16,6 @@ export class NuevaSesionComponent {
   
   workoutForm: FormGroup;
 
-  getGroupColor(group: string): string {
-    const colors: { [key: string]: string } = {
-      'Chest': '#4158D0',
-      'Back': '#198754',      
-      'Legs': '#dc3545',     
-      'Shoulders': '#ffc107',
-      'Arms': '#0dcaf0',      
-      'Core': '#212529',      
-      'Default': '#6c757d'
-    };
-    return colors[group] || colors['Default'];
-    
-  }
-
   constructor() {
     this.workoutForm = this.fb.group({
       title: ['New Workout Session', Validators.required],
@@ -46,17 +32,28 @@ export class NuevaSesionComponent {
     return this.exercises.at(index).get('sets') as FormArray;
   }
 
-  addExercise(name: string, group: string) {
-    if (!name) return;
+  getGroupColor(group: string): string {
+    const colors: { [key: string]: string } = {
+      'Chest': '#4158D0', 'Back': '#198754', 'Legs': '#dc3545',
+      'Shoulders': '#ffc107', 'Arms': '#0dcaf0', 'Core': '#212529',
+      'Default': '#6c757d'
+    };
+    return colors[group] || colors['Default'];
+  }
 
-    // LÓGICA DE MAYÚSCULA: "bench press" -> "Bench press"
+  addExercise(name: string, group: string) {
+    if (!name) {
+      alert("Please enter an exercise name");
+      return;
+    }
     const formattedName = name.trim().charAt(0).toUpperCase() + name.trim().slice(1).toLowerCase();
 
     this.exercises.push(this.fb.group({
-      name: [formattedName], // Aquí guardamos el nombre con la mayúscula
+      name: [formattedName],
       muscleGroup: [group],
       sets: this.fb.array([])
     }));
+    console.log("Ejercicio añadido:", formattedName);
   }
 
   addSet(index: number, weight: any, reps: any) {
@@ -71,11 +68,33 @@ export class NuevaSesionComponent {
   }
 
   async finishWorkout() {
-    if (this.workoutForm.valid && this.exercises.length > 0) {
-      const success = await this.trainingService.saveFromForm(this.workoutForm.value);
+    console.log("Intentando guardar sesión...");
+    
+    // Si no hay ejercicios, avisamos
+    if (this.exercises.length === 0) {
+      alert('Add at least one exercise before finishing!');
+      return;
+    }
+
+    const fullData = {
+      ...this.workoutForm.value,
+      createdAt: Date.now()
+    };
+
+    try {
+      const success = await this.trainingService.saveFromForm(fullData);
       if (success) {
-        alert('Workout successfully saved to cloud! 🚀');
+        alert('Workout successfully saved! 🚀');
+        this.exercises.clear();
+        this.workoutForm.patchValue({
+          title: 'New Workout Session',
+          date: new Date().toISOString().substring(0, 10)
+        });
+      } else {
+        alert('Could not save to Firebase. Check console.');
       }
+    } catch (error) {
+      console.error("Error en finishWorkout:", error);
     }
   }
 }
