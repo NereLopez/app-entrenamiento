@@ -1,0 +1,19 @@
+/* Estilo para el botón de la ruta donde estamos */
+.btn-group .active {
+  background-color: #4158D0 !important; /* Tu color principal */
+  color: white !important;
+  border-color: #4158D0 !important;
+}
+
+/* Para que los botones no se vean grises feos al pasar el ratón */
+.btn-light {
+  background-color: white;
+  border: none;
+  color: #6c757d;
+  transition: all 0.2s;
+}
+
+.btn-light:hover {
+  background-color: #f8f9fa;
+  color: #4158D0;
+}

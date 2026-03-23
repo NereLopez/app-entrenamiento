@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { RouterLink, RouterLinkActive, RouterModule, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { NuevaSesionComponent } from './nueva-sesion/nueva-sesion.component';
 import { LoginComponent } from './auth/login.component';
@@ -9,7 +9,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet,RouterLink,RouterLinkActive, CommonModule, NuevaSesionComponent, LoginComponent, HistorialComponent, DashboardComponent],
+  imports: [RouterOutlet,RouterLink,RouterLinkActive, CommonModule, NuevaSesionComponent, LoginComponent, HistorialComponent, DashboardComponent, RouterModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
