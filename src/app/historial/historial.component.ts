@@ -2,6 +2,7 @@ import { Component, inject, effect, ElementRef, ViewChild, viewChild } from '@an
 import { CommonModule } from '@angular/common';
 import { EntrenamientoService } from '../services/entrenamiento.service'; // Check this path!
 import { Chart, registerables } from 'chart.js';
+import { BaseChartDirective } from 'ng2-charts';
 
 Chart.register(...registerables);
 
@@ -20,6 +21,9 @@ export class HistorialComponent {
   @ViewChild('muscleChart') muscleChart!: ElementRef;
   private doughnutChart: any;
 
+  public expandedSessionId: string | null = null;
+  public currentMetric: 'Volume' | 'Frequency' = 'Volume';
+
   constructor() {
     effect(() => {
       const historyData = this.entrenamientoService.history();
@@ -33,6 +37,23 @@ export class HistorialComponent {
     });
   }
 
+  toggleSession(sessionId: string) {
+    if (this.expandedSessionId === sessionId) {
+      this.expandedSessionId = null;
+    } else {
+      this.expandedSessionId = sessionId;
+    }
+    }
+  
+
+  setMetric(metric: 'Volume' | 'Frequency') {
+    this.currentMetric = metric;
+    const historyData = this.entrenamientoService.history();
+    if (historyData.length >0) {
+      this.renderChart(historyData);
+    }
+
+  }
   calculateVolume(workout: any): number {
     let total = 0;
     workout.exercises?.forEach((ex: any) => {
@@ -67,7 +88,7 @@ export class HistorialComponent {
       labels: Object.keys(counts),
       datasets: [{
         data: Object.values(counts),
-        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40'],
+        backgroundColor: ['#4158D0', '#198754', '#dc3545', '#ffc107', '#0dcaf0', '#6c757d'],
         borderWidth: 2,
         hoverOffset: 15,
         borderColor: '#ffffff'
@@ -79,11 +100,18 @@ export class HistorialComponent {
     const ctx = this.statsChart.nativeElement.getContext('2d');
     if (this.chart) this.chart.destroy();
 
-    const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-    gradient.addColorStop(0, 'rgba(99, 102, 241, 0.5)');
-    gradient.addColorStop(1, 'rgba(99, 102, 241, 0)');
     
     const sorted = [...data].sort((a, b) => a.createdAt - b.createdAt);
+
+    const isVolume = this.currentMetric === 'Volume';
+
+    const chartData = sorted.map(w => isVolume ? this.calculateVolume(w) : 1);
+    const label = isVolume ? 'Total Volume (kg)' : 'Workouts';
+    const mainColor = isVolume ? '#6366f1' : '#C850C0'; // Morado para Vol, Rosa para Freq
+
+    const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+    gradient.addColorStop(0, isVolume ? 'rgba(99, 102, 241, 0.4)' : 'rgba(200, 80, 192, 0.4)');
+    gradient.addColorStop(1, 'transparent');
 
     this.chart = new Chart(ctx, {
       type: 'line',
@@ -114,8 +142,7 @@ export class HistorialComponent {
         x: { grid: { display: false }, ticks: { color: '#9ca3af'}},
         y : {
           beginAtZero: true,
-          grid: { color: '#f3f4f6'},
-          ticks: { color: '#9ca3af'}
+          ticks: { stepSize: isVolume ? undefined : 1}
         } }
        }
     });  

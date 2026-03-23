@@ -6,12 +6,11 @@ import { LoginComponent } from './auth/login.component';
 
 
 export const routes: Routes = [
-{ path: '', component: DashboardComponent },
-{ path: 'login', component: LoginComponent},
+{ path: '', redirectTo: 'dashboard', pathMatch: 'full'},
 { path: 'dashboard', component: DashboardComponent},
 { path: 'training', component: NuevaSesionComponent },
 { path: 'historial', component: HistorialComponent },
-{ path: '', redirectTo: 'dashboard', pathMatch: 'full'},
-{ path: '**', redirectTo: ''}
+{ path: 'login', component: LoginComponent},
+{ path: '**', redirectTo: 'dashboard'}
 
 ];

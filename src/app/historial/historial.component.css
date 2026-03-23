@@ -1,7 +1,5 @@
-/* Espaciado de letras para títulos profesionales */
 .ls-1 { letter-spacing: 1px; }
 
-/* Caja de icono principal */
 .icon-box {
   width: 45px;
   height: 45px;
@@ -11,14 +9,12 @@
   border-radius: 12px;
 }
 
-/* Tarjeta de PR con degradado moderno */
 .pr-card {
   background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
   position: relative;
   overflow: hidden;
 }
 
-/* Tarjeta de entrenamiento */
 .workout-card {
   transition: all 0.3s ease;
   border-left: 6px solid #6366f1 !important;
@@ -29,7 +25,6 @@
   box-shadow: 0 8px 15px rgba(0,0,0,0.08) !important;
 }
 
-/* Badge de fecha tipo calendario */
 .date-badge {
   background: #f3f4f6;
   padding: 8px;
@@ -54,7 +49,6 @@
   color: #6b7280;
 }
 
-/* Badge de volumen total */
 .volume-badge {
   background: #eef2ff;
   padding: 10px 18px;
@@ -62,7 +56,30 @@
   font-size: 1.1rem;
 }
 
-/* Estado vacío con borde punteado */
 .border-dashed {
   border: 2px dashed #d1d5db;
+}
+
+.transition-all {
+  transition: all 0.3s ease;;
+}
+
+.btn-group .btn {
+  white-space: nowrap;
+}
+
+canvas {
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+.chart-container {
+  width: 100% !important;
+  min-height: 350px;
+  position: relative;
+}
+
+.card {
+  transition: transform 0.2s;
+  border: none !important;
 }

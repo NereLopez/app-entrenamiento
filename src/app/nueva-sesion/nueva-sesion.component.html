@@ -1,9 +1,9 @@
 <div class="container py-4">
-  <div class="card p-4 shadow-lg border-0 mb-4 header-gradient" style="background: linear-gradient(45deg, #4158D0, #C850C0);">
-    <div class="d-flex justify-content-between align-items-center">
+  <div class="card p-4 shadow-lg border-0 mb-4 header-gradient" style="background: linear-gradient(45deg, #4158D0, #C850C0); border-radius: 20px;">
+    <div class="d-flex justify-content-between align-items-center text-white">
       <div>
         <span class="badge bg-white text-primary mb-2 shadow-sm">🚀 ACTIVE SESSION</span>
-        <h2 class="display-6 fw-bold text-white mb-0">{{ workoutForm.get('title')?.value }}</h2>
+        <h2 class="display-6 fw-bold mb-0">{{ workoutForm.get('title')?.value }}</h2>
         <p class="text-white-50 small mt-1 mb-0">
           {{ workoutForm.get('date')?.value | date:'EEEE, MMM d, yyyy' }}
         </p>
@@ -14,12 +14,59 @@
     </div>
   </div>
 
-  <div class="row g-2 mb-4">
+    <div class="position-relative mb-4 px-1">
+  <button type="button" 
+          (click)="showLibrary = !showLibrary"
+          class="btn w-100 d-flex justify-content-between align-items-center shadow-sm py-3 px-4 rounded-4 border-0"
+          [style.background]="showLibrary ? '#f8f9fa' : 'white'">
+    <span class="fw-bold" [class.text-primary]="showLibrary">
+      <i class="bi bi-plus-lg me-2"></i>
+      {{ showLibrary ? 'Choose an exercise' : 'Add Exercise' }}
+    </span>
+    <i class="bi" [class.bi-chevron-up]="showLibrary" [class.bi-dash-lg]="!showLibrary"></i>
+  </button>
+
+  @if (showLibrary) {
+    <div class="card shadow-xl border-0 position-absolute w-100 mt-2 z-3 library-dropdown animate__animated animate__fadeInUp">
+      <div class="card-body p-3">
+        @for (group of exerciseLibrary; track group.muscle) {
+          <div class="muscle-group-section mb-3">
+            <div class="d-flex align-items-center mb-2">
+              <span class="badge rounded-pill me-2" [style.backgroundColor]="getGroupColor(group.muscle) + '20'" [style.color]="getGroupColor(group.muscle)">
+                {{ getMuscleIcon(group.muscle) }}
+              </span>
+              <span class="text-uppercase fw-bold x-small text-muted" style="letter-spacing: 1px; font-size: 0.7rem;">
+                {{ group.muscle }}
+              </span>
+            </div>
+            
+            <div class="exercise-grid">
+              @for (ex of group.exercises; track ex) {
+                <button type="button" 
+                        (click)="selectFromLibrary(ex, group.muscle)"
+                        class="exercise-pill border-0"
+                        [style.backgroundColor]="getGroupColor(group.muscle) + '1A'"
+                         style="font-weight: 700; padding: 10px 18px; border-radius: 14px; font-size: 0.85rem; letter-spacing: 0.3px;">
+                        
+                  {{ ex }}
+                </button>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  }
+</div>
+
+ 
+
+  <div class="row g-2 mb-4 align-items-center">
     <div class="col-md-7">
-      <input #nameInput placeholder="Ex: Bench Press" class="form-control shadow-sm">
+      <input #nameInput placeholder="Or type manually: Ex: Bench Press" class="form-control shadow-sm border-0 py-2" style="border-radius: 12px;">
     </div>
     <div class="col-md-3">
-      <select #groupInput class="form-select shadow-sm">
+      <select #groupInput class="form-select shadow-sm border-0 py-2" style="border-radius: 12px;">
         <option value="Chest">🏋️‍♂️ Chest</option>
         <option value="Back">📐 Back</option>
         <option value="Legs">🍗 Legs</option>
@@ -29,7 +76,9 @@
       </select>
     </div>
     <div class="col-md-2">
-      <button type="button" (click)="addExercise(nameInput.value, groupInput.value); nameInput.value=''" class="btn btn-primary fw-bold w-100 shadow-sm">
+      <button type="button" 
+              (click)="addExercise(nameInput.value, groupInput.value); nameInput.value=''" 
+              class="btn btn-primary fw-bold w-100 shadow-sm py-2" style="border-radius: 12px;">
         Add
       </button>
     </div>
@@ -38,26 +87,47 @@
   <form [formGroup]="workoutForm">
     <div formArrayName="exercises">
       @for (ej of exercises.controls; let i = $index; track i) {
-        <div [formGroupName]="i" class="card border-0 shadow-sm mb-4 rounded-4 overflow-hidden" 
-             [style.borderLeft]="'6px solid ' + getGroupColor(ej.get('muscleGroup')?.value)">
-    
+        <div [formGroupName]="i" class="card border-0 shadow-sm mb-4 rounded-4 overflow-hidden">
+          <div [style.height]="'6px'" [style.backgroundColor]="getGroupColor(ej.get('muscleGroup')?.value)"></div>
           <div class="card-header bg-white d-flex justify-content-between align-items-center py-3 border-0">
-            <span class="fw-bold">{{ ej.get('name')?.value }}</span>
-            <button type="button" (click)="exercises.removeAt(i)" class="btn btn-sm text-danger border-0">Delete</button>
+            <div class="d-flex align-items-center gap-2">
+              <h5 class="fw-bold mb-0 text-dark">{{ ej.get('name')?.value }}</h5>
+              <span class="badge" [style.backgroundColor]="getGroupColor(ej.get('muscleGroup')?.value)">
+                {{ ej.get('muscleGroup')?.value }}
+              </span>
+            </div>
+            <button type="button" (click)="exercises.removeAt(i)" class="btn btn-sm text-danger border-0">
+              <i class="bi bi-trash"></i>
+            </button>
           </div>
 
-          <div class="card-body">
-            <div class="d-flex gap-2 mb-3">
-              <input #wInput type="number" placeholder="Kg" class="form-control" style="width: 100px;">
-              <input #rInput type="number" placeholder="Reps" class="form-control" style="width: 100px;">
-              <button type="button" (click)="addSet(i, wInput.value, rInput.value); wInput.value=''; rInput.value=''" class="btn btn-success">+ Set</button>
+          <div class="card-body bg-white pt-0">
+            <div class="d-flex gap-2 mb-3 p-3 bg-light rounded-4">
+              <div class="input-group input-group-sm">
+                <span class="input-group-text border-0 bg-white">Kg</span>
+                <input #wInput type="number" class="form-control border-0" placeholder="0">
+              </div>
+              <div class="input-group input-group-sm">
+                <span class="input-group-text border-0 bg-white">Reps</span>
+                <input #rInput type="number" class="form-control border-0" placeholder="0">
+              </div>
+              <button type="button" 
+                      (click)="addSet(i, wInput.value, rInput.value); wInput.value=''; rInput.value=''" 
+                      class="btn btn-success btn-sm px-3 rounded-3 shadow-sm fw-bold">
+                + Set
+              </button>
             </div>
 
             <div formArrayName="sets">
               @for (set of getSets(i).controls; let j = $index; track j) {
-                <div [formGroupName]="j" class="d-flex justify-content-between p-2 mb-2 bg-light rounded">
-                  <span>Set {{ j + 1 }}: {{ set.get('weight')?.value }}kg x {{ set.get('reps')?.value }} reps</span>
-                  <button type="button" (click)="getSets(i).removeAt(j)" class="btn btn-sm text-danger">X</button>
+                <div [formGroupName]="j" class="d-flex justify-content-between align-items-center p-2 mb-2 bg-light border-start border-primary border-3 rounded-3">
+                  <div class="d-flex align-items-center gap-3">
+                    <span class="small text-muted fw-bold">SET {{ j + 1 }}</span>
+                    <span class="fw-bold">{{ set.get('weight')?.value }}kg x {{ set.get('reps')?.value }}</span>
+                  </div>
+                  <button type="button" (click)="getSets(i).removeAt(j)" class="btn btn-sm text-danger border-0">
+                    <i class="bi bi-x"></i>
+                  </button>
                 </div>
               }
             </div>

@@ -1,20 +1,6 @@
 import { Injectable, signal, inject, computed } from '@angular/core';
-import { 
-  Firestore, 
-  collection, 
-  addDoc, 
-  query, 
-  where, 
-  orderBy, 
-  collectionData 
-} from '@angular/fire/firestore'; 
-import { 
-  Auth, 
-  signInWithEmailAndPassword, 
-  createUserWithEmailAndPassword, 
-  signOut, 
-  user 
-} from '@angular/fire/auth';
+import { Firestore, collection, addDoc,  query, where,  orderBy,  collectionData } from '@angular/fire/firestore'; 
+import { Auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, user } from '@angular/fire/auth';
 
 @Injectable({ providedIn: 'root' })
 export class EntrenamientoService {
