@@ -15,13 +15,10 @@ export class DashboardComponent {
 
   @Output() changeTab = new EventEmitter<string>();
   goToTab(tabName: string, exerciseName?: string) {
-    if(exerciseName){
-      this.entrenamientoService.selectedExercise.set(exerciseName);
-    } else {
-      this.entrenamientoService.selectedExercise.set(null);
+    console.log("IUntentando guardar ejercicio:0, exerciseName");
+      this.entrenamientoService.selectedExercise.set(exerciseName || null);
+      this.entrenamientoService.currentTab.set(tabName);
     }
-    this.changeTab.emit(tabName);
-  }
 
   getWorkoutsThisWeek(): number {
     const now = Date.now();

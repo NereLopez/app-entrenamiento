@@ -10,22 +10,28 @@
 
   <div class="container mb-4">
     <div class="btn-group w-100 shadow-sm rounded-4 overflow-hidden">
-      <button (click)="tab = 'dashboard'" [class.active]="tab === 'dashboard'" class="btn btn-light py-2 fw-bold">
+      <button (click)="entrenamientoService.currentTab.set('dashboard')"
+      [class.active]="entrenamientoService.currentTab() === 'dashboard'" 
+              class="btn btn-light py-2 fw-bold">
         🏠 Home
       </button>
-      <button (click)="tab = 'nueva'" [class.active]="tab === 'nueva'" class="btn btn-light py-2 fw-bold">
+      <button (click)="entrenamientoService.currentTab.set('nueva')" 
+              [class.active]="entrenamientoService.currentTab() === 'nueva'" 
+              class="btn btn-light py-2 fw-bold">
         🏋️‍♂️ Workout
       </button>
-      <button (click)="tab = 'historial'" [class.active]="tab === 'historial'" class="btn btn-light py-2 fw-bold">
+      <button (click)="entrenamientoService.currentTab.set('historial')" 
+              [class.active]="entrenamientoService.currentTab() === 'historial'" 
+              class="btn btn-light py-2 fw-bold">
         📜 History
       </button>
     </div>
   </div>
 
   <div class="container">
-    @if (tab === 'dashboard') {
-      <app-dashboard (changeTab)="tab = $event"></app-dashboard>
-    } @else if (tab === 'nueva') {
+    @if (entrenamientoService.currentTab() === 'dashboard') {
+      <app-dashboard></app-dashboard>
+    } @else if (entrenamientoService.currentTab() === 'nueva') {
       <app-nueva-sesion></app-nueva-sesion>
     } @else {
       <app-historial></app-historial>
@@ -38,6 +44,7 @@
 
 <style>
   .btn-group .btn.active { 
-    background-color: #4f46e5 !important; 
+    background-color: #4f46e5;
+    color: white;
   }
 </style>

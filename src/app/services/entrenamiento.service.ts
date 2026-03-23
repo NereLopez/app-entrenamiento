@@ -22,6 +22,7 @@ export class EntrenamientoService {
   private auth = inject (Auth);
 
   public selectedExercise = signal<string | null>(null);
+  public currentTab = signal<string>('dashboard');
 
   // Your original signals
   userSignal = signal<any>(null);

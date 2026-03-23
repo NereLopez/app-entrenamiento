@@ -26,11 +26,16 @@ export class NuevaSesionComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log("!. He entrado en nueva sesion");
     const exerciseName = this.entrenamientoService.selectedExercise();
+    console.log("2. el ejercicio q recibo es", exerciseName);
     if (exerciseName) {
-      this.addExercise(exerciseName, 'Custom');
+      console.log("3. intentado añadir enercicio", exerciseName);
+      this.addExercise(exerciseName, 'Chest');
       // Importante: lo reseteamos para que no se añada cada vez que entres
       this.entrenamientoService.selectedExercise.set(null);
+
+      console.log("Ejercicio auto-añadido con éxito");
     }
   }
 
