@@ -14,6 +14,7 @@ export class NuevaSesionComponent implements OnInit {
   private fb = inject(FormBuilder);
   private trainingService = inject(EntrenamientoService);
   public entrenamientoService = inject(EntrenamientoService);
+  private service = inject(EntrenamientoService);
 
   workoutForm: FormGroup;
 
@@ -28,10 +29,9 @@ export class NuevaSesionComponent implements OnInit {
   ngOnInit() {
     console.log("!. He entrado en nueva sesion");
     const exerciseName = this.entrenamientoService.selectedExercise();
-    console.log("2. el ejercicio q recibo es", exerciseName);
     if (exerciseName) {
       console.log("3. intentado añadir enercicio", exerciseName);
-      this.addExercise(exerciseName, 'Chest');
+      this.addExercise(exerciseName, 'General');
       // Importante: lo reseteamos para que no se añada cada vez que entres
       this.entrenamientoService.selectedExercise.set(null);
 
@@ -56,19 +56,26 @@ export class NuevaSesionComponent implements OnInit {
     return colors[group] || colors['Default'];
   }
 
-  addExercise(name: string, group: string) {
-    if (!name) {
-      alert("Please enter an exercise name");
+  addExercise(name: string, group: string = 'Default') {
+    if (!name) 
       return;
-    }
+
+      let autoGroup = group;
+      const lowerName = name.toLowerCase();
+      if (lowerName.includes('bench')) autoGroup = 'Chest';
+      if (lowerName.includes('squat' ) || lowerName.includes('deadlift')) autoGroup = 'Legs';
+ 
+    
     const formattedName = name.trim().charAt(0).toUpperCase() + name.trim().slice(1).toLowerCase();
 
-    this.exercises.push(this.fb.group({
-      name: [formattedName],
-      muscleGroup: [group],
+    const exerciseGroup = this.fb.group({
+    name: [formattedName, Validators.required],
+      muscleGroup: [autoGroup],
       sets: this.fb.array([])
-    }));
+    });
+    this.exercises.push(exerciseGroup);
     console.log("Ejercicio añadido:", formattedName);
+
   }
 
   addSet(index: number, weight: any, reps: any) {

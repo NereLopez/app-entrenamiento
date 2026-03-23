@@ -114,3 +114,21 @@
   transition: transform 0.2s;
 }
 .stat-card:hover { transform: translateY(-5px); }
+
+.user-card {
+  border: 1px solid #f1f5f9;
+  transition: transform 0.2s ease;
+}
+
+.user-card:hover {
+  transform: translateY(-2px);
+}
+
+.bg-primary-subtle {
+  background-color: #eef2ff !important;
+  color: #6366f1 !important;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.text-primary { color: #6366f1 !important; }

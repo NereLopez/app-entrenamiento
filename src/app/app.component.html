@@ -10,41 +10,16 @@
 
   <div class="container mb-4">
     <div class="btn-group w-100 shadow-sm rounded-4 overflow-hidden">
-      <button (click)="entrenamientoService.currentTab.set('dashboard')"
-      [class.active]="entrenamientoService.currentTab() === 'dashboard'" 
-              class="btn btn-light py-2 fw-bold">
-        🏠 Home
-      </button>
-      <button (click)="entrenamientoService.currentTab.set('nueva')" 
-              [class.active]="entrenamientoService.currentTab() === 'nueva'" 
-              class="btn btn-light py-2 fw-bold">
-        🏋️‍♂️ Workout
-      </button>
-      <button (click)="entrenamientoService.currentTab.set('historial')" 
-              [class.active]="entrenamientoService.currentTab() === 'historial'" 
-              class="btn btn-light py-2 fw-bold">
-        📜 History
-      </button>
+      <a routerLink="/dashboard" routerLinkActive="active" class="btn btn-light py-2 fw-bold">🏠 Home</a>
+      <a routerLink="/training" routerLinkActive="active" class="btn btn-light py-2 fw-bold">🏋️‍♂️ Workout</a>
+      <a routerLink="/historial" routerLinkActive="active" class="btn btn-light py-2 fw-bold">📜 History</a>
     </div>
   </div>
 
   <div class="container">
-    @if (entrenamientoService.currentTab() === 'dashboard') {
-      <app-dashboard></app-dashboard>
-    } @else if (entrenamientoService.currentTab() === 'nueva') {
-      <app-nueva-sesion></app-nueva-sesion>
-    } @else {
-      <app-historial></app-historial>
-    }
+    <router-outlet></router-outlet>
   </div>
 
 } @else {
   <app-login></app-login>
 }
-
-<style>
-  .btn-group .btn.active { 
-    background-color: #4f46e5;
-    color: white;
-  }
-</style>

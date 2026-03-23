@@ -1,28 +1,26 @@
 import { Component, inject, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterLink, Router, RouterModule } from '@angular/router';
 import { EntrenamientoService } from '../services/entrenamiento.service';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterLink, RouterModule],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
 export class DashboardComponent {
   public entrenamientoService = inject(EntrenamientoService);
+  private router = inject(Router);
 
-  @Output() changeTab = new EventEmitter<string>();
-  goToTab(tabName: string, exerciseName?: string) {
-    console.log("IUntentando guardar ejercicio:0, exerciseName");
-      this.entrenamientoService.selectedExercise.set(exerciseName || null);
-      this.entrenamientoService.currentTab.set(tabName);
-    }
+  startWithExercise(exerciseName?: string){
+    this.entrenamientoService.selectedExercise.set(exerciseName || null);
+    this.router.navigate(['/training']);
+  }
 
   getWorkoutsThisWeek(): number {
-    const now = Date.now();
-    const oneWeekAgo = now - (7 * 24 * 60 * 60 * 1000);
+    const oneWeekAgo = Date.now() - (7 * 24 * 60 * 60 * 1000);
     return this.entrenamientoService.history().filter((w:any) => w.createdAt > oneWeekAgo).length;
   }
 
@@ -40,10 +38,6 @@ export class DashboardComponent {
     return total;
   }
 
-  startWithExercise(name: string) {
-    // Aquí podrías redirigir a la página de entreno 
-    // y pre-cargar el ejercicio (lógica avanzada para luego)
-    console.log("Starting session with:", name);
   }
-}
+
 

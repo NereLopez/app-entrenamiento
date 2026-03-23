@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { EntrenamientoService } from '../services/entrenamiento.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -40,10 +41,12 @@ export class LoginComponent {
   email = '';
   pass = '';
   private trainingService = inject(EntrenamientoService);
+  private router = inject(Router);
 
   async onLogin() {
     try {
       await this.trainingService.login(this.email, this.pass);
+      this.router.navigate(['/dashboard']);
     } catch (e) {
       alert('Login failed. Please check your credentials.');
     }

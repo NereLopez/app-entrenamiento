@@ -1,4 +1,4 @@
-import { Injectable, signal, inject } from '@angular/core';
+import { Injectable, signal, inject, computed } from '@angular/core';
 import { 
   Firestore, 
   collection, 
@@ -23,10 +23,20 @@ export class EntrenamientoService {
 
   public selectedExercise = signal<string | null>(null);
   public currentTab = signal<string>('dashboard');
+  public userSignal = signal<any>(null);
+  public history = signal<any[]>([]);
 
-  // Your original signals
-  userSignal = signal<any>(null);
-  history = signal<any[]>([]);
+  public userName = computed(() => {
+    const u = this.userSignal();
+    let name = u?.displayName || u?.email?.split('@') [0] || 'User';
+    name = name.replace(/\./g, ' ').trim();
+    if (name.length > 0) {
+      return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+    }
+
+    return 'User';
+  });
+public userLevel = signal<string>('Intermediate');
 
   constructor() {
     // Escucha cambios en el usuario (si entra o sale)
@@ -56,26 +66,19 @@ export class EntrenamientoService {
 
   // MÉTODOS DE BASE DE DATOS
   private fetchHistory(userId: string) {
-    console.log("📡 Pidiendo datos a Firebase para el usuario:", userId);
 
     const ref = collection(this.firestore, 'workouts');
     const q = query(ref, where('userId', '==', userId), orderBy('createdAt', 'desc'));
 
     collectionData(q, { idField: 'id' }).subscribe(data => {
-      console.log("✅ ¡Llegaron datos! Cantidad:", data.length);
-      console.log("Contenido:", data);
       this.history.set(data);
     });
   }
 
   async saveFromForm(formData: any) {
     const currentUser = this.userSignal();
-    if (!currentUser) {
-      console.error("No hay usuario logueado para guardar");
-      alert("Error: Debes estar logueado");
-       return false;
-        }
-
+    if (!currentUser) return false;
+        
     try {
       const workoutsRef = collection(this.firestore as any, 'workouts');
       const newWorkout = {
@@ -83,11 +86,11 @@ export class EntrenamientoService {
         userId: (currentUser as any).uid, // ASOCIAMOS EL USUARIO
         createdAt: Date.now()
       };
-      console.log("Enviando a Firestore...", newWorkout);
+      
       await addDoc(workoutsRef, newWorkout);
       return true;
     } catch (error) {
-      console.error("Error crítico al guardar en Firebase", error);
+      console.error("Erroral guardar", error);
       return false;
     }
   }

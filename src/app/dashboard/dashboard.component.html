@@ -1,15 +1,38 @@
+<div class="user-card d-flex align-items-center p-3 mb-4 bg-white shadow-sm rounded-4">
+  <div class="me-3">
+    <img [src]="'https://ui-avatars.com/api/?name=' + entrenamientoService.userName() + '&background=6366f1&color=fff'" 
+         class="rounded-circle shadow-sm" width="55" alt="Avatar">
+  </div>
+
+  <div class="flex-grow-1">
+    <h5 class="fw-bold mb-0 text-dark">Welcome, {{ entrenamientoService.userName() }}!</h5>
+    <div class="d-flex align-items-center mt-1">
+      <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-1">
+        <i class="bi bi-lightning-fill me-1"></i> {{ entrenamientoService.userLevel() }}
+      </span>
+      <small class="text-muted ms-3">
+        <i class="bi bi-calendar3 me-1"></i> {{ entrenamientoService.history().length }} sessions
+      </small>
+    </div>
+  </div>
+
+  <button (click)="entrenamientoService.logout()" class="btn btn-outline-danger btn-sm border-0 rounded-circle p-2">
+    <i class="bi bi-box-arrow-right fs-5"></i>
+  </button>
+</div>
+
 <div class="row g-3 mb-5">
   <div class="col-6">
-    <button (click)="goToTab('nueva')" class="quick-card bg-primary text-white border-0 w-100 shadow-sm">
+    <button (click)="startWithExercise()" class="quick-card bg-primary text-white border-0 w-100 shadow-sm rounded-4 py-3">
       <div class="quick-icon"><i class="bi bi-plus-lg"></i></div>
       <span class="fw-bold">Start Workout</span>
     </button>
   </div>
   <div class="col-6">
-    <button (click)="goToTab('historial')" class="quick-card bg-white text-dark border-0 w-100 shadow-sm">
+    <a routerLink="/historial" class="quick-card bg-white text-dark border-0 w-100 shadow-sm rounded-4 py-3 text-decoration-none d-block text-center">
       <div class="quick-icon text-primary"><i class="bi bi-bar-chart-fill"></i></div>
       <span class="fw-bold">View History</span>
-    </button>
+    </a>
   </div>
 </div>
 
@@ -23,13 +46,13 @@
     <h5 class="fw-bold mb-3">Quick Start</h5>
     <div class="d-flex gap-3 overflow-auto pb-2" style="scrollbar-width: none;">
       
-      <button (click)="goToTab('nueva')" class="btn-exercise-quick active shadow-sm border-0">
+      <button (click)="startWithExercise()" class="btn-exercise-quick active shadow-sm border-0">
         <div class="icon-circle mb-2"><i class="bi bi-plus-lg"></i></div>
         <span>New Session</span>
       </button>
 
       @for (item of ['Bench Press', 'Squat', 'Deadlift']; track item) {
-        <button (click)="goToTab('nueva')" class="btn-exercise-quick shadow-sm border-0 bg-white">
+        <button (click)="startWithExercise(item)" class="btn-exercise-quick shadow-sm border-0 bg-white">
           <div class="icon-circle-alt mb-2"><i class="bi bi-lightning-fill"></i></div>
           <span>{{ item }}</span>
         </button>
@@ -63,7 +86,7 @@
 
   <div class="d-flex justify-content-between align-items-center mb-3">
     <h5 class="fw-bold mb-0">Last Exercise</h5>
-    <button (click)="goToTab('historial')" class="btn btn-link text-primary text-decoration-none small fw-bold">View History</button>
+    <a routerLink="/historial" class="btn btn-link text-primary text-decoration-none small fw-bold">View History</a>
   </div>
 
   <div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
@@ -73,7 +96,7 @@
           <i class="bi bi-check-circle-fill text-success fs-3"></i>
         </div>
         <div>
-          <h6 class="fw-bold mb-0">{{ lastWorkout.title }}</h6>
+          <h6 class="fw-bold mb-0">{{ lastWorkout.title || 'Workout Session' }}</h6>
           <p class="text-muted small mb-0">{{ lastWorkout.createdAt | date:'mediumDate' }}</p>
         </div>
       </div>
