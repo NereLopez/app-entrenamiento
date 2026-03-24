@@ -1,0 +1,287 @@
+/* Container Wrapper */
+.nutrition-wrapper {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+/* Base Card Style */
+.card {
+  background: white;
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  height: 100%; /* Ensures grid cards align */
+}
+
+/* --- DASHBOARD HEADER --- */
+.energy-header {
+  background: linear-gradient(135deg, #2d936c 0%, #3b71ca 100%);
+  color: white;
+  padding: 3rem;
+  border-radius: 24px;
+  text-align: center;
+  position: relative;
+  margin-bottom: 2rem;
+  box-shadow: 0 15px 35px rgba(59, 113, 202, 0.2);
+}
+
+.energy-header .label {
+  font-size: 0.8rem;
+  letter-spacing: 1.5px;
+  opacity: 0.8;
+  text-transform: uppercase;
+}
+
+.energy-header h1 { 
+  font-size: 4rem; 
+  margin: 0.5rem 0; 
+  font-weight: 800;
+}
+
+.energy-header .unit { font-size: 1.5rem; font-weight: 300; }
+
+.goal-badge {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 6px 20px;
+  border-radius: 50px;
+  display: inline-block;
+  font-size: 0.9rem;
+}
+
+.btn-edit-float {
+  position: absolute; top: 20px; right: 20px;
+  background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.4);
+  color: white; padding: 8px 16px; border-radius: 12px; cursor: pointer;
+  backdrop-filter: blur(5px);
+}
+
+.btn-edit-float:hover { background: white; color: #3b71ca; }
+
+/* --- DASHBOARD GRID --- */
+.dashboard-grid {
+  display: grid; 
+  grid-template-columns: 1fr 1.2fr; 
+  gap: 1.5rem;
+}
+
+.metric-row {
+  display: flex; justify-content: space-between; padding: 1.2rem 0;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.value-highlight { font-weight: bold; color: #3b71ca; font-size: 1.1rem; }
+
+/* Macro Boxes (With border colors from your original version) */
+.macro-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 1.5rem; margin-bottom: 1rem; border-radius: 16px;
+  background: #f8fafc;
+  transition: transform 0.2s;
+}
+
+.macro-item:hover { transform: translateX(5px); }
+
+.protein { border-left: 6px solid #e57373; background: #fff5f5; }
+.carbs { border-left: 6px solid #448aff; background: #f5f9ff; }
+.fats { border-left: 6px solid #81c784; background: #f5fff5; }
+
+.macro-text strong { display: block; font-size: 1rem; color: #333; }
+.macro-text small { color: #718096; font-size: 0.8rem; }
+.macro-gram { font-size: 1.4rem; font-weight: 800; color: #2d3748; }
+
+/* --- QUESTIONNAIRE FORM --- */
+.nutrition-container { max-width: 500px; margin: auto; }
+
+.form-group { margin-bottom: 1.5rem; display: flex; flex-direction: column; }
+
+label { font-weight: 600; margin-bottom: 0.6rem; color: #4a5568; font-size: 0.95rem; }
+
+input, select {
+  padding: 14px 18px;
+  border: 2px solid #edf2f7;
+  border-radius: 14px;
+  font-size: 1rem;
+  background: #f8fafc;
+  transition: all 0.2s;
+}
+
+input:focus, select:focus {
+  outline: none;
+  border-color: #3b71ca;
+  background: white;
+  box-shadow: 0 0 0 4px rgba(59, 113, 202, 0.1);
+}
+
+.btn-submit {
+  padding: 1.1rem; background: #3b71ca; color: white; border: none;
+  border-radius: 14px; font-weight: 700; cursor: pointer; font-size: 1rem;
+}
+
+.btn-submit:disabled { background: #cbd5e0; cursor: not-allowed; }
+
+.btn-cancel { 
+  margin-top: 15px; background: none; border: none; 
+  color: #718096; cursor: pointer; text-decoration: underline; 
+}
+
+/* Animations */
+.dashboard-view, .nutrition-container {
+  animation: slideUp 0.5s ease-out;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.weight-slider {
+  width: 100%;
+  margin: 20px 0;
+  accent-color: #3b71ca; /* Matches your header */
+  cursor: pointer;
+}
+
+.goal-selector-mini {
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px dashed #ddd;
+}
+
+.goal-selector-mini p { font-size: 0.8rem; color: #777; margin-bottom: 8px; }
+
+.badge {
+  display: inline-block;
+  padding: 5px 15px;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 0.85rem;
+}
+
+/* Dynamic colors for the goal badge */
+.lose { background: #fee2e2; color: #ef4444; }
+.maintain { background: #fef3c7; color: #d97706; }
+.gain { background: #dcfce7; color: #16a34a; }
+
+/* Styling for the items inside the macro card */
+.macro-item {
+  display: flex;
+  flex-direction: column; /* Stack text and progress bar */
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  border-radius: 16px;
+  background: #f8fafc;
+}
+
+.macro-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+/* The Gray Track */
+.progress-container {
+  width: 100%;
+  height: 8px;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 10px;
+  margin-top: 12px;
+  overflow: hidden;
+}
+
+/* The Colored Bar */
+.progress-bar {
+  height: 100%;
+  border-radius: 10px;
+  transition: width 0.8s ease-in-out;
+  /* Add a subtle glow to the progress bars */
+.protein .progress-bar { 
+  background: #e57373; 
+  box-shadow: 0 0 8px rgba(229, 115, 115, 0.4); 
+}
+.carbs .progress-bar { 
+  background: #448aff; 
+  box-shadow: 0 0 8px rgba(68, 138, 255, 0.4); 
+}
+.fats .progress-bar { 
+  background: #81c784; 
+  box-shadow: 0 0 8px rgba(129, 199, 132, 0.4); 
+}
+}
+
+/* Match the colors to your borders */
+.protein .progress-bar { background: #e57373; }
+.carbs .progress-bar { background: #448aff; }
+.fats .progress-bar { background: #81c784; }
+
+/* --- INTERACTIVE BIOMETRICS CONTROLS --- */
+.interactive-controls {
+  display: flex;
+  justify-content: space-between;
+  padding: 1.5rem 0;
+  border-bottom: none !important; /* Keep it clean */
+}
+
+.mini-control {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label-sm {
+  font-size: 0.75rem;
+  color: #718096;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+.button-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #f1f5f9;
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid #e2e8f0;
+}
+
+.button-group button {
+  border: none;
+  background: white;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #3b71ca;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  transition: all 0.2s ease;
+}
+
+.button-group button:hover {
+  background: #3b71ca;
+  color: white;
+  transform: scale(1.1);
+}
+
+.button-group strong {
+  font-size: 1rem;
+  color: #1e293b;
+  min-width: 25px;
+  text-align: center;
+}
+
+/* Tooltip or small info for interactive elements */
+.biometrics-card h3::after {
+  content: " (Adjustable)";
+  font-size: 0.7rem;
+  color: #3b71ca;
+  font-weight: normal;
+  vertical-align: middle;
+}

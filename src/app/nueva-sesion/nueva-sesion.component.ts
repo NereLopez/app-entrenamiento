@@ -16,6 +16,9 @@ export class NuevaSesionComponent implements OnInit {
   
   public showLibrary = false;
   public workoutForm: FormGroup; 
+  public isResting = false;
+  public restTime = 60;
+  private timer: any;
 
   public exerciseLibrary = [
     { muscle: 'Chest', exercises: ['Bench Press', 'Incline Press', 'Chest Flys'] },
@@ -97,43 +100,85 @@ export class NuevaSesionComponent implements OnInit {
   }
 
   addSet(index: number, weight: any, reps: any) {
-    const w = parseFloat(weight) || 0;
+    const w = weight === '' || weight === null ? 0 : parseFloat(weight);
     const r = parseInt(reps) || 0;
     if (r > 0) {
       this.getSets(index).push(this.fb.group({
         weight: [w],
         reps: [r]
       }));
+      this.startRest(60);
     }
   }
 
   async finishWorkout() {
-    const hasSets = this.exercises.controls.some((ex, idx) => this.getSets(idx).length > 0);
+ const hasExercises = this.exercises.length > 0;
+  const hasSets = this.exercises.controls.some((_, idx) => this.getSets(idx).length > 0);
+  
+  if (!hasExercises || !hasSets) {
+    alert('Please add at least one exercise with sets before finishing! 💪');
+    return;
+  }
+
+  if (!confirm('Are you sure you have finished your training session?')) return;
+
+  // 2. Prepare the data exactly as the Service expects it
+  const sessionData = {
+    title: this.workoutForm.value.title,
+    date: this.workoutForm.value.date,
+    // We map the form values to ensure the structure is clean for Firebase
+    exercises: this.exercises.value.map((ex: any) => ({
+      name: ex.name,
+      muscleGroup: ex.muscleGroup,
+      sets: ex.sets.map((s: any) => ({
+        weight: Number(s.weight || 0),
+        reps: Number(s.reps || 0)
+      }))
+    })),
+    createdAt: Date.now()
+  };
+
+  try {
+    const success = await this.entrenamientoService.saveFromForm(sessionData);
     
-    if (!hasSets) {
-      alert('Add at least one exercise before finishing!💪');
-      return;
+    if (success) {
+      // Logic for the Signal state is handled inside the service
+      alert('Workout successfully saved! 🚀');
+      
+      // Reset the form
+      this.exercises.clear();
+      this.workoutForm.patchValue({
+        title: 'New Workout Session',
+        date: new Date().toISOString().substring(0, 10)
+      });
+
+      // Redirect to Dashboard
+      this.entrenamientoService.currentTab.set('dashboard');
     }
+  } catch (error) {
+    console.error("Error in finishWorkout:", error);
+    alert('There was an error saving your workout. Please try again.');
+  }
+}
 
-    if (!confirm('Have you finished your training?')) return;
+  startRest(seconds: number) {
+    this.isResting = true;
+    this.restTime = seconds;
 
-    const fullData = {
-      ...this.workoutForm.value,
-      createdAt: Date.now()
-    };
+    if (this.timer) clearInterval(this.timer);
 
-    try {
-      const success = await this.entrenamientoService.saveFromForm(fullData);
-      if (success) {
-        alert('Workout successfully saved! 🚀');
-        this.exercises.clear();
-        this.workoutForm.patchValue({
-          title: 'New Workout Session',
-          date: new Date().toISOString().substring(0, 10)
-        });
+    this.timer = setInterval(() => {
+      if (this.restTime > 0) {
+        this.restTime--;
+      } else {
+        this.stopRest();
+        // Opcional: Sonido o vibración aquí
       }
-    } catch (error) {
-      console.error("Error en finishWorkout:", error);
-    }
+    }, 1000);
+  }
+
+  stopRest() {
+    this.isResting = false;
+    clearInterval(this.timer);
   }
 }

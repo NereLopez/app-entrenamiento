@@ -1,185 +1,22 @@
 :host {
+  --main-gradient: linear-gradient(135deg, #0d9488 0%, #115e59 100%) !important;
+  --primary-blue: #0d9488 !important;
+  --primary-green: #0d9488 !important;
+  
   display: block;
   background-color: #f4f7f9;
   min-height: 100vh;
   padding: 20px;
-  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
 
-.header-gradient {
-  background: linear-gradient(135deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
-  border-radius: 24px !important;
-  border: none !important;
-  transition: all 0.3s ease;
+
+.header-gradient, .active-session-header {
+  background: linear-gradient(45deg, #0d9488, #115e59) !important;
+  box-shadow: 0 10px 20px rgba(13, 148, 136, 0.2) !important;
 }
 
-.fw-extrabold {
-  font-weight: 850 !important;
-  letter-spacing: -1.5px;
-}
-
-.text-white-50 {
-  color: rgba(255, 255, 255, 0.85) !important;
-  text-transform: capitalize;
-}
-
-.form-control, .form-select {
-  border-radius: 12px !important;
-  border: 1px solid #dee2e6 !important;
-  padding: 12px !important;
-  transition: all 0.2s ease;
-}
-
-.form-control:focus, .form-select:focus {
-  border-color: #C850C0 !important;
-  box-shadow: 0 0 0 0.25rem rgba(200, 80, 192, 0.1) !important;
-  outline: none;
-}
-
-.card.border.shadow-sm {
-  border-radius: 20px !important;
-  border: 1px solid rgba(0,0,0,0.05) !important;
-  background: white;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.card.border.shadow-sm:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.08) !important;
-}
-
-.card-header {
-  border-bottom: 1px solid #f8f9fa !important;
-  background-color: transparent !important;
-  padding: 15px 20px !important;
-}
-
-.badge {
-  border-radius: 30px !important;
-  padding: 6px 14px !important;
-  font-weight: 700 !important;
-  font-size: 0.7rem !important;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.rounded-pill {
-  background-color: #f8f9fa !important;
-  border: 1px solid #e9ecef !important;
-  padding: 10px 15px !important;
-  transition: all 0.2s ease;
-}
-
-.rounded-pill:hover {
-  background-color: #ffffff !important;
-  border-color: #C850C0 !important;
-  transform: scale(1.02);
-}
 
 .btn-primary {
-  background-color: #4158D0 !important;
+  background: linear-gradient(135deg, #0d9488, #115e59) !important;
   border: none !important;
-  border-radius: 12px !important;
-  font-weight: 600;
-  transition: all 0.3s ease;
-}
-
-.btn-primary:hover {
-  background-color: #3346a8 !important;
-  transform: translateY(-1px);
-}
-
-.btn-light.hover-scale {
-  border-radius: 15px !important;
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.btn-light.hover-scale:hover {
-  transform: scale(1.1);
-  background-color: white !important;
-}
-
-.rounded-circle {
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-}
-
-h5.text-dark {
-  color: #212529 !important; 
-  margin-top: 10px;
-}
-
-.form-control, .form-select {
-  padding-top: 0 !important;
-  padding-bottom: 0 !important;
-}
-
-@keyframes pulse-rocket {
-  0% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.1); opacity: 0.8; }
-  100% { transform: scale(1); opacity: 1; }
-}
-
-.badge.bg-white.text-primary {
-  animation: pulse-rocket 2s infinite ease-in-out;
-  display: inline-flex;
-  align-items: center;
-}
-
-.custom-input::first-letter {
-  text-transform: uppercase;
-}
-#nameInput {
-  text-transform: capitalize;
-}
-
-.library-dropdown {
-  border-radius: 24px !important;
-  background: rgba(255, 255, 255, 0.95) !important;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(0,0,0,0.05) !important;
-  z-index: 2000 !important;
-}
-
-.exercise-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  padding-left: 5px;
-}
-
-.exercise-pill {
-  transition: all 0.2s ease;
-  opacity: 0.9;
-}
-
-.exercise-pill:hover {
- opacity: 1;
- transform: scale(1.05);
- box-shadow: 0 4px 8px rgba(0,0,0,0.15) !important;
-}
-
-.exercise-pill:active {
-  transform: scale(0.95);
-}
-
-.exercise-grid {
-  display: flex;
-  flex-wrap: wrap0;
-  gap: 10px;
-  padding: 5px 0 15px 0;
-}
-
-
-.animate__fadeInUp {
-  animation: fadeInUp 0.3s ease-out;
-}
-
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
 }

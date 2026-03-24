@@ -1,18 +1,39 @@
 <div class="container py-4">
-  <div class="card p-4 shadow-lg border-0 mb-4 header-gradient" style="background: linear-gradient(45deg, #4158D0, #C850C0); border-radius: 20px;">
+  <div class="card p-4 shadow-lg border-0 mb-4" 
+  style="background: linear-gradient(45deg, #0d9488, #115e59) !important; border-radius: 20px;">
     <div class="d-flex justify-content-between align-items-center text-white">
       <div>
-        <span class="badge bg-white text-primary mb-2 shadow-sm">🚀 ACTIVE SESSION</span>
+        <span class="badge bg-white mb-2 shadow-sm" style="color: #0d9488 !important;">🚀 ACTIVE SESSION</span>
         <h2 class="display-6 fw-bold mb-0">{{ workoutForm.get('title')?.value }}</h2>
         <p class="text-white-50 small mt-1 mb-0">
           {{ workoutForm.get('date')?.value | date:'EEEE, MMM d, yyyy' }}
         </p>
       </div>
-      <button type="button" (click)="finishWorkout()" class="btn shadow-sm fw-bold bg-white text-success border-0 px-4 py-2" style="border-radius: 15px;">
+      <button type="button" (click)="finishWorkout()"
+                             class="btn shadow-sm fw-bold bg-white border-0 px-4 py-2" 
+                            style="border-radius: 15px; color: #0d9488 !important;">
         Finish
       </button>
     </div>
   </div>
+
+  @if (isResting) {
+<div class="rest-banner">
+    <div class="d-flex flex-column w-100">
+      <div class="progress-container">
+        <div class="progress-bar-fill" [style.width.%]="(restTime / 60) * 100"></div>
+      </div>
+
+      <div class="d-flex align-items-center justify-content-between p-3">
+        <div class="d-flex align-items-center">
+          <div class="spinner-border spinner-border-sm text-info me-3" role="status"></div>
+          <span class="text-white">Next set in: <span style="color: #54b4d3;" class="fw-bold">{{ restTime }}s</span></span>
+        </div>
+        <button (click)="stopRest()" class="btn btn-sm btn-link text-white text-decoration-none fw-bold">SKIP</button>
+      </div>
+    </div>
+  </div>
+}
 
     <div class="position-relative mb-4 px-1">
   <button type="button" 
@@ -78,7 +99,8 @@
     <div class="col-md-2">
       <button type="button" 
               (click)="addExercise(nameInput.value, groupInput.value); nameInput.value=''" 
-              class="btn btn-primary fw-bold w-100 shadow-sm py-2" style="border-radius: 12px;">
+              class="btn fw-bold w-100 shadow-sm py-2"
+               style="border-radius: 12px; background: #0d9488; color: white; border: none;box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3) !important;">
         Add
       </button>
     </div>

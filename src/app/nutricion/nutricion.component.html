@@ -1,88 +1,138 @@
-<div class="container py-4 animate__animated animate__fadeIn">
-  
-  <div class="card p-4 shadow-lg border-0 mb-4 text-white" 
-       style="background: linear-gradient(45deg, #059669, #3b82f6); border-radius: 24px;">
-    <div class="text-center py-2">
-      <span class="text-uppercase fw-bold opacity-75 small">Daily Energy Target</span>
-      <h1 class="display-3 fw-bold mb-0">{{ nutricionServices.caloriasObjetivo() }} <small class="fs-4">kcal</small></h1>
-      <p class="mb-0 mt-2 d-flex align-items-center justify-content-center gap-2">
-        <span class="opacity-75 small fw-bold text-uppercase" style="font-size: 0.7rem; letter-spacing: 1px;">Goal:</span>
-  
-        <span class="badge rounded-pill px-3 py-2 shadow-sm animate__animated animate__fadeIn"
-        [style.backgroundColor]="nutricionServices.objetivo() === 'perder' ? '#ef4444' : '#10b981'"
-        style="color: white; font-weight: 800; font-size: 0.75rem; border: 1px solid rgba(255,255,255,0.3);">
-         {{ nutricionServices.objetivo() === 'perder' ? 'FAT LOSS' : 'MUSCLE GAIN' }}
-  </span>
-</p>
-    </div>
-  </div>
+<div class="nutrition-wrapper">
+  <form [formGroup]="form" (ngSubmit)="saveProfile()">
 
-  <div class="row g-4">
-    <div class="col-md-6">
-      <div class="card border-0 shadow-sm rounded-4 p-4 bg-white h-100">
-        <h5 class="fw-bold mb-4">Biometrics & Goal</h5>
+    <div class="dashboard-view" *ngIf="form.valid && !isEditing">
+      <div class="energy-header">
+        <p class="label">DAILY ENERGY TARGET</p>
+        <h1>{{ nutricionSvc.caloriasObjetivo() }} <span class="unit">kcal</span></h1>
+        <div class="goal-badge">Goal: {{ form.get('goal')?.value | titlecase }}</div>
+        <button type="button" class="btn-edit-float" (click)="toggleEdit()">✏️ Edit Profile</button>
+      </div>
+
+      <div class="dashboard-grid">
         
-        <div class="mb-4">
-          <label class="d-flex justify-content-between fw-bold mb-2">
+        <div class="card biometrics-card">
+          <h3>Biometrics & Goal</h3>
+          
+          <div class="metric-row">
             <span>Weight</span>
-            <span class="text-primary">{{ nutricionServices.peso() }} kg</span>
-          </label>
-          <input type="range" class="form-range" min="40" max="150" 
-                 [value]="nutricionServices.peso()" 
-                 (input)="updatePeso($event)">
+            <span class="value-highlight">{{ form.get('weight')?.value }} kg</span>
+          </div>
+          <input type="range" class="weight-slider" formControlName="weight" min="40" max="150">
+
+          <div class="metric-row interactive-controls">
+            <div class="mini-control">
+              <span class="label-sm">Age</span>
+              <div class="button-group">
+                <button type="button" (click)="adjust('age', -1)">-</button>
+                <strong>{{ form.get('age')?.value }}</strong>
+                <button type="button" (click)="adjust('age', 1)">+</button>
+              </div>
+            </div>
+            
+            <div class="mini-control">
+              <span class="label-sm">Height</span>
+              <div class="button-group">
+                <button type="button" (click)="adjust('height', -1)">-</button>
+                <strong>{{ form.get('height')?.value }}</strong>
+                <button type="button" (click)="adjust('height', 1)">+</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="goal-selector-mini">
+            <p>Current Strategy:</p>
+            <div class="badge" [ngClass]="form.get('goal')?.value">
+              {{ (form.get('goal')?.value === 'lose' ? 'Lose Weight' : 
+                 form.get('goal')?.value === 'gain' ? 'Build Muscle' : 'Maintain') }}
+            </div>
+          </div>
+        </div> <div class="card macros-card">
+          <h3>Macronutrient Split</h3>
+
+          <div class="macro-item protein">
+            <div class="macro-header-row">
+              <div class="macro-text"><strong>Protein</strong><small>Muscle repair</small></div>
+              <span class="macro-gram">{{ nutricionSvc.macros().proteinas }}g</span>
+            </div>
+            <div class="progress-container">
+              <div class="progress-bar" [style.width.%]="(nutricionSvc.macros().proteinas / 2.5)"></div>
+            </div>
+          </div>
+
+          <div class="macro-item carbs">
+            <div class="macro-header-row">
+              <div class="macro-text"><strong>Carbs</strong><small>Energy source</small></div>
+              <span class="macro-gram">{{ nutricionSvc.macros().carbos }}g</span>
+            </div>
+            <div class="progress-container">
+              <div class="progress-bar" [style.width.%]="(nutricionSvc.macros().carbos / 4)"></div>
+            </div>
+          </div>
+
+          <div class="macro-item fats">
+            <div class="macro-header-row">
+              <div class="macro-text"><strong>Fats</strong><small>Hormonal health</small></div>
+              <span class="macro-gram">{{ nutricionSvc.macros().grasas }}g</span>
+            </div>
+            <div class="progress-container">
+              <div class="progress-bar" [style.width.%]="(nutricionSvc.macros().grasas / 1.5)"></div>
+            </div>
+          </div>
+        </div> </div>
+    </div>
+
+    <div class="nutrition-container card" *ngIf="!form.valid || isEditing">
+      <div class="form-header">
+        <h2>📊 Nutrition Questionnaire</h2>
+        <p>Fill in your details to calculate your daily target.</p>
+      </div>
+
+      <div class="nutrition-form">
+        <div class="form-group">
+          <label>Age (years)</label>
+          <input type="number" formControlName="age" placeholder="e.g. 30">
         </div>
 
-        <label class="fw-bold mb-2">I want to...</label>
-        <div class="d-flex gap-2 p-1 bg-light rounded-4">
-          <button (click)="nutricionServices.objetivo.set('perder')" 
-                  class="btn flex-grow-1 border-0 rounded-3 py-2 fw-bold transition-all"
-                  [style.backgroundColor]="nutricionServices.objetivo() === 'perder' ? '#ef4444' : 'transparent'"
-                  [style.color]="nutricionServices.objetivo() === 'perder' ? 'white' : '#64748b'">
-            Lose Weight
+        <div class="form-group">
+          <label>Weight (kg)</label>
+          <input type="number" formControlName="weight" placeholder="e.g. 75">
+        </div>
+
+        <div class="form-group">
+          <label>Height (cm)</label>
+          <input type="number" formControlName="height" placeholder="e.g. 175">
+        </div>
+
+        <div class="form-group">
+          <label>Gender</label>
+          <select formControlName="gender">
+            <option value="" disabled selected>Select gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Fitness Goal</label>
+          <select formControlName="goal">
+            <option value="" disabled selected>Select your goal</option>
+            <option value="lose">Lose Weight</option>
+            <option value="maintain">Maintain Weight</option>
+            <option value="gain">Gain Muscle</option>
+          </select>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" [disabled]="form.invalid" class="btn-submit">
+            Save Profile & View Dashboard
           </button>
-          <button (click)="nutricionServices.objetivo.set('ganar')" 
-                  class="btn flex-grow-1 border-0 rounded-3 py-2 fw-bold transition-all"
-                  [style.backgroundColor]="nutricionServices.objetivo() === 'ganar' ? '#10b981' : 'transparent'"
-                  [style.color]="nutricionServices.objetivo() === 'ganar' ? 'white' : '#64748b'">
-            Build Muscle
+          <button type="button" *ngIf="isEditing" (click)="toggleEdit()" class="btn-cancel">
+            Cancel
           </button>
         </div>
       </div>
     </div>
 
-    <div class="col-md-6">
-      <div class="card border-0 shadow-sm rounded-4 p-4 bg-white h-100">
-        <h5 class="fw-bold mb-4">Macronutrient Split</h5>
-        
-        <div class="vstack gap-3">
-          <div class="p-3 rounded-4 d-flex justify-content-between align-items-center" 
-               style="background: rgba(239, 68, 68, 0.08); border: 2px solid rgba(239, 68, 68, 0.2);">
-            <div>
-              <span class="d-block fw-bold text-danger">Protein</span>
-              <small class="text-muted">Muscle repair</small>
-            </div>
-            <span class="h4 mb-0 fw-bold text-danger">{{ nutricionServices.macros().proteinas }}g</span>
-          </div>
-
-          <div class="p-3 rounded-4 d-flex justify-content-between align-items-center" 
-               style="background: rgba(59, 130, 246, 0.08); border: 2px solid rgba(59, 130, 246, 0.2);">
-            <div>
-              <span class="d-block fw-bold text-primary">Carbohydrates</span>
-              <small class="text-muted">Energy source</small>
-            </div>
-            <span class="h4 mb-0 fw-bold text-primary">{{ nutricionServices.macros().carbos }}g</span>
-          </div>
-
-          <div class="p-3 rounded-4 d-flex justify-content-between align-items-center" 
-               style="background: rgba(16, 185, 129, 0.08); border: 2px solid rgba(16, 185, 129, 0.2);">
-            <div>
-              <span class="d-block fw-bold text-success">Fats</span>
-              <small class="text-muted">Hormonal health</small>
-            </div>
-            <span class="h4 mb-0 fw-bold text-success">{{ nutricionServices.macros().grasas }}g</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  </form>
 </div>

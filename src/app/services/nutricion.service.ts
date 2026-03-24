@@ -1,9 +1,12 @@
-import { Injectable, signal, computed } from '@angular/core';
+import { Injectable, signal, computed, inject } from '@angular/core';
+import { Firestore, collection, addDoc } from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NutricionService {
+  private firestore = inject(Firestore);
+
   // Datos del usuario (Signals para reactividad)
   public peso = signal<number>(75);
   public altura = signal<number>(180);
@@ -39,4 +42,18 @@ export class NutricionService {
       grasas: Math.round((total * 0.30) / 9)
     };
   });
-}
+
+  async saveToFirestore () {
+    const colRef = collection(this.firestore, 'nutricion_usuarios');
+    return addDoc(colRef, {
+      peso: this.peso(),
+      altura: this.altura(),
+      edad: this.edad(),
+      tmb: this.tmb(),
+      caloriasObjetivo: this.caloriasObjetivo(),
+      macrods: this.macros(),
+      fecha: new Date()
+    });
+  }      
+    }
+  

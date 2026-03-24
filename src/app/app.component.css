@@ -1,19 +1,49 @@
-/* Estilo para el botón de la ruta donde estamos */
-.btn-group .active {
-  background-color: #4158D0 !important; /* Tu color principal */
-  color: white !important;
-  border-color: #4158D0 !important;
+/* 1. Theme Variables (Global access) */
+:root {
+  --main-gradient: linear-gradient(135deg, #2d936c 0%, #3b71ca 100%);
+  --primary-blue: #3b71ca;
+  --primary-green: #2d936c;
 }
 
-/* Para que los botones no se vean grises feos al pasar el ratón */
+/* 2. The Active Tab Button */
+.btn-group .active {
+  /* Now matches your Nutrition header perfectly */
+  background: var(--main-gradient) !important; 
+  color: white !important;
+  border: none !important;
+  box-shadow: 0 4px 12px rgba(45, 147, 108, 0.2);
+  font-weight: 600;
+}
+
+/* 3. Inactive Buttons (The gray ones) */
 .btn-light {
   background-color: white;
   border: none;
-  color: #6c757d;
-  transition: all 0.2s;
+  color: #94a3b8; /* A softer blue-gray */
+  transition: all 0.3s ease;
+  font-weight: 500;
 }
 
+/* 4. Hover Effect for Inactive Tabs */
 .btn-light:hover {
-  background-color: #f8f9fa;
-  color: #4158D0;
+  background-color: #f1f5f9;
+  color: var(--primary-green); /* Subtle green hint on hover */
+  transform: translateY(-1px);
+}
+
+/* 5. Special Case: Start Workout Button in Navbar (if exists) */
+.btn-start-workout {
+  background: var(--main-gradient);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 20px;
+  font-weight: 700;
+  box-shadow: 0 10px 20px rgba(45, 147, 108, 0.2);
+  transition: all 0.3s ease;
+}
+
+.btn-start-workout:hover {
+  filter: brightness(1.1);
+  transform: scale(1.02);
 }

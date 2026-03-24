@@ -1,4 +1,39 @@
 
+:root {
+
+  --main-gradient: linear-gradient(135deg, #0d9488 0%, #115e59 100%);
+  --primary-blue: #0d9488;
+  --primary-green: #0d9488;
+}
+
+.text-primary {
+  background: var(--main-gradient);
+  background-clip: text;
+  -webkit-background-clip: tesxt;
+  -webkit-text-fill-color: transparent;
+  font-weight: 800 !important;
+}
+
+.btn-group .btn-light {
+  border: none !important;
+  color: #64748b !important; /* Gris elegante para los inactivos */
+  transition: all 0.3s ease;
+  background: white !important;
+}
+
+/* El botón activo de la navegación */
+.btn-group .btn-light.active {
+  background: var(--main-gradient) !important;
+  color: white !important;
+  -webkit-text-fill-color: white !important; /* Reset del gradiente de texto */
+}
+
+/* Quitar los bordes internos de Bootstrap que ensucian el diseño */
+.btn-group.rounded-4 {
+  border: 1px solid #edf2f7 !important;
+  overflow: hidden;
+}
+
 body {
   background-color: #f8f9fa; 
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
@@ -52,4 +87,5 @@ body {
   --bs-badge-color: #fff;
 
 }
+
 

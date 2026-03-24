@@ -1,8 +1,16 @@
-/* Botón principal de inicio */
-.btn-start {
-  background: #4f46e5;
-  color: white;
-  border: none;
+:root {
+  --main-gradient: linear-gradient(135deg, #2d936c 0%, #3b71ca 100%);
+  --primary-blue: #3b71ca;
+  --primary-green: #2d936c;
+  --bg-light-green: #f0fdf4;
+  --card-shadow: 0 10px 20px rgba(45, 147, 108, 0.15);
+}
+
+
+.btn-start .btn-primary {
+  background: var(--main-gradient) !important;
+  color: white !important;
+  border: none !important;
   min-width: 120px;
   height: 120px;
   border-radius: 24px;
@@ -10,125 +18,93 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  transition: transform 0.2s;
+  transition: all 0.3s ease !important;
+  box-shadow: 0 10px 20px rgba(45, 147, 108, 0.2) !important;
+  font-weight: 700 !important;
 }
 
-/* Botones de ejercicios rápidos */
+.btn-start:hover {
+  transform: translateY(-3px) scale(1.02);
+  filter: brightness(1.1);
+}
+
 .btn-exercise-quick {
   background: white;
   color: #374151;
-  border: 1px solid #f3f4f6;
-  min-width: 120px;
-  height: 120px;
-  border-radius: 24px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.2s;
-}
-
-.btn-start:active, .btn-exercise-quick:active {
-  transform: scale(0.95);
-}
-
-.icon-circle {
-  background: rgba(255, 255, 255, 0.2);
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.icon-circle-alt {
-  background: #eef2ff;
-  color: #4f46e5;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.stat-card {
-  transition: transform 0.3s;
-}
-
-.stat-card:hover {
-  transform: translateY(-5px);
-}
-
-.quick-card {
-  padding: 20px;
-  border-radius: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  height: 110px;
-  transition: transform 0.2s;
-}
-.quick-card:active { transform: scale(0.95); }
-.quick-icon {
-  font-size: 1.5rem;
-  margin-bottom: 8px;
-  background: rgba(255, 255, 255, 0.2);
-  width: 45px;
-  height: 45px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-}
-.bg-white .quick-icon { background: #f8f9fa; }
-
-/* Botones Quick Start */
-.btn-exercise-quick {
+  border: 1px solid #f1f5f9;
   min-width: 100px;
   padding: 15px;
   border-radius: 18px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  transition: all 0.2s;
+  transition: all 0.2s ease;
 }
 
 .btn-exercise-quick.active {
-  background: #4f46e5;
+  background: var(--main-gradient);
   color: white;
+  border: none;
+  box-shadow: var(--card-shadow);
 }
 
 .icon-circle, .icon-circle-alt {
-  width: 40px; height: 40px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.icon-circle { background: rgba(255,255,255,0.2); }
-.icon-circle-alt { background: #f3f4f6; color: #4f46e5; }
-
-/* Tarjetas de stats */
-.stat-card {
-  transition: transform 0.2s;
+.icon-circle {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
 }
-.stat-card:hover { transform: translateY(-5px); }
+
+.icon-circle-alt {
+  background: var(--bg-light-green);
+  color: var(--primary-green);
+}
+
+.stat-card, .user-card {
+  border-radius: 20px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stat-card:hover, .user-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.05);
+}
 
 .user-card {
   border: 1px solid #f1f5f9;
-  transition: transform 0.2s ease;
+  background: white;
 }
 
-.user-card:hover {
-  transform: translateY(-2px);
+.user-avatar, .bg-primary.rounded-circle {
+  background: linear-gradient(135deg, #2d936c 0%, #3b71ca 100%) !important;
+  border: none !important;
+  color: white !important;
+  font-weight: 700 !important;
 }
 
 .bg-primary-subtle {
-  background-color: #eef2ff !important;
-  color: #6366f1 !important;
+  background-color: var(--bg-light-green) !important;
+  color: var(--primary-green) !important;
   font-size: 0.75rem;
   font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 50px;
 }
 
-.text-primary { color: #6366f1 !important; }
+.text-primary, .fa-bolt, .bi-lightning-fill { 
+  color: #3b71ca !important; 
+}
+.btn-history i, .btn-history .text-primary {
+  color: #2d936c !important;
+}
+
+.btn-start:active, .btn-exercise-quick:active, .quick-card:active {
+  transform: scale(0.95);
+}

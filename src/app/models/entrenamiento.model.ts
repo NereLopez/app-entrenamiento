@@ -1,4 +1,4 @@
-// src/app/models/entrenamiento.model.ts
+
 
 export interface Serie {
     peso: number;
@@ -14,9 +14,20 @@ export interface Ejercicio {
 }
 
 export interface SesionEntrenamiento {
-    id?: string;        // Opcional porque Firebase lo genera al guardar
-    userId: string;     // ¡IMPORTANTE! Para saber de quién es el entreno
-    fecha: number;      // Usar 'number' (Timestamp) es mejor para ordenar fechas en Firebase
+    id?: string;        
+    userId: string;     
+    fecha: number;    
     titulo: string;
     ejercicios: Ejercicio[];
+}
+
+export interface UserStats {
+  userId: string;
+  puntosXP: number;
+  nivel: number;
+  rachaActual: number;
+  ultimaSesionFecha: any; 
+  recordsPersonales: {
+    [exerciseId: string]: number; 
+  };
 }

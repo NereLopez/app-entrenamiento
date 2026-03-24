@@ -110,7 +110,7 @@ export class HistorialComponent {
     const mainColor = isVolume ? '#6366f1' : '#C850C0'; // Morado para Vol, Rosa para Freq
 
     const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-    gradient.addColorStop(0, isVolume ? 'rgba(99, 102, 241, 0.4)' : 'rgba(200, 80, 192, 0.4)');
+    gradient.addColorStop(0, isVolume ? 'rgba(59, 113, 202, 0.4)' : 'rgba(45, 147, 16, 0.4)');
     gradient.addColorStop(1, 'transparent');
 
     this.chart = new Chart(ctx, {
