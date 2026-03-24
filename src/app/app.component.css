@@ -1,49 +1,47 @@
-/* 1. Theme Variables (Global access) */
+
 :root {
-  --main-gradient: linear-gradient(135deg, #2d936c 0%, #3b71ca 100%);
-  --primary-blue: #3b71ca;
-  --primary-green: #2d936c;
+  --primary-teal: #0d9488;
+  --dark-teal: #115e59;
+  --main-gradient: linear-gradient(135deg, #0d9488 0%, #115e59 100%);
+  --soft-teal-bg: #f0fdfa;
 }
 
-/* 2. The Active Tab Button */
 .btn-group .active {
-  /* Now matches your Nutrition header perfectly */
   background: var(--main-gradient) !important; 
   color: white !important;
   border: none !important;
-  box-shadow: 0 4px 12px rgba(45, 147, 108, 0.2);
-  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3) !important;
+  font-weight: 700 !important;
 }
 
-/* 3. Inactive Buttons (The gray ones) */
 .btn-light {
-  background-color: white;
-  border: none;
-  color: #94a3b8; /* A softer blue-gray */
-  transition: all 0.3s ease;
+  background-color: white !important;
+  border: none !important;
+  color: #94a3b8 !important; 
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   font-weight: 500;
 }
 
-/* 4. Hover Effect for Inactive Tabs */
 .btn-light:hover {
-  background-color: #f1f5f9;
-  color: var(--primary-green); /* Subtle green hint on hover */
+  background-color: var(--soft-teal-bg) !important;
+  color: var(--primary-teal) !important; 
   transform: translateY(-1px);
 }
 
-/* 5. Special Case: Start Workout Button in Navbar (if exists) */
-.btn-start-workout {
+.workout-master-brand {
   background: var(--main-gradient);
-  color: white;
-  border: none;
-  border-radius: 12px;
-  padding: 10px 20px;
-  font-weight: 700;
-  box-shadow: 0 10px 20px rgba(45, 147, 108, 0.2);
-  transition: all 0.3s ease;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 900;
+  letter-spacing: -1px;
+  font-size: 1.5rem;
 }
 
-.btn-start-workout:hover {
-  filter: brightness(1.1);
-  transform: scale(1.02);
+.btn-logout {
+  color: #ef4444; 
+  transition: opacity 0.2s;
+}
+
+.btn-logout:hover {
+  opacity: 0.7;
 }

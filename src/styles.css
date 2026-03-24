@@ -1,91 +1,40 @@
 
 :root {
-
-  --main-gradient: linear-gradient(135deg, #0d9488 0%, #115e59 100%);
-  --primary-blue: #0d9488;
-  --primary-green: #0d9488;
+  
+  --main-gradient: linear-gradient(135deg, #0d9488 0%, #075985 100%);
+  --primary-teal: #0d9488;
+  --dark-teal: #0ea5e9;
+  --light-teal: #f0fdf4;
 }
 
-.text-primary {
-  background: var(--main-gradient);
-  background-clip: text;
-  -webkit-background-clip: tesxt;
-  -webkit-text-fill-color: transparent;
-  font-weight: 800 !important;
-}
-
-.btn-group .btn-light {
+.btn-primary {
+  background: var(--main-gradient) !important;
   border: none !important;
-  color: #64748b !important; /* Gris elegante para los inactivos */
-  transition: all 0.3s ease;
-  background: white !important;
+  box-shadow: 0 4px 12px rgba(13, 148, 136, 0.2) !important;
 }
 
-/* El botón activo de la navegación */
+.text-primary, .fa-bolt, .bi-lightning-fill {
+  color: var(--primary-teal) !important;
+  background: none !important;
+  -webkit-text-fill-color: initial !important;
+}
+
+.bg-primary {
+  background: var(--main-gradient) !important;
+}
+
 .btn-group .btn-light.active {
   background: var(--main-gradient) !important;
   color: white !important;
-  -webkit-text-fill-color: white !important; /* Reset del gradiente de texto */
 }
 
-/* Quitar los bordes internos de Bootstrap que ensucian el diseño */
-.btn-group.rounded-4 {
-  border: 1px solid #edf2f7 !important;
-  overflow: hidden;
+.navbar-brand, h1.logo, .app-title {
+  color: #0d9488 !important; 
+  background: linear-gradient(135deg, #0d9488, #115e59);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 900 !important;
+  font-size: 1.5rem;
+  letter-spacing: -1px;
 }
-
-body {
-  background-color: #f8f9fa; 
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-}
-
-.app-title {
-  color: #8e44ad; 
-  font-weight: 800;
-  text-align: center;
-  padding: 20px 0;
-  font-size: 2.5rem;
-}
-
-.custom-input {
-  border-radius: 8px;
-  border: 1px solid #dee2e6;
-  padding: 10px 15px;
-  transition: all 0.2s;
-}
-
-.custom-input:focus {
-  border-color: #4158D0;
-  box-shadow: 0 0 0 0.25rem rgba(65, 88, 208, 0.1);
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.badge.rounded-pill {
-  color: #ffffff !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.5px;
-  border: none !important;
-  opacity: 1 !important;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 80px;
-  padding: 6px 12px;
-}
-
-.badge {
-  --bs-badge-color: #fff;
-
-}
-
 
