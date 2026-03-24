@@ -4,13 +4,14 @@ import { RouterLink, Router, RouterModule } from '@angular/router';
 import { EntrenamientoService } from '../services/entrenamiento.service';
 import { Chart, plugins, registerables } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
+import { CalendarHeatmapComponent } from './components/calendar-heatmap/calendar-heatmap.component';
 
 Chart.register(...registerables);
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterLink, RouterModule, BaseChartDirective],
+  imports: [CommonModule, RouterLink, RouterModule, BaseChartDirective, CalendarHeatmapComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })

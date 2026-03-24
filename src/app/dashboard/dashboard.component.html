@@ -5,7 +5,7 @@
   </div>
 
   <div class="flex-grow-1">
-    <h5 class="fw-bold mb-0 text-dark">Welcome, {{ entrenamientoService.userName() }}!</h5>
+    <h5 class="fw-bold mb-0 text-dark">Welcome ! {{ entrenamientoService.userName() }}!</h5>
     <div class="d-flex align-items-center mt-1">
       <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-1">
         <i class="bi bi-lightning-fill me-1"></i> {{ entrenamientoService.userLevel() }}
@@ -16,9 +16,8 @@
     </div>
   </div>
 
-  <button (click)="entrenamientoService.logout()" class="btn btn-outline-danger btn-sm border-0 rounded-circle p-2">
-    <i class="bi bi-box-arrow-right fs-5"></i>
-  </button>
+<app-calendar-heatmap></app-calendar-heatmap>
+ 
 </div>
 
 <div class="row g-3 mb-5">
@@ -38,7 +37,7 @@
 
 <div class="container py-4">
   <div class="mb-5">
-    <h2 class="fw-bold mb-1 text-dark">Welcome back! 👋</h2>
+    <h2 class="fw-bold mb-1 text-dark">Welcome back!</h2>
     <p class="text-muted">Ready to crush your goals today?</p>
   </div>
 

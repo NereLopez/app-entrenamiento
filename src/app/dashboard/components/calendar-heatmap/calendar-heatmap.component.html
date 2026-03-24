@@ -1,1 +1,26 @@
-<p>calendar-heatmap works!</p>
+<div id="share-area" class="calendar-card p-4 rounded-4 shadow-sm bg-white position-relative">
+  
+  <div class="share-only-header d-none mb-3">
+    <div class="d-flex align-items-center gap-2">
+      <div class="user-avatar-mini">AR</div>
+      <div>
+        <h5 class="m-0 fw-bold" style="color: #334155; font-size: 1rem;">Aroa's Weekly Progress</h5>
+        <small class="text-muted">Powered by Kinetic</small>
+      </div>
+    </div>
+  </div>
+
+  <h6 class="fw-bold mb-2 text-secondary" style="font-size: 0.8rem;">Weekly Activity</h6>
+  
+  <div class="d-flex gap-2">
+    @for (day of ['M', 'T', 'W', 'T', 'F', 'S', 'S']; track $index) {
+      <div class="d-flex flex-column align-items-center gap-1">
+        <div class="day-box" [class.active]="$index < 4"></div>
+        <span class="text-muted" style="font-size: 0.6rem; font-weight: bold;">{{day}}</span>
+      </div>
+    }
+  </div>
+
+  <button (click)="exportAsImage($event)" class="btn-share-icon">
+     </button>
+</div>
