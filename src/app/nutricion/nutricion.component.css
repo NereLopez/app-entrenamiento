@@ -1,4 +1,11 @@
+/* 1. CONTENEDOR Y WRAPPER */
+.nutrition-wrapper {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+}
 
+/* 2. HEADER DE ENERGÍA (KCAL) */
 .energy-header {
   background: linear-gradient(135deg, #0d9488 0%, #115e59 100%) !important;
   color: white;
@@ -10,40 +17,116 @@
   box-shadow: 0 15px 35px rgba(13, 148, 136, 0.25) !important;
 }
 
+.energy-header h1 {
+  font-size: 3.5rem;
+  font-weight: 900;
+  margin: 0;
+}
+
+.energy-header .unit { font-size: 1.5rem; opacity: 0.8; }
+
+.btn-edit-float {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 50px;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
 .btn-edit-float:hover { 
   background: white !important; 
   color: #0d9488 !important; 
 }
 
-input:focus, select:focus {
-  outline: none;
-  border-color: #0d9488 !important; 
+/* 3. GRID DEL DASHBOARD (Para poner Biometría y Macros en paralelo) */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+  margin-top: 20px;
+}
+
+/* 4. TARJETAS (CARDS) */
+.card {
   background: white;
-  box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.1) !important;
+  border-radius: 20px;
+  padding: 24px;
+  border: 1px solid #f1f5f9;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+}
+
+.card h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #334155;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* 5. BIOMETRÍA Y CONTROLES */
+.metric-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.value-highlight { 
+  font-weight: 800; 
+  color: #0d9488 !important; 
+  font-size: 1.2rem; 
 }
 
 .weight-slider {
   width: 100%;
-  margin: 20px 0;
+  margin: 15px 0 25px 0;
   accent-color: #0d9488 !important; 
+  height: 6px;
   cursor: pointer;
+}
+
+/* Botones + y - */
+.interactive-controls {
+  display: flex;
+  gap: 15px;
+}
+
+.mini-control {
+  flex: 1;
+  background: #f8fafc;
+  padding: 12px;
+  border-radius: 16px;
+  text-align: center;
+}
+
+.button-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 8px;
 }
 
 .button-group button {
   border: none;
   background: white;
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
-  cursor: pointer;
+  color: #0d9488 !important; 
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: bold;
-  font-size: 1.1rem;
-  color: #0d9488 !important; 
-  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-  transition: all 0.2s ease;
+  transition: all 0.2s;
 }
 
 .button-group button:hover {
@@ -52,80 +135,72 @@ input:focus, select:focus {
   transform: scale(1.1);
 }
 
-.biometrics-card h3::after {
-  content: " (Adjustable)";
-  font-size: 0.7rem;
-  color: #0d9488 !important;
-  font-weight: normal;
-  vertical-align: middle;
+/* 6. MACRONUTRIENTES */
+.macro-item {
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #f1f5f9;
 }
 
-.carbs .progress-bar { 
-  background: #448aff; 
-  box-shadow: 0 0 8px rgba(68, 138, 255, 0.4); 
-}
-.value-highlight { 
-  font-weight: bold; 
-  color: #0d9488 !important; 
-  font-size: 1.1rem; 
+.macro-item:last-child { border-bottom: none; }
+
+.macro-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 8px;
 }
 
-/* Contenedor del cuestionario */
+.macro-text strong { display: block; color: #1e293b; }
+.macro-text small { color: #94a3b8; font-size: 0.75rem; }
+.macro-gram { font-weight: 800; color: #1e293b; }
+
+.progress-container {
+  height: 8px;
+  background: #f1f5f9;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress-bar { height: 100%; border-radius: 10px; transition: width 0.6s ease; }
+
+/* Colores de Macros */
+.protein .progress-bar { background: #10b981; }
+.carbs .progress-bar { background: #3b82f6; }
+.fats .progress-bar { background: #ef4444; }
+
+/* 7. FORMULARIO (Cuestionario) */
 .nutrition-container {
-  max-width: 600px;
-  margin: 30px auto;
-  padding: 30px;
-  background: white;
-  border-radius: 24px;
-  box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+  max-width: 550px;
+  margin: 40px auto;
 }
 
-/* Título del cuestionario */
-.nutrition-container h2 {
-  color: #0d9488 !important;
-  font-weight: 800;
+.form-header { text-align: center; margin-bottom: 30px; }
+.form-header h2 { color: #0d9488 !important; font-weight: 800; }
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #475569;
+}
+
+.nutrition-form input, .nutrition-form select {
+  width: 100%;
+  padding: 14px;
+  border: 2px solid #f1f5f9;
+  border-radius: 14px;
+  background: #f8fafc;
   margin-bottom: 20px;
 }
 
-/* Estilo para los campos de texto y selects */
-.nutrition-container input, 
-.nutrition-container select {
-  width: 100%;
-  padding: 12px 16px;
-  margin: 10px 0 20px 0;
-  border: 2px solid #f1f5f9;
-  border-radius: 12px;
-  background: #f8fafc;
-  transition: all 0.3s;
-}
-
-.nutrition-container input:focus, 
-.nutrition-container select:focus {
-  border-color: #0d9488;
-  outline: none;
-  background: white;
-  box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.1);
-}
-
-/* El botón de guardar (Save Profile) */
 .btn-submit {
   width: 100%;
-  padding: 15px;
+  padding: 16px;
   background: linear-gradient(135deg, #0d9488, #115e59) !important;
   color: white !important;
-  border: none !important;
-  border-radius: 14px;
+  border: none;
+  border-radius: 16px;
   font-weight: 700;
-  cursor: pointer;
-  transition: transform 0.2s;
-}
-
-.btn-submit:hover:not(:disabled) {
-  transform: translateY(-2px);
-  filter: brightness(1.1);
-}
-
-.btn-submit:disabled {
-  background: #cbd5e0 !important;
-  cursor: not-allowed;
+  box-shadow: 0 10px 20px rgba(13, 148, 136, 0.2);
 }

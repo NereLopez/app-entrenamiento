@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { NutricionService } from '../services/nutricion.service';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 
@@ -10,7 +10,7 @@ import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
   templateUrl: './nutricion.component.html',
   styleUrl: './nutricion.component.css'
 })
-export class NutricionComponent {
+export class NutricionComponent implements OnInit {
   private fb = inject(FormBuilder);
   public nutricionSvc = inject(NutricionService);
   
@@ -24,28 +24,36 @@ export class NutricionComponent {
     goal: ['', Validators.required]
   });
 
+  ngOnInit() {
+    // Si ya existen datos en el servicio (por ejemplo, cargados de Firebase),
+    // rellenamos el formulario para que no aparezca vacío al editar.
+    this.syncFormWithService();
+  }
+
   toggleEdit() {
     this.isEditing = !this.isEditing;
-    
     if (this.isEditing) {
-      const currentGoal = this.nutricionSvc.objetivo();
-      const goalMapInv: any = { 'perder': 'lose', 'mantener': 'maintain', 'ganar': 'gain' };
-
-      this.form.patchValue({
-        age: this.nutricionSvc.edad(),
-        weight: this.nutricionSvc.peso(),
-        height: this.nutricionSvc.altura(),
-        gender: this.nutricionSvc.genero() === 'hombre' ? 'male' : 'female',
-        goal: goalMapInv[currentGoal] || 'maintain'
-      });
+      this.syncFormWithService();
     }
   }
 
-  // UPDATED: Logic with correct bracket closure
+  private syncFormWithService() {
+    const currentGoal = this.nutricionSvc.objetivo();
+    const goalMapInv: any = { 'perder': 'lose', 'mantener': 'maintain', 'ganar': 'gain' };
+
+    this.form.patchValue({
+      age: this.nutricionSvc.edad(),
+      weight: this.nutricionSvc.peso(),
+      height: this.nutricionSvc.altura(),
+      gender: this.nutricionSvc.genero() === 'hombre' ? 'male' : 'female',
+      goal: goalMapInv[currentGoal] || 'maintain'
+    });
+  }
+
   adjust(field: string, delta: number) {
     const control = this.form.get(field);
     if (control) {
-      const newVal = (control.value || 0) + delta;
+      const newVal = (Number(control.value) || 0) + delta;
       
       const limits: any = {
         age: { min: 10, max: 100 },
@@ -56,12 +64,13 @@ export class NutricionComponent {
       const limit = limits[field];
       if (limit && newVal >= limit.min && newVal <= limit.max) {
         control.setValue(newVal);
+        // Esto permite que las calorías y macros del Dashboard cambien 
+        // mientras el usuario pulsa los botones, ¡efecto instantáneo!
         this.syncSidebarToService(field, newVal);
       }
     }
   }
 
-  // Helper to ensure the service signals update in real-time
   private syncSidebarToService(field: string, value: number) {
     if (field === 'weight') this.nutricionSvc.peso.set(value);
     if (field === 'height') this.nutricionSvc.altura.set(value);
@@ -72,6 +81,7 @@ export class NutricionComponent {
     if (this.form.valid) {
       const val = this.form.value;
 
+      // Actualizamos los Signals del servicio
       this.nutricionSvc.peso.set(val.weight!);
       this.nutricionSvc.altura.set(val.height!);
       this.nutricionSvc.edad.set(val.age!);
@@ -89,7 +99,8 @@ export class NutricionComponent {
       try {
         await this.nutricionSvc.saveToFirestore();
         this.isEditing = false;
-        alert('Profile saved successfully!');
+        // Cambiamos el alert por un log o algo más discreto si prefieres
+        console.log('Profile saved successfully!');
       } catch (err) {
         console.error('Firestore error:', err);
         alert('Error saving to database.');

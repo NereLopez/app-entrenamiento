@@ -2,45 +2,44 @@
   <div class="d-flex justify-content-between align-items-center mb-5 mt-2">
     <div>
       <div class="d-flex align-items-center">
-        <div class="icon-box bg-primary shadow-sm me-3 p-2 rounded-3">
+        <div class="icon-box shadow-sm me-3 p-2 rounded-3" style="background-color: #0d9488;">
           <i class="bi bi-graph-up-arrow text-white fs-4"></i>
         </div>
         <h2 class="fw-bold m-0 text-dark">My Progress</h2>
       </div>
       <p class="text-muted small mb-0 mt-2 ms-5">
-        You've completed <strong>{{ entrenamientoService.history().length }}</strong> sessions so far.
+        You have completed <strong>{{ groupedWorkouts.length }}</strong> days of training.
       </p>
     </div>
     
     <div class="btn-group shadow-sm bg-white rounded-pill p-1">
       <button type="button"
           (click)="setMetric('Volume')" 
-          [class.bg-primary]="currentMetric === 'Volume'"
+          [style.background-color]="currentMetric === 'Volume' ? '#0d9488' : 'white'"
           [class.text-white]="currentMetric === 'Volume'"
-          [class.bg-white]="currentMetric !== 'Volume'"
           [class.text-dark]="currentMetric !== 'Volume'"
           class="btn btn-sm rounded-pill px-3 border-0 transition-all fw-bold">
-    Volume
-  </button>
+        Volume
+      </button>
 
-  <button type="button"
+      <button type="button"
           (click)="setMetric('Frequency')"
-          [class.bg-primary]="currentMetric === 'Frequency'"
+          [style.background-color]="currentMetric === 'Frequency' ? '#0d9488' : 'white'"
           [class.text-white]="currentMetric === 'Frequency'"
-          [class.bg-white]="currentMetric !== 'Frequency'"
           [class.text-dark]="currentMetric !== 'Frequency'"
           class="btn btn-sm rounded-pill px-3 border-0 transition-all fw-bold">
-    Frequency
-  </button>
-</div>
+        Frequency
+      </button>
+    </div>
   </div>
 
   <div class="row g-4 mb-5">
-    
     <div class="col-lg-8">
       <div class="card border-0 shadow-lg rounded-4 overflow-hidden bg-white h-100">
         <div class="card-header bg-white border-0 pt-4 px-4">
-          <h6 class="text-uppercase text-muted fw-bold small ls-1"> {{ currentMetric === 'Volume' ? 'Volume Evolution (kg)' : 'Workout Frequency' }}</h6>
+          <h6 class="text-uppercase text-muted fw-bold small ls-1"> 
+            {{ currentMetric === 'Volume' ? 'Volume Evolution (kg)' : 'Workout Frequency' }}
+          </h6>
         </div>
         <div class="card-body px-4 pb-4">
           <div style="height: 350px; position: relative;">
@@ -51,9 +50,8 @@
     </div>
 
     <div class="col-lg-4 d-flex flex-column gap-4">
-      
       <div class="card border-0 shadow-lg rounded-4 pr-card text-white p-4 text-center"
-      style="background: linear-gradient(45deg, #6366f1, #a855f7); position: relative; overflow: hidden;">
+      style="background: linear-gradient(45deg, #0d9488, #115e59); position: relative; overflow: hidden;">
         <h6 class="opacity-75 fw-bold text-uppercase small ls-1 mb-2">Personal Record</h6>
         <div class="d-flex align-items-center justify-content-center">
           <span class="display-4 fw-bold">{{ getPersonalRecord() }}</span>
@@ -78,51 +76,67 @@
 
   <div class="mt-5">
     <h5 class="fw-bold mb-4 text-secondary d-flex align-items-center">
-      <i class="bi bi-calendar-check me-2 text-primary"></i> Workout History
+      <i class="bi bi-calendar-check me-2" style="color: #0d9488;"></i> Workout History
     </h5>
     
     <div class="row">
-      @for (workout of entrenamientoService.history(); track workout.id) {
+      @for (session of groupedWorkouts; track session.id) {
         <div class="col-12 mb-3">
           <div class="card border-0 shadow-sm rounded-4 workout-card" 
-               (click)="toggleSession(workout.id)"
-               style="cursor: pointer;">
+               (click)="toggleSession(session.id)"
+               style="cursor: pointer; border-left: 5px solid #0d9488 !important;">
             
-            <div class="card-body p-4">
+            <div class="card-body p-3 px-4">
               <div class="d-flex justify-content-between align-items-center">
                 <div class="d-flex align-items-center">
-                  <div class="date-badge me-3 text-center bg-light rounded-3 p-2" style="min-width: 60px;">
-                    <b class="text-primary fs-4 d-block">{{ workout.createdAt | date:'dd' }}</b>
-                    <small class="text-uppercase text-muted d-block">{{ workout.createdAt | date:'MMM' }}</small>
+                  <div class="date-badge me-3 text-center rounded-3 p-2" 
+                       style="min-width: 65px; background-color: #f0fdfa;">
+                    <span class="d-block fw-bolder text-dark fs-4" style="line-height: 1;">
+                      {{ session.displayDate | date:'dd' }}
+                    </span>
+                    <small class="text-uppercase fw-bold" style="color: #0d9488; font-size: 0.7rem;">
+                      {{ session.displayDate | date:'MMM' }}
+                    </small>
                   </div>
+                  
                   <div>
-                    <h5 class="fw-bold text-dark mb-0">
-                      {{ workout.title === 'New Workout Session' ? (workout.exercises[0]?.name + ' Session') : workout.title }}
-                    </h5>
-                    <div class="text-muted small mt-1">
-                      {{ workout.exercises.length }} exercises performed
-                    </div>
+                    <h6 class="fw-bold text-dark mb-1">Session Day</h6>
+                    @if (expandedSessionId !== session.id) {
+                      <div class="d-flex gap-1 flex-wrap">
+                        @for (ex of session.allExercises.slice(0, 4); track $index) {
+                          <span class="badge rounded-pill fw-normal" style="background: #f1f5f9; color: #64748b; font-size: 0.7rem;">
+                            {{ ex.name }}
+                          </span>
+                        }
+                        @if (session.allExercises.length > 4) {
+                          <span class="badge rounded-pill fw-bold" style="background: #e2e8f0; color: #475569; font-size: 0.7rem;">
+                            +{{ session.allExercises.length - 4 }}
+                          </span>
+                        }
+                      </div>
+                    }
                   </div>
                 </div>
 
-                <div class="text-end d-flex align-items-center">
-                   <div class="me-3 bg-light px-3 py-1 rounded-pill">
-                     <span class="fw-bold text-primary">{{ calculateVolume(workout) }}</span> kg
-                   </div>
-                   <i class="bi" [ngClass]="expandedSessionId === workout.id ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
+                <div class="d-flex align-items-center">
+                  <div class="text-end me-3">
+                    <small class="text-muted d-block" style="font-size: 0.7rem; text-transform: uppercase;">Volumen Total</small>
+                    <span class="fw-bold" style="color: #0d9488;">{{ calculateVolume(session) }} kg</span>
+                  </div>
+                  <i class="bi fs-5 text-muted" [ngClass]="expandedSessionId === session.id ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
                 </div>
               </div>
 
-              @if (expandedSessionId === workout.id) {
+              @if (expandedSessionId === session.id) {
                 <div class="mt-4 pt-3 border-top">
-                  <div class="row g-3">
-                    @for (ex of workout.exercises; track $index) {
-                      <div class="col-md-6">
-                        <div class="p-3 rounded-3 bg-light">
-                          <div class="fw-bold text-dark mb-2">{{ ex.name }}</div>
-                          <div class="d-flex flex-wrap gap-2">
+                  <div class="row g-2">
+                    @for (ex of session.allExercises; track $index) {
+                      <div class="col-md-6 col-lg-4">
+                        <div class="p-3 rounded-3" style="background-color: #f8fafc; border: 1px solid #edf2f7;">
+                          <div class="fw-bold text-dark small mb-2">{{ ex.name }}</div>
+                          <div class="d-flex flex-wrap gap-1">
                             @for (set of ex.sets; track $index) {
-                              <span class="badge bg-white text-dark border shadow-sm">
+                              <span style="font-size: 0.75rem;" class="badge bg-white text-secondary border">
                                 {{ set.weight }}kg x {{ set.reps }}
                               </span>
                             }
@@ -139,4 +153,4 @@
       }
     </div>
   </div>
-</div> 
+</div>

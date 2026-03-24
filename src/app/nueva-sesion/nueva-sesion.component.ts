@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { EntrenamientoService } from '../services/entrenamiento.service';
@@ -10,12 +10,14 @@ import { EntrenamientoService } from '../services/entrenamiento.service';
   templateUrl: './nueva-sesion.component.html',
   styleUrl: './nueva-sesion.component.css',
 })
-export class NuevaSesionComponent implements OnInit {
+export class NuevaSesionComponent implements OnInit, OnDestroy {
   private fb = inject(FormBuilder);
   public entrenamientoService = inject(EntrenamientoService); 
   
   public showLibrary = false;
   public workoutForm: FormGroup; 
+  
+  // Lógica del Cronómetro
   public isResting = false;
   public restTime = 60;
   private timer: any;
@@ -27,29 +29,26 @@ export class NuevaSesionComponent implements OnInit {
     { muscle: 'Shoulders', exercises: ['Military Press', 'Lateral Raise'] },
     { muscle: 'Arms', exercises: ['Bicep Curl', 'Tricep Extension'] },
     { muscle: 'Core', exercises: ['Plank', 'Crunches', 'Leg Raises', 'Russian Twist'] }
-
   ];
 
   constructor() {
     this.workoutForm = this.fb.group({
-      title: ['New Workout Session', Validators.required],
+      title: ["Today's Workout", Validators.required],
       date: [new Date().toISOString().substring(0, 10), Validators.required],
       exercises: this.fb.array([]) 
     });
   }
 
-  selectFromLibrary(name: string, muscle: string) {
-    this.addExercise(name, muscle); 
-    this.showLibrary = false; 
-  }
-
   ngOnInit() {
-    console.log("!. He entrado en nueva sesion");
     const exerciseName = this.entrenamientoService.selectedExercise();
     if (exerciseName) {
-      this.addExercise(exerciseName, 'General');
+      this.addExercise(exerciseName);
       this.entrenamientoService.selectedExercise.set(null);
     }
+  }
+
+  ngOnDestroy() {
+    if (this.timer) clearInterval(this.timer);
   }
 
   get exercises() {
@@ -62,123 +61,96 @@ export class NuevaSesionComponent implements OnInit {
 
   getGroupColor(group: string): string {
     const colors: { [key: string]: string } = {
-      'Chest': '#4158D0', 'Back': '#198754', 'Legs': '#dc3545',
-      'Shoulders': '#ffc107', 'Arms': '#0dcaf0', 'Core': '#212529',
-      'Default': '#6c757d'
+      'Chest': '#fb7185', 'Back': '#38bdf8', 'Legs': '#fbbf24',
+      'Shoulders': '#a78bfa', 'Arms': '#2dd4bf', 'Core': '#064e3b',
+      'Default': '#64748b'
     };
     return colors[group] || colors['Default'];
   }
 
   getMuscleIcon(group: string): string {
     const icons: {[key: string]: string } = {
-    'Chest': '🔥', 'Back': '📐', 'Legs': '🍗', 'Shoulders': '🧥', 'Arms': '💪', 'Core': '🧩'    };
+      'Chest': '🔥', 'Back': '📐', 'Legs': '🍗', 'Shoulders': '🧥', 'Arms': '💪', 'Core': '🧩'
+    };
     return icons[group] || '🏋️‍♂️';
   }
 
   addExercise(name: string, group: string = 'Default') {
     if (!name) return;
-
     let autoGroup = group;
-    const lowerName = name.toLocaleLowerCase();
+    const lowerName = name.toLowerCase();
 
-    if (lowerName.includes('bench') || lowerName.includes('press')) autoGroup = 'Chest';
-    else if (lowerName.includes('squat') || lowerName.includes('leg')) autoGroup = 'Legs';
-    else if (lowerName.includes('deadlift') || lowerName.includes('row')) autoGroup = 'Back';
-    else if (lowerName.includes('bicep') || lowerName.includes('tricep')) autoGroup = 'Arms';
-    else if (lowerName.includes('shoulder')) autoGroup = 'Shoulders';
-    else if (lowerName.includes('abs') || lowerName.includes('core')) autoGroup = 'Core';
-      
-    const formattedName = name.trim().charAt(0).toUpperCase() + name.trim().slice(1).toLowerCase();
+    if (lowerName.includes('abs') || lowerName.includes('core') || lowerName.includes('plank') || lowerName.includes('raise')) {
+    autoGroup = 'Core';
+  } else if (lowerName.includes('squat') || lowerName.includes('leg') || lowerName.includes('lunge')) {
+    autoGroup = 'Legs';
+  } else if (lowerName.includes('bench') || lowerName.includes('chest') || lowerName.includes('press')) {
+    autoGroup = 'Chest';
+  } else if (lowerName.includes('deadlift') || lowerName.includes('row') || lowerName.includes('pull')) {
+    autoGroup = 'Back';
+  } else if (lowerName.includes('curl') || lowerName.includes('tricep') || lowerName.includes('bicep') || lowerName.includes('arm')) {
+    autoGroup = 'Arms';
+  } else if (lowerName.includes('shoulder') || lowerName.includes('lateral')) {
+    autoGroup = 'Shoulders';
+  }
 
     const exerciseGroup = this.fb.group({
-      name: [formattedName, Validators.required],
+      name: [name, Validators.required],
       muscleGroup: [autoGroup],
       sets: this.fb.array([])
     });
 
     this.exercises.push(exerciseGroup);
+    this.showLibrary = false;
   }
 
   addSet(index: number, weight: any, reps: any) {
-    const w = weight === '' || weight === null ? 0 : parseFloat(weight);
+    const w = parseFloat(weight) || 0;
     const r = parseInt(reps) || 0;
+    
     if (r > 0) {
       this.getSets(index).push(this.fb.group({
         weight: [w],
         reps: [r]
       }));
+      // Lanzamos el cronómetro automáticamente al añadir la serie
       this.startRest(60);
     }
   }
 
-  async finishWorkout() {
- const hasExercises = this.exercises.length > 0;
-  const hasSets = this.exercises.controls.some((_, idx) => this.getSets(idx).length > 0);
-  
-  if (!hasExercises || !hasSets) {
-    alert('Please add at least one exercise with sets before finishing! 💪');
-    return;
-  }
-
-  if (!confirm('Are you sure you have finished your training session?')) return;
-
-  // 2. Prepare the data exactly as the Service expects it
-  const sessionData = {
-    title: this.workoutForm.value.title,
-    date: this.workoutForm.value.date,
-    // We map the form values to ensure the structure is clean for Firebase
-    exercises: this.exercises.value.map((ex: any) => ({
-      name: ex.name,
-      muscleGroup: ex.muscleGroup,
-      sets: ex.sets.map((s: any) => ({
-        weight: Number(s.weight || 0),
-        reps: Number(s.reps || 0)
-      }))
-    })),
-    createdAt: Date.now()
-  };
-
-  try {
-    const success = await this.entrenamientoService.saveFromForm(sessionData);
-    
-    if (success) {
-      // Logic for the Signal state is handled inside the service
-      alert('Workout successfully saved! 🚀');
-      
-      // Reset the form
-      this.exercises.clear();
-      this.workoutForm.patchValue({
-        title: 'New Workout Session',
-        date: new Date().toISOString().substring(0, 10)
-      });
-
-      // Redirect to Dashboard
-      this.entrenamientoService.currentTab.set('dashboard');
-    }
-  } catch (error) {
-    console.error("Error in finishWorkout:", error);
-    alert('There was an error saving your workout. Please try again.');
-  }
-}
-
   startRest(seconds: number) {
     this.isResting = true;
     this.restTime = seconds;
-
     if (this.timer) clearInterval(this.timer);
-
     this.timer = setInterval(() => {
       if (this.restTime > 0) {
         this.restTime--;
       } else {
         this.stopRest();
-        // Opcional: Sonido o vibración aquí
       }
     }, 1000);
   }
 
   stopRest() {
     this.isResting = false;
-    clearInterval(this.timer);
+    if (this.timer) clearInterval(this.timer);
+  }
+
+  async finishWorkout() {
+    if (this.exercises.length === 0) return;
+    if (!confirm('¿Terminar sesión?')) return;
+
+    const sessionData = {
+      title: this.workoutForm.value.title,
+      date: this.workoutForm.value.date,
+      exercises: this.workoutForm.value.exercises,
+      createdAt: Date.now()
+    };
+
+    const success = await this.entrenamientoService.saveFromForm(sessionData);
+    if (success) {
+      this.exercises.clear();
+      this.entrenamientoService.currentTab.set('dashboard');
+    }
   }
 }

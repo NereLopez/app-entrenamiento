@@ -1,45 +1,200 @@
 :host {
   --primary-teal: #0d9488;
   --dark-teal: #115e59;
-  --main-gradient: linear-gradient(135deg, #0d9488 0%, #115e59 100%) !important;
-  
-  display: block;
-  background-color: #f4f7f9;
+  --bg-light: #f8fafc;
+}
+
+.container {
+  max-width: 800px !important;
+  background: var(--bg-light);
   min-height: 100vh;
-  padding: 20px;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
 }
 
-.header-gradient, .active-session-header {
-  background: var(--main-gradient) !important;
-  border-radius: 24px !important; 
-  border: none !important;
-  box-shadow: 0 12px 24px rgba(13, 148, 136, 0.25) !important;
-  padding: 1.5rem !important;
+.exercise-card {
+  background: white;
+  border-radius: 20px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease;
+  overflow: hidden;
 }
 
-.btn-primary {
-  background: var(--main-gradient) !important;
-  border: none !important;
-  border-radius: 14px !important;
-  font-weight: 700 !important;
-  transition: all 0.3s ease !important;
-  box-shadow: 0 4px 12px rgba(13, 148, 136, 0.2) !important;
+.exercise-header {
+  border-bottom: 1px solid #f1f5f9;
+  padding: 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.btn-primary:hover {
-  transform: translateY(-2px);
-  filter: brightness(1.1);
-}
-
-.badge.bg-white {
-  color: var(--primary-teal) !important;
-  font-weight: 800 !important;
-  letter-spacing: 0.5px;
+/* El Badge del grupo muscular */
+.muscle-badge {
+  font-size: 0.7rem;
   text-transform: uppercase;
+  font-weight: 800;
+  padding: 4px 12px;
+  border-radius: 50px;
+  letter-spacing: 0.5px;
 }
 
-.form-control:focus, .form-select:focus {
-  border-color: var(--primary-teal) !important;
-  box-shadow: 0 0 0 0.25rem rgba(13, 148, 136, 0.1) !important;
+/* Tabla de Series (Sets) */
+.sets-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 8px;
+}
+
+.set-row {
+  background: #f8fafc;
+  border-radius: 10px;
+}
+
+.set-number {
+  width: 40px;
+  font-weight: 800;
+  color: #94a3b8;
+  text-align: center;
+}
+*/
+.input-minimal {
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 8px;
+  text-align: center;
+  font-weight: 700;
+  width: 80px;
+  transition: all 0.2s;
+}
+
+.input-minimal:focus {
+  border-color: var(--primary-teal);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
+}
+
+.btn-add-set {
+  background: #f0fdfa;
+  color: var(--primary-teal);
+  border: 1px dashed var(--primary-teal);
+  width: 100%;
+  padding: 10px;
+  border-radius: 12px;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.btn-add-set:hover {
+  background: var(--primary-teal);
+  color: white;
+}
+
+.rest-timer-overlay {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: var(--dark-teal);
+  color: white;
+  padding: 15px 25px;
+  border-radius: 50px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  z-index: 1000;
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from { transform: translateY(100px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+
+.btn-finish {
+  background: linear-gradient(135deg, #0d9488 0%, #115e59 100%);
+  color: white;
+  border: none;
+  padding: 16px;
+  border-radius: 16px;
+  font-weight: 800;
+  font-size: 1.1rem;
+  box-shadow: 0 10px 20px rgba(13, 148, 136, 0.3);
+}
+
+.timer-viewport-wrapper {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 99999 !important;
+  pointer-events: none; /* Allows you to click things BEHIND the wrapper */
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding-bottom: 30px;
+}
+
+.timer-floating-card {
+  pointer-events: auto; /* Re-enables clicks for the SKIP button */
+  width: 90%;
+  max-width: 380px;
+  background: #1e293b; 
+  border-radius: 20px;
+  box-shadow: 0 15px 50px rgba(0,0,0,0.6);
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.1);
+  animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.progress-bar-container {
+  height: 6px;
+  background: rgba(255,255,255,0.1);
+}
+
+.progress-fill {
+  height: 100%;
+  background: #0d9488;
+  transition: width 1s linear;
+}
+
+.timer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 25px;
+}
+
+.status-label {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: #94a3b8;
+  letter-spacing: 1.5px;
+}
+
+.timer-seconds {
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: white;
+  line-height: 1;
+}
+
+.btn-skip-timer {
+  background: rgba(255,255,255,0.15);
+  border: none;
+  color: white;
+  padding: 8px 18px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  transition: all 0.2s;
+}
+
+.btn-skip-timer:hover {
+  background: #ef4444;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(150px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
 }

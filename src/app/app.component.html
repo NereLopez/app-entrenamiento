@@ -1,7 +1,7 @@
 @if (entrenamientoService.userSignal()) {
   <nav class="navbar bg-white border-bottom sticky-top mb-3">
     <div class="container d-flex justify-content-between align-items-center">
-      <span class="fw-bold text-primary">WorkoutMaster</span>
+      <span class="fw-bold" style="color: #0d9488 !important; font-size: 1.5rem; letter-spacing: -1px">Kinetic</span>
       <button (click)="entrenamientoService.logout()" class="btn btn-sm btn-outline-danger border-0">
         <i class="bi bi-box-arrow-right fs-5"></i>
       </button>
@@ -11,16 +11,20 @@
   <div class="container mb-4">
     <div class="btn-group w-100 shadow-sm rounded-4 overflow-hidden border">
       <a routerLink="/dashboard" routerLinkActive="active" class="btn btn-light py-2 fw-bold flex-fill border-end">
-        🏠 <span class="d-none d-sm-inline"> Home</span>
+       <i class="bi bi-house-door fs-5"></i>
+        <span class="d-none d-sm-inline"> Home</span>
       </a>
       <a routerLink="/training" routerLinkActive="active" class="btn btn-light py-2 fw-bold flex-fill border-end">
-        🏋️‍♂️ <span class="d-none d-sm-inline">Workout</span>
+        <i class="bi bi-lightning-charge fs-5"></i> 
+        <span class="d-none d-sm-inline">Workout</span>
        </a>
        <a routerLink="/nutricion" routerLinkActive="active" class="btn btn-light py-2 fw-bold flex-fill border-end">
-        🍎 <span class="d-none d-sm-inline">Nutrition</span>
+        <i class="bi bi-apple fs-5"></i>
+         <span class="d-none d-sm-inline">Nutrition</span>
        </a>
       <a routerLink="/historial" routerLinkActive="active" class="btn btn-light py-2 fw-bold flex-fill border-end">
-        📜 <span class="d-none d-sm-inline">History</span>
+        <i class="bi bi-clock-history fs-5"></i>
+        <span class="d-none d-sm-inline">History</span>
       </a>
     </div>
   </div>
