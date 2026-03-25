@@ -7,53 +7,59 @@ import { Firestore, collection, addDoc } from '@angular/fire/firestore';
 export class NutricionService {
   private firestore = inject(Firestore);
 
-  // Datos del usuario (Signals para reactividad)
-  public peso = signal<number>(75);
-  public altura = signal<number>(180);
-  public edad = signal<number>(30);
-  public genero = signal<'hombre' | 'mujer'>('hombre');
-  public nivelActividad = signal<number>(1.55); // 1.2: Sedentario, 1.55: Moderado, 1.9: Atleta
-  public objetivo = signal<'perder' | 'mantener' | 'ganar'>('mantener');
+  public weight = signal<number | null>(null);
+  public height = signal<number | null>(null);
+  public age = signal<number | null>(null);
+  public gender = signal<'male' | 'female'>('male');
+  public activityLevel = signal<number>(1.55); 
+  public goal = signal<'lose' | 'maintain' | 'gain'>('maintain');
 
-  // Cálculos Automáticos usando 'computed'
-  public tmb = computed(() => {
-    if (this.genero() === 'hombre') {
-      return (10 * this.peso()) + (6.25 * this.altura()) - (5 * this.edad()) + 5;
+ 
+  public bmr = computed(() => {
+    const w = this.weight();
+    const h = this.height();
+    const a = this.age();
+
+    if (!w || !h || !a) return 0;
+
+    if (this.gender() === 'male') {
+      return (10 * w) + (6.25 * h) - (5 * a) + 5;
     } else {
-      return (10 * this.peso()) + (6.25 * this.altura()) - (5 * this.edad()) - 161;
+      return (10 * w) + (6.25 * h) - (5 * a) - 161;
     }
   });
 
-  public mantenimiento = computed(() => Math.round(this.tmb() * this.nivelActividad()));
-
-  public caloriasObjetivo = computed(() => {
-    const base = this.mantenimiento();
-    if (this.objetivo() === 'perder') return base - 500;
-    if (this.objetivo() === 'ganar') return base + 400;
+  public targetCalories = computed(() => {
+    const base = Math.round(this.bmr() * this.activityLevel());
+    if (base === 0) return 0;
+    if (this.goal() === 'lose') return base - 500;
+    if (this.goal() === 'gain') return base + 400;
     return base;
   });
 
-  // Reparto de Macros (Proteína 30%, Carbos 40%, Grasas 30%)
   public macros = computed(() => {
-    const total = this.caloriasObjetivo();
+    const total = this.targetCalories();
+    if (total === 0) return { protein: 0, carbs: 0, fats: 0 };
+    
     return {
-      proteinas: Math.round((total * 0.30) / 4),
-      carbos: Math.round((total * 0.40) / 4),
-      grasas: Math.round((total * 0.30) / 9)
+      protein: Math.round((total * 0.30) / 4),
+      carbs: Math.round((total * 0.40) / 4),
+      fats: Math.round((total * 0.30) / 9)
     };
   });
 
-  async saveToFirestore () {
-    const colRef = collection(this.firestore, 'nutricion_usuarios');
+  async saveToFirestore() {
+    const colRef = collection(this.firestore, 'user_nutrition');
     return addDoc(colRef, {
-      peso: this.peso(),
-      altura: this.altura(),
-      edad: this.edad(),
-      tmb: this.tmb(),
-      caloriasObjetivo: this.caloriasObjetivo(),
-      macrods: this.macros(),
-      fecha: new Date()
+      weight: this.weight(),
+      height: this.height(),
+      age: this.age(),
+      gender: this.gender(),
+      goal: this.goal(),
+      bmr: this.bmr(),
+      targetCalories: this.targetCalories(),
+      macros: this.macros(),
+      createdAt: new Date()
     });
   }      
-    }
-  
+}

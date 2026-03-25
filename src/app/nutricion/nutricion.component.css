@@ -150,7 +150,7 @@
 
 .progress-container {
   height: 8px;
-  background: #f1f5f9;
+  background: rgba(0, 0, 0, 0,05);
   border-radius: 10px;
   overflow: hidden;
 }
@@ -159,12 +159,34 @@
   max-width: 100%;
   height: 100%;
   border-radius: 10px; 
-  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1); 
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1); 
 }
 
-.protein .progress-bar { background: #10b981; }
-.carbs .progress-bar { background: #3b82f6; }
-.fats .progress-bar { background: #ef4444; }
+.protein .progress-bar {
+   background: linear-gradient(90deg, #2dd4bf, #0d9488) !important;
+  box-shadow:  0 0 12px rgba(45, 212, 191, 0.4);
+ }
+.carbs .progress-bar{ 
+  background: linear-gradient(90deg, #3b82f6, #256ebc) !important;
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.3);
+ }
+.fats .progress-bar { 
+  background:linear-gradient(90deg, #fbbf24, #d97706) !important;
+  box-shadow: 0 0 12px rgba(251, 191, 36, 0.3)
+}
+
+.badge {
+  padding: 6px 12px;
+  border-radius: 20px; /* Estilo píldora */
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badge.lose { background-color: #f87171; color: white; }
+.badge.maintain { background-color: #6366f1; color: white; }
+.badge.gain { background-color: #10b981; color: white; }
 
 /* 7. FORMULARIO (Cuestionario) */
 .nutrition-container {
@@ -319,4 +341,20 @@ select.ng-invalid.ng-touched {
   background: #f8fafc;
   color: #64748b;
   border-color: #cbd5e1;
+}
+
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  color: #0d9488;
+}
+
+.text-teal {
+  color: #0d9488 !important;
+  width: 3rem;
+  height: 3rem;
+  margin-bottom: 1rem;
 }

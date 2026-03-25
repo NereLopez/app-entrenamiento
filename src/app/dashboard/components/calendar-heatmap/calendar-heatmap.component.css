@@ -11,10 +11,9 @@
 
 .day-box {
   cursor: pointer;
-  width: 100%; 
-  height: 28px; 
-  background-color: #e2e8f0; 
-  transition: all 0.2s ease-in-out;
+  width: 32px; 
+  height: 32px;
+  background-color: #f1f5f9; 
 }
 
 .day-box:active {
@@ -22,8 +21,9 @@
 }
 
 .day-box:hover {
-  transform: scale(1.05); 
-  box-shadow: 0 0 5px rgba(0,0,0,0.1);
+transform: translateY(-2px); 
+filter: brightness(1.1);
+cursor: pointer;
 }
 
 .workout-intensity-0 { background-color: #e2e8f0; } 
@@ -57,4 +57,15 @@
 .nutrition-box {
   border-bottom-left-radius: 6px;
   border-bottom-right-radius: 6px;
+}
+.nutrition-box.completed {
+  background-color: linear-gradient(135deg, #fb923c, #ea580c) !important;
+  box-shadow: 0 0 8px rgba(251, 146, 60, 0.3);
+  border: none;
+}
+
+.workout-box.completed {
+  background-color: linear-gradient(135deg, #2dd4bf, #0d9488) !important;
+  box-shadow: 0 0 8px rgba(45, 212, 191, 0.3);
+  border: none;
 }

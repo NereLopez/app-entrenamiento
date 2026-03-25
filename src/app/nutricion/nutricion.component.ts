@@ -1,7 +1,7 @@
-import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { NutricionService } from '../services/nutricion.service';
+import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
+import { NutricionService } from '../services/nutricion.service';
 
 @Component({
   selector: 'app-nutricion',
@@ -21,95 +21,64 @@ export class NutricionComponent implements OnInit {
     age: [null as number | null, [Validators.required, Validators.min(10), Validators.max(100)]],
     weight: [null as number | null, [Validators.required, Validators.min(30), Validators.max(250)]],
     height: [null as number | null, [Validators.required, Validators.min(50), Validators.max(250)]],
-    gender: ['', Validators.required],
-    goal: ['', Validators.required]
+    gender: ['male', Validators.required],
+    goal: ['maintain', Validators.required]
   });
 
   ngOnInit() {
-    this.syncFormWithService();
-  
-    this.form.get('weight')?.valueChanges.subscribe(val => {
-      if (val) this.nutricionSvc.peso.set(val);
-    })
+    // Sincronización inteligente: solo actualiza el servicio si el formulario es válido
+    // Esto permite que el dashboard reaccione mientras editas
+    this.form.valueChanges.subscribe(val => {
+      if (this.form.valid) {
+        if (val.weight) this.nutricionSvc.weight.set(val.weight);
+        if (val.height) this.nutricionSvc.height.set(val.height);
+        if (val.age) this.nutricionSvc.age.set(val.age);
+        if (val.gender) this.nutricionSvc.gender.set(val.gender as 'male' | 'female');
+        if (val.goal) this.nutricionSvc.goal.set(val.goal as 'lose' | 'maintain' | 'gain');
+      }
+    });
   }
-
 
   toggleEdit() {
     this.isEditing = !this.isEditing;
     if (this.isEditing) {
-      this.syncFormWithService();
+      // Al entrar en modo edición, cargamos los datos del servicio en el form
+      // Usamos emitEvent: false para no disparar el subscribe y evitar bucles
+      this.form.patchValue({
+        age: this.nutricionSvc.age(),
+        weight: this.nutricionSvc.weight(),
+        height: this.nutricionSvc.height(),
+        gender: this.nutricionSvc.gender(),
+        goal: this.nutricionSvc.goal()
+      }, { emitEvent: false });
     }
   }
 
-  private syncFormWithService() {
-    const currentGoal = this.nutricionSvc.objetivo();
-    const goalMapInv: Record<string, string> = {
-       'perder': 'lose',
-       'mantener': 'maintain',
-       'ganar': 'gain' };
-
-    this.form.patchValue({
-      age: this.nutricionSvc.edad(),
-      weight: this.nutricionSvc.peso(),
-      height: this.nutricionSvc.altura(),
-      gender: this.nutricionSvc.genero() === 'hombre' ? 'male' : 'female',
-      goal: goalMapInv[currentGoal] || 'maintain'
-    });
-  }
-
+  // Función para los botones + y -
   adjust(field: string, delta: number) {
     const control = this.form.get(field);
     if (control) {
       const newVal = (Number(control.value) || 0) + delta;
-      
-      const limits: any = {
-        age: { min: 10, max: 100 },
-        height: { min: 50, max: 250 },
-        weight: { min: 30, max: 250 }
-      };
-
-      const limit = limits[field];
-      if (limit && newVal >= limit.min && newVal <= limit.max) {
-        control.setValue(newVal);
-       
-        this.syncSidebarToService(field, newVal);
-      }
+      control.setValue(newVal); 
     }
   }
 
-  private syncSidebarToService(field: string, value: number) {
-    if (field === 'weight') this.nutricionSvc.peso.set(value);
-    if (field === 'height') this.nutricionSvc.altura.set(value);
-    if (field === 'age') this.nutricionSvc.edad.set(value);
+  // Función para el Slider de peso
+  onWeightSliderChange(event: any) {
+    const value = Number(event.target.value);
+    this.form.get('weight')?.setValue(value);
   }
 
   async saveProfile() {
-    if (this.form.valid && !this.isSaving ()) {
+    if (this.form.valid && !this.isSaving()) {
       this.isSaving.set(true);
-
-      const val = this.form.value;
-
-      // Actualizamos los Sinals del servicio
-      this.nutricionSvc.peso.set(val.weight!);
-      this.nutricionSvc.altura.set(val.height!);
-      this.nutricionSvc.edad.set(val.age!);
-      this.nutricionSvc.genero.set(val.gender === 'male' ? 'hombre' : 'mujer');
-
-      const goalMapping: Record<string, 'perder' | 'mantener' | 'ganar'> = {
-        'lose': 'perder',
-        'maintain': 'mantener',
-        'gain': 'ganar'
-      };
-
-      this.nutricionSvc.objetivo.set(goalMapping[val.goal as string] || 'mantener');
-
       try {
+        // Los signals ya están actualizados gracias al valueChanges
         await this.nutricionSvc.saveToFirestore();
         this.isEditing = false;
-        console.log('Profile saved successfully!');
       } catch (err) {
-        console.error('Firestore error:', err);
-        alert('Error saving to database.');
+        console.error('Error al guardar:', err);
+        alert('Could not save profile.');
       } finally {
         this.isSaving.set(false);
       }

@@ -1,4 +1,4 @@
-import { Component, signal, ElementRef, viewChild } from '@angular/core'; 
+import { Component, signal, ElementRef, viewChild,computed } from '@angular/core'; 
 import html2canvas from 'html2canvas';
 
 interface DayActivity {
@@ -39,25 +39,28 @@ export class CalendarHeatmapComponent {
     { label: 'S', workout: { completed: false, intensity: 0 }, nutrition: { completed: false, intensity: 0 } },
     { label: 'S', workout: { completed: false, intensity: 0 }, nutrition: { completed: false, intensity: 0 } }
   ]);
+  readonly nutritionScore = computed(() => {
+    const days = this.weeklyActivity();
+    const completed = days.filter(d => d.nutrition.completed).length;
+    return Math.round((completed / days.length) * 100);
+  });
 
   toggleDayActivity(index: number, type: 'workout' | 'nutrition') {
     this.weeklyActivity.update(days => {
-      const newDays = [...days];
+      const newDays = JSON.parse(JSON.stringify(days));
       const activity = newDays[index][type];
 
-      if (!activity.completed) {
-        activity.completed = true;
-        activity.intensity = Math.floor(Math.random() * 3) + 1;
-      } else {
-        activity.completed = false;
-        activity.intensity = 0;
-      }
+      activity.completed = !activity.completed;
+      
+     
+      activity.intensity = activity.completed ? 3 : 0;
+
+     
       localStorage.setItem('workoutNutritionProgress', JSON.stringify(newDays));
 
       return newDays;
     });
   }
-
   // 4. Método de exportación
   async exportAsImage(event: Event) {
     event.stopPropagation();

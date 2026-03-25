@@ -1,12 +1,12 @@
 <div class="nutrition-wrapper">
   <form [formGroup]="form" (ngSubmit)="saveProfile()">
 
-    @if (form.valid && !isEditing) {
+    @if (!isEditing) {
       <div class="dashboard-view animate__animated animate__fadeIn">
         <div class="energy-header">
           <p class="label">DAILY ENERGY TARGET</p>
-          <h1>{{ nutricionSvc.caloriasObjetivo() }} <span class="unit">kcal</span></h1>
-          <div class="goal-badge">Goal: {{ form.get('goal')?.value | titlecase }}</div>
+          <h1>{{ nutricionSvc.targetCalories() }} <span class="unit">kcal</span></h1>
+          <div class="goal-badge">Goal: {{ nutricionSvc.goal() | titlecase }}</div>
           
           <button type="button" class="btn-edit-float" (click)="toggleEdit()">
             <i class="bi bi-pencil-square me-1"></i> Edit Profile
@@ -18,16 +18,16 @@
             <h3>Biometrics & Goal</h3>
             <div class="metric-row">
               <span>Weight</span>
-              <span class="value-highlight">{{ form.get('weight')?.value }} kg</span>
+              <span class="value-highlight">{{ nutricionSvc.weight() || '--' }} kg</span>
             </div>
-            <input type="range" class="weight-slider" formControlName="weight" min="40" max="150">
+            <input type="range" class="weight-slider" [value]="nutricionSvc.weight()" (input)="onWeightSliderChange($event)" min="30" max="250">
 
             <div class="metric-row interactive-controls">
               <div class="mini-control">
                 <span class="label-sm">Age</span>
                 <div class="button-group">
                   <button type="button" (click)="adjust('age', -1)">-</button>
-                  <strong>{{ form.get('age')?.value }}</strong>
+                  <strong>{{ nutricionSvc.age() || '--' }}</strong>
                   <button type="button" (click)="adjust('age', 1)">+</button>
                 </div>
               </div>
@@ -35,7 +35,7 @@
                 <span class="label-sm">Height</span>
                 <div class="button-group">
                   <button type="button" (click)="adjust('height', -1)">-</button>
-                  <strong>{{ form.get('height')?.value }}</strong>
+                  <strong>{{ nutricionSvc.height() || '--' }}</strong>
                   <button type="button" (click)="adjust('height', 1)">+</button>
                 </div>
               </div>
@@ -43,9 +43,9 @@
 
             <div class="goal-selector-mini">
               <p>Current Strategy:</p>
-              <div class="badge" [ngClass]="form.get('goal')?.value">
-                {{ (form.get('goal')?.value === 'lose' ? 'Lose Weight' : 
-                   form.get('goal')?.value === 'gain' ? 'Build Muscle' : 'Maintain') }}
+              <div class="badge" [ngClass]="nutricionSvc.goal()">
+                {{ nutricionSvc.goal() === 'lose' ? 'Fat Loss' : 
+                   nutricionSvc.goal() === 'gain' ? 'Muscle Gain' : 'Maintenance' }}
               </div>
             </div>
           </div>
@@ -56,110 +56,101 @@
             <div class="macro-item protein">
               <div class="macro-header-row">
                 <div class="macro-text"><strong>Protein</strong><small>Muscle repair</small></div>
-                <span class="macro-gram">{{ nutricionSvc.macros().proteinas }}g</span>
+                <span class="macro-gram">{{ nutricionSvc.macros().protein }}g</span>
               </div>
               <div class="progress-container">
-                <div class="progress-bar" [style.width.%]="(nutricionSvc.macros().proteinas / 2.5)"></div>
+                <div class="progress-bar" [style.width.%]="(nutricionSvc.macros().protein / 2.5)"></div>
               </div>
             </div>
 
             <div class="macro-item carbs">
               <div class="macro-header-row">
                 <div class="macro-text"><strong>Carbs</strong><small>Energy source</small></div>
-                <span class="macro-gram">{{ nutricionSvc.macros().carbos }}g</span>
+                <span class="macro-gram">{{ nutricionSvc.macros().carbs }}g</span>
               </div>
               <div class="progress-container">
-                <div class="progress-bar" [style.width.%]="(nutricionSvc.macros().carbos / 4)"></div>
+                <div class="progress-bar" [style.width.%]="(nutricionSvc.macros().carbs / 4)"></div>
               </div>
             </div>
 
             <div class="macro-item fats">
               <div class="macro-header-row">
                 <div class="macro-text"><strong>Fats</strong><small>Hormonal health</small></div>
-                <span class="macro-gram">{{ nutricionSvc.macros().grasas }}g</span>
+                <span class="macro-gram">{{ nutricionSvc.macros().fats }}g</span>
               </div>
               <div class="progress-container">
-                <div class="progress-bar" [style.width.%]="(nutricionSvc.macros().grasas / 1.5)"></div>
+                <div class="progress-bar" [style.width.%]="(nutricionSvc.macros().fats / 1.5)"></div>
               </div>
             </div>
+
           </div>
         </div>
       </div>
     } 
-
+    
     @else {
-  <div class="nutrition-container card animate__animated animate__fadeIn">
-    <div class="form-header mb-4">
-      <div class="icon-circle mb-3">
-        <i class="bi bi-person-gear"></i>
-      </div>
-      <h2>Profile Settings</h2>
-      <p class="text-muted">Update your biometrics to recalculate targets</p>
-    </div>
+      <div class="nutrition-container card animate__animated animate__fadeIn">
+        <div class="form-header mb-4">
+          <div class="icon-circle mb-3">
+            <i class="bi bi-person-gear"></i>
+          </div>
+          <h2>Profile Settings</h2>
+          <p class="text-muted">Update your biometrics to recalculate targets</p>
+        </div>
 
-    <div class="nutrition-form">
-      <div class="row">
-        <div class="col-md-6">
+        <div class="nutrition-form">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group custom-input">
+                <label>Age</label>
+                <input type="number" formControlName="age">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group custom-input">
+                <label>Weight (kg)</label>
+                <input type="number" formControlName="weight">
+              </div>
+            </div>
+          </div>
+
           <div class="form-group custom-input">
-            <label>Age</label>
-            <input type="number" formControlName="age" min="10" max="100">
-            @if (form.get('age')?.invalid && form.get('age')?.touched) {
-          <small class="error-text">Range: 10 - 100 years</small>
-        }
+            <label>Height (cm)</label>
+            <input type="number" formControlName="height">
+          </div>
+
+          <div class="form-group custom-input">
+            <label>Gender</label>
+            <select formControlName="gender">
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+          </div>
+
+          <div class="form-group custom-input">
+            <label>Fitness Goal</label>
+            <select formControlName="goal">
+              <option value="lose">Lose Weight</option>
+              <option value="maintain">Maintain Weight</option>
+              <option value="gain">Gain Muscle</option>
+            </select>
+          </div>
+
+          <div class="form-actions-stack mt-4">
+            <button type="submit" [disabled]="form.invalid || isSaving()" class="btn-submit-main">
+              @if (isSaving()) {
+                <span class="spinner-border spinner-border-sm me-2"></span> Saving...
+              } @else {
+                <i class="bi bi-check-circle me-2"></i> Update Profile
+              }
+            </button>
+            <button type="button" (click)="toggleEdit()" class="btn-cancel-outline">
+              Discard Changes
+            </button>
           </div>
         </div>
-        <div class="col-md-6">
-          <div class="form-group custom-input">
-            <label>Weight (kg)</label>
-            <input type="number" formControlName="weight" min="30" max="250">
-
-            @if (form.get('weight')?.invalid && form.get('weight')?.touched) {
-            <small class="error-text">Range: 30 - 250 kg</small>         
-            }
-          </div>
-        </div>
       </div>
-
-      <div class="form-group custom-input">
-        <label>Height (cm)</label>
-        <input type="number" formControlName="height" min="50" max="250">
-        @if (form.get('height')?.invalid && form.get('height')?.touched) {
-      <small class="error-text">Range: 50 - 250 cm</small>
     }
-      </div>
 
-      <div class="form-group custom-input">
-        <label>Gender</label>
-        <select formControlName="gender">
-          <option value="male">Male</option>
-          <option value="female">Female</option>
-        </select>
-      </div>
-
-      <div class="form-group custom-input">
-        <label>Fitness Goal</label>
-        <select formControlName="goal">
-          <option value="lose">Lose Weight</option>
-          <option value="maintain">Maintain Weight</option>
-          <option value="gain">Gain Muscle</option>
-        </select>
-      </div>
-
-      <div class="form-actions-stack mt-4">
-        <button type="submit" [disabled]="form.invalid || isSaving()" class="btn-submit-main">
-          @if (isSaving()) {
-            <span class="spinner-border spinner-border-sm me-2"></span> Saving Changes...
-          } @else {
-            <i class="bi bi-check-circle me-2"></i> Update Profile
-          }
-        </button>
-        
-        @if (isEditing) {
-          <button type="button" (click)="toggleEdit()" class="btn-cancel-outline" [disabled]="isSaving()">
-            Discard Changes
-          </button>
-        }
-      </div>
-    </div>
-  </div>
-}
+  </form>
+</div>
