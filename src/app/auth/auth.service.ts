@@ -8,19 +8,22 @@ export class EntrenamientoService {
   private firestore = inject(Firestore);
   private auth = inject(Auth);
 
-  // Signal para saber quién está logueado
   userSignal = signal<any>(null);
   history = signal<any[]>([]);
 
   constructor() {
-    // Escuchar si el usuario entra o sale
     user(this.auth).subscribe(u => {
+      if (u) {
       this.userSignal.set(u);
       if (u) this.fetchHistory(u.uid);
+      } else {
+        this.userSignal.set(null);
+        this.history.set([]);
+      }
     });
   }
 
-  // --- AUTH METHODS ---
+  
   async signUp(email: string, pass: string) {
     return createUserWithEmailAndPassword(this.auth, email, pass);
   }
@@ -29,14 +32,14 @@ export class EntrenamientoService {
     return signInWithEmailAndPassword(this.auth, email, pass);
   }
 
-  logout() {
-    return signOut(this.auth);
+  async logout() {
+    await signOut(this.auth);
+    this.userSignal.set(null);
+    this.history.set([]);
   }
 
-  // --- DATABASE METHODS ---
   private fetchHistory(userId: string) {
     const ref = collection(this.firestore, 'workouts');
-    // Solo traemos los entrenamientos que pertenecen a este usuario (where)
     const q = query(ref, where('userId', '==', userId), orderBy('createdAt', 'desc'));
     collectionData(q, { idField: 'id' }).subscribe(data => this.history.set(data));
   }

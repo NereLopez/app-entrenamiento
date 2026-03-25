@@ -1,0 +1,39 @@
+<div class="login-wrapper">
+  <div class="login-card animate__animated animate__fadeIn">
+    <div class="text-center mb-4">
+      <div class="brand-logo mb-3">
+        <i class="bi bi-lightning-charge-fill"></i>
+      </div>
+      <h2 class="fw-bold">Workout Master</h2>
+      <p class="text-muted">Your fitness journey starts here</p>
+    </div>
+
+    <div class="form-floating mb-3">
+      <input [(ngModel)]="email" type="email" class="form-control" id="emailInput" placeholder="name@example.com">
+      <label for="emailInput">Email address</label>
+    </div>
+
+    <div class="form-floating mb-4">
+      <input [(ngModel)]="pass" type="password" class="form-control" id="passInput" placeholder="Password">
+      <label for="passInput">Password</label>
+    </div>
+
+    <div class="d-grid gap-2">
+      <button (click)="onLogin()" [disabled]="isPending" class="btn btn-login py-3 shadow-sm">
+        @if (isPending) {
+          <span class="spinner-border spinner-border-sm me-2"></span>
+        } @else {
+          Sign In
+        }
+      </button>
+      
+      <button (click)="onRegister()" [disabled]="isPending" class="btn btn-register py-3">
+        Create New Account
+      </button>
+    </div>
+    
+    <p class="text-center mt-4 small text-secondary">
+      v2.0 - DAM Project 2026
+    </p>
+  </div>
+</div>
