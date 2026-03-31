@@ -14,6 +14,7 @@
 
   <h6 class="fw-bold mb-3 text-secondary" style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;">Weekly Activity</h6>
   
+   
   <div class="d-flex justify-content-between align-items-center gap-1">
     @for (day of weeklyActivity(); track $index) {
       <div class="d-flex flex-column align-items-center gap-2">
@@ -33,7 +34,12 @@
                style="cursor: pointer;">
           </div>
         </div>
-        <span class="text-muted fw-bold" style="font-size: 0.65rem;">{{day.label}}</span>
+
+        <span class="text-muted fw-bold day-label"
+        [class.is-today]="$index === todayIndex()"
+        style="font-size: 0.65rem;">
+        {{ day.label }}
+       </span>
       </div>
     }
   </div>

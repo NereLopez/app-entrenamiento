@@ -12,3 +12,11 @@ export interface UserNutrition {
   };
   updatedAt: Date;
 }
+
+export interface FoodEntry {
+  id?: string;
+  name: string;
+  calories: number;
+  type: 'breakfast' | 'lunch' | 'dinner'| 'snack' ;
+  date: number;
+}

@@ -23,6 +23,7 @@ export class EntrenamientoService {
   public userSignal = signal<any>(null);
   public history = signal<any[]>([]);
   public userLevel = signal<string>('Intermediate');
+  public isWorkoutCompletedToday = signal<boolean>(false);
   
   
   public statsSignal = signal<UserStats>({
@@ -69,7 +70,15 @@ export class EntrenamientoService {
     const docRef = doc(this.firestore, `stats/${userId}`);
     const snap = await getDoc(docRef);
     if (snap.exists()) {
-      this.statsSignal.set(snap.data() as UserStats);
+      const stats = snap.data() as UserStats;
+      this.statsSignal.set(stats);
+
+      const today = new Date().setHours(0, 0, 0, 0);
+      const lastSession = new Date(stats.lastSessionDate ||0).setHours(0, 0, 0, 0);
+
+      if (today === lastSession) {
+        this.isWorkoutCompletedToday.set(true);
+      }
     }
   }
 
@@ -129,6 +138,7 @@ export class EntrenamientoService {
     await setDoc(statsRef, currentStats, { merge: true });
     this.statsSignal.set(currentStats);
 
+    this.isWorkoutCompletedToday.set(true);
     return { brokeRecord, earnedXP: newXP };
   }
 

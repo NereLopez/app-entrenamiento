@@ -358,3 +358,39 @@ select.ng-invalid.ng-touched {
   height: 3rem;
   margin-bottom: 1rem;
 }
+
+/* Para que el botón "Add" use el color corporativo de tu app */
+.btn-success {
+  background-color: #346761 !important; /* El verde oscuro de tu header */
+  border-color: #346761 !important;
+  transition: all 0.3s ease;
+}
+
+.btn-success:hover {
+  background-color: #2a524d !important;
+  transform: translateY(-1px);
+}
+
+/* Estilo para la tarjeta del log de comidas */
+.meal-logger-card {
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  padding: 20px;
+  background-color: white;
+}
+
+/* Estilo para cada item de la lista */
+.meal-item {
+  border-bottom: 1px solid #f0f0f0;
+  padding: 12px 0;
+}
+
+.meal-item strong {
+  color: #333;
+}
+
+.text-success {
+  color: #346761 !important; /* Kcal en el mismo tono */
+  font-weight: 600;
+}

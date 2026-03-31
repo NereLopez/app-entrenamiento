@@ -84,4 +84,23 @@ export class NutricionComponent implements OnInit {
       }
     }
   }
+  // Esta función es la que el HTML llama cuando haces clic en "Add"
+addMeal(name: string, calories: number, type: string) {
+  // 1. Validamos que el usuario haya escrito algo coherente
+  if (!name || name.trim() === '') {
+    alert('Please enter the name of the food.');
+    return;
+  }
+
+  if (!calories || calories <= 0) {
+    alert('Please enter a valid number of calories.');
+    return;
+  }
+
+  // 2. Llamamos al servicio para que lo guarde en Firebase
+  // Usamos "this.nutricionSvc" porque es el nombre que le diste al inyectarlo
+  this.nutricionSvc.addFoodEntry(name, calories, type as any);
+  
+  console.log('Enviando a Firebase:', { name, calories, type });
+}
 }

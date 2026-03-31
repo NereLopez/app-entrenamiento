@@ -1,13 +1,15 @@
-import { Injectable, signal, computed, inject } from '@angular/core';
-import { Firestore, collection, addDoc } from '@angular/fire/firestore';
+import { Injectable, signal, computed, inject, effect } from '@angular/core';
+import { Firestore, collection, addDoc, collectionData, query, where } from '@angular/fire/firestore';
+import { FoodEntry } from '../models/nutricion.model';
+import { Auth, user } from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NutricionService {
   private firestore = inject(Firestore);
+  private auth = inject(Auth);
 
-  public userName = signal<string>('');
   public weight = signal<number | null>(null);
   public height = signal<number | null>(null);
   public age = signal<number | null>(null);
@@ -15,6 +17,30 @@ export class NutricionService {
   public activityLevel = signal<number>(1.55); 
   public goal = signal<'lose' | 'maintain' | 'gain'>('maintain');
   public isWorkoutDay = signal<boolean>(false);
+  public isNutritionCompleteToday = signal<boolean>(false);
+  public dailyMeals = signal<FoodEntry[]>([]);
+
+
+  constructor (){
+    // Escuchamos cuando el usuario se loguea para cargar sus comidas
+    user(this.auth).subscribe(u => {
+    if (u) {
+      this.fetchDailyMeals(); 
+    }
+  });
+
+    effect(() => {
+    const target = this.targetCalories(); // Tu computed de kcal objetivo
+    const consumed = this.caloriesConsumed();
+
+    if(consumed > 0 && consumed >= (target * 0.8)) {
+      this.isNutritionCompleteToday.set(true);
+    } else {
+      this.isNutritionCompleteToday.set(false);
+    }
+  });
+}
+  
 
  
   public bmr = computed(() => {
@@ -40,6 +66,8 @@ export class NutricionService {
     return this.isWorkoutDay() ? base + 300 : base -100;
   });
 
+
+
   public macros = computed(() => {
     const total = this.targetCalories();
     if (total === 0) return { protein: 0, carbs: 0, fats: 0 };
@@ -51,10 +79,34 @@ export class NutricionService {
     };
   });
 
+  public caloriesConsumed = computed(() => {
+  return this.dailyMeals().reduce((total, meal) => total + meal.calories, 0);
+  });
+
+  public fetchDailyMeals() {
+  const userId = this.auth.currentUser?.uid;
+  if (!userId) return;
+
+  const today = new Date().setHours(0, 0, 0, 0);
+  const colRef = collection(this.firestore, 'food_entries');
+  const q = query(
+    colRef, 
+    where('userId', '==', userId), 
+    where('date', '==', today)
+  );
+
+  // 2. Escuchamos los cambios (esto es un Observable)
+  collectionData(q, { idField: 'id' }).subscribe((data) => {
+    // 3. Actualizamos nuestro Signal con lo que llega de Firebase
+    this.dailyMeals.set(data as FoodEntry[]);
+    console.log('Comidas del día cargadas:', data);
+  });
+}
+
+  
   async saveToFirestore() {
     const colRef = collection(this.firestore, 'user_nutrition');
-    return addDoc(colRef, {
-      userName: this.userName(),
+    await addDoc(colRef, {
       weight: this.weight(),
       height: this.height(),
       age: this.age(),
@@ -64,6 +116,27 @@ export class NutricionService {
       targetCalories: this.targetCalories(),
       macros: this.macros(),
       createdAt: new Date()
-    });
-  }      
+    });  
+  }   
+  
+  async addFoodEntry(name: string, calories: number, type: 'breakfast' | 'lunch' | 'dinner' | 'snack') {
+    const userId = this.auth.currentUser?.uid;
+    if (!userId) return;
+
+    try {
+      const colRef = collection(this.firestore, 'food_entries');
+
+      const newEntry: FoodEntry = {
+        name: name,
+        calories: calories,
+        type: type,
+        date: new Date().setHours(0, 0, 0, 0)
+      };
+      await addDoc(colRef, {...newEntry, userId: userId});
+      console.log('Meal guardada');
+    } catch (error) {
+      console.error('Error al guardar la comida:',error);
+    };
+    
+  }
 }

@@ -2,17 +2,38 @@
 .day-cell-container {
   display: flex; 
   flex-direction: column; 
-  gap: 2px;
-  width: 30px;
-  height: 58px; 
+  gap: 4px;
+  width: 32px;
   border-radius: 6px;
   overflow: hidden; 
+}
+
+.day-label.is-today {
+  color: #0d9488 !important;
+  opacity: 1 !important;
+  position: relative;
+  display: inline-block;
+}
+
+.day-label.is-today::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  background-color: #0d9488;
+  border-radius: 50%;
+  box-shadow: 0 0 5px rgba(13, 148, 136, 0.4);
 }
 
 .day-box {
   cursor: pointer;
   width: 32px; 
-  height: 32px;
+  height: 28px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
   background-color: #f1f5f9; 
 }
 
@@ -59,13 +80,25 @@ cursor: pointer;
   border-bottom-right-radius: 6px;
 }
 .nutrition-box.completed {
-  background-color: linear-gradient(135deg, #fb923c, #ea580c) !important;
-  box-shadow: 0 0 8px rgba(251, 146, 60, 0.3);
+  background: linear-gradient(135deg, #fb923c, #ea580c) !important;
+  box-shadow: 0 4px 10px rgba(251, 146, 60, 0.3);
   border: none;
 }
 
 .workout-box.completed {
-  background-color: linear-gradient(135deg, #2dd4bf, #0d9488) !important;
+  background: linear-gradient(135deg, #2dd4bf, #0d9488) !important;
   box-shadow: 0 0 8px rgba(45, 212, 191, 0.3);
   border: none;
+}
+
+:host-context(.dark-mode) .day-label {
+  color: #94a3b8 !important; /* Gris claro */
+}
+
+:host-context(.dark-mode) .day-label.is-today {
+  color: #2dd4bf !important; /* Teal brillante para resaltar hoy */
+}
+
+:host-context(.dark-mode) .day-box:not(.completed) {
+  border: none !important;
 }
