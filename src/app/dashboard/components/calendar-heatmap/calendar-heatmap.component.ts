@@ -1,17 +1,12 @@
-import { Component, signal, ElementRef, viewChild,computed } from '@angular/core'; 
+import { Component, signal, ElementRef, viewChild,computed, inject } from '@angular/core'; 
 import html2canvas from 'html2canvas';
+import { NutricionService } from '../../../services/nutricion.service';
 
 interface DayActivity {
   label: string;
-  workout: {
-  completed: boolean;
-  intensity: number;
-};
+  workout: { completed: boolean; intensity: number };
 
-nutrition: {
-  completed: boolean;
-  intensity: number;
-};
+nutrition: {completed: boolean, intensity: number;};
 }
 
 @Component({
@@ -23,6 +18,8 @@ nutrition: {
 })
 
 export class CalendarHeatmapComponent {
+private nutricionSvc = inject(NutricionService);
+
   readonly shareArea = viewChild<ElementRef>('shareArea');
   isExporting = signal(false);
 
@@ -31,13 +28,13 @@ export class CalendarHeatmapComponent {
   readonly weeklyActivity = signal<DayActivity[]>(
     this.savedData ? JSON.parse(this.savedData) : [
 
-    { label: 'M', workout: { completed: true, intensity: 3 }, nutrition: { completed: true, intensity: 3 } },
-    { label: 'T', workout: { completed: true, intensity: 2 }, nutrition: { completed: true, intensity: 2 } },
-    { label: 'W', workout: { completed: true, intensity: 1 }, nutrition: { completed: true, intensity: 1 } },
-    { label: 'T', workout: { completed: true, intensity: 2 }, nutrition: { completed: false, intensity: 0 } },
-    { label: 'F', workout: { completed: false, intensity: 0 }, nutrition: { completed: false, intensity: 0 } },
-    { label: 'S', workout: { completed: false, intensity: 0 }, nutrition: { completed: false, intensity: 0 } },
-    { label: 'S', workout: { completed: false, intensity: 0 }, nutrition: { completed: false, intensity: 0 } }
+    { label: 'Mon', workout: { completed: true, intensity: 3 }, nutrition: { completed: true, intensity: 3 } },
+    { label: 'Tue', workout: { completed: true, intensity: 2 }, nutrition: { completed: true, intensity: 2 } },
+    { label: 'Wed', workout: { completed: true, intensity: 1 }, nutrition: { completed: true, intensity: 1 } },
+    { label: 'Thu', workout: { completed: true, intensity: 2 }, nutrition: { completed: false, intensity: 0 } },
+    { label: 'Fri', workout: { completed: false, intensity: 0 }, nutrition: { completed: false, intensity: 0 } },
+    { label: 'Sat', workout: { completed: false, intensity: 0 }, nutrition: { completed: false, intensity: 0 } },
+    { label: 'Sun', workout: { completed: false, intensity: 0 }, nutrition: { completed: false, intensity: 0 } }
   ]);
   readonly nutritionScore = computed(() => {
     const days = this.weeklyActivity();
@@ -51,11 +48,15 @@ export class CalendarHeatmapComponent {
       const activity = newDays[index][type];
 
       activity.completed = !activity.completed;
-      
-     
       activity.intensity = activity.completed ? 3 : 0;
 
-     
+     const todayJS = new Date().getDay(); 
+      const todayIndex = todayJS === 0 ? 6 : todayJS - 1; 
+
+      
+      if (index === todayIndex && type === 'workout') {
+        this.nutricionSvc.isWorkoutDay.set(activity.completed);
+      }
       localStorage.setItem('workoutNutritionProgress', JSON.stringify(newDays));
 
       return newDays;

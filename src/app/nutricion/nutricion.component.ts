@@ -21,7 +21,7 @@ export class NutricionComponent implements OnInit {
     age: [null as number | null, [Validators.required, Validators.min(10), Validators.max(100)]],
     weight: [null as number | null, [Validators.required, Validators.min(30), Validators.max(250)]],
     height: [null as number | null, [Validators.required, Validators.min(50), Validators.max(250)]],
-    gender: ['male', Validators.required],
+    gender: ['female', Validators.required],
     goal: ['maintain', Validators.required]
   });
 

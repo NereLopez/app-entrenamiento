@@ -5,6 +5,19 @@
   --main-gradient: linear-gradient(135deg, #0d9488 0%, #115e59 100%);
   --soft-teal-bg: #f0fdfa;
 }
+.btn-dark-mode {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 10px 20px;
+  border-radius: 50px;
+  border: none;
+  background: var(--main-gradient);
+  color: white;
+  cursor: pointer;
+  z-index: 1000;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
 
 .btn-group .active {
   background: var(--main-gradient) !important; 

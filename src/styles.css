@@ -1,10 +1,31 @@
 
 :root {
   
+  --bg-body: #f8fafc;
+  --card-bg: #ffffff;
+  --main-text: #1e293b;
+  --border-color: #e2e8f0;
+
   --main-gradient: linear-gradient(135deg, #0d9488 0%, #075985 100%);
   --primary-teal: #0d9488;
   --dark-teal: #0ea5e9;
   --light-teal: #f0fdf4;
+}
+
+.dark-mode {
+  --bg-body: #2d3748;
+  --card-bg: #1a202c;
+  --main-text: #edf2f7;
+  --border-color: #334155;
+
+  --main-gradient: linear-gradient(135deg, #115e59 0%, #0c4a6e 100%);
+  --light-teal: #134e4a;
+}
+
+body {
+  background-color: var(--bg-body) !important;
+  color: var(--main-text) !important;
+  transition: background-color 0.4s ease, color o.4s ease;
 }
 
 .btn-primary {
@@ -38,3 +59,54 @@
   letter-spacing: -1px;
 }
 
+/* Botón estilo pastilla para la Navbar */
+.btn-theme-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid #e2e8f0;
+  background-color: #f8fafc;
+  color: #1e293b !important;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: all 0.4s ease;
+  cursor: pointer;
+}
+
+.btn-theme-pill i {
+  font-size: 1rem;
+}
+
+
+.dark-mode .btn-theme-pill {
+  background-color: #334155; 
+  border-color: #475569;
+  color: #ffffff !important;
+}
+
+.dark-mode .btn-theme-pill i {
+  color: #fbbf24;
+}
+
+.bi-sun-fill { color: #facc15; }
+.bi-moon-fill { color: #3b82f6; }
+
+/* Efecto al pasar el ratón */
+.btn-theme-pill:hover {
+  filter: brightness(0.9);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+
+.btn-nav-logout {
+  background: none;
+  border: none;
+  color: #ef4444;
+  font-size: 1.3rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}

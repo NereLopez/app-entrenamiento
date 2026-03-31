@@ -7,12 +7,14 @@ import { Firestore, collection, addDoc } from '@angular/fire/firestore';
 export class NutricionService {
   private firestore = inject(Firestore);
 
+  public userName = signal<string>('');
   public weight = signal<number | null>(null);
   public height = signal<number | null>(null);
   public age = signal<number | null>(null);
   public gender = signal<'male' | 'female'>('male');
   public activityLevel = signal<number>(1.55); 
   public goal = signal<'lose' | 'maintain' | 'gain'>('maintain');
+  public isWorkoutDay = signal<boolean>(false);
 
  
   public bmr = computed(() => {
@@ -30,11 +32,12 @@ export class NutricionService {
   });
 
   public targetCalories = computed(() => {
-    const base = Math.round(this.bmr() * this.activityLevel());
+    let base = Math.round(this.bmr() * this.activityLevel());
     if (base === 0) return 0;
-    if (this.goal() === 'lose') return base - 500;
-    if (this.goal() === 'gain') return base + 400;
-    return base;
+
+    if (this.goal() === 'lose') return base -= 500;
+    if (this.goal() === 'gain') return base += 400;
+    return this.isWorkoutDay() ? base + 300 : base -100;
   });
 
   public macros = computed(() => {
@@ -51,6 +54,7 @@ export class NutricionService {
   async saveToFirestore() {
     const colRef = collection(this.firestore, 'user_nutrition');
     return addDoc(colRef, {
+      userName: this.userName(),
       weight: this.weight(),
       height: this.height(),
       age: this.age(),

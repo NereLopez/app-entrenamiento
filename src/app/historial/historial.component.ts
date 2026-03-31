@@ -109,17 +109,20 @@ export class HistorialComponent {
     const counts: { [key: string]: number } = {};
     this.entrenamientoService.history().forEach(w => {
       w.exercises?.forEach((ex: any) => {
-        const group = ex.muscleGroup || 'Other';
+        const group = ex.muscleGroup || 'Default';
         counts[group] = (counts[group] || 0) + 1;
       });
     });
+
+    const labels = Object.keys(counts);
+    const dynamycColors = labels.map(group => this.getGroupColor(group));
 
     return {
       labels: Object.keys(counts),
       datasets: [{
         data: Object.values(counts),
         // Colores vibrantes y diferenciados (Sincronizados con Nueva Sesión)
-        backgroundColor: ['#fbbf24', '#fb7185', '#a78bfa', '#38bdf8', '#064e3b', '#2dd4bf', '#64748b'],
+        backgroundColor: dynamycColors,
         borderWidth: 2,
         hoverOffset: 15,
         borderColor: '#ffffff'
@@ -185,5 +188,17 @@ export class HistorialComponent {
         }
       }
     });
+  }
+ getGroupColor(group: string): string {
+    const colors: { [key: string]: string } = {
+      'Chest': '#fb7185', 
+      'Back': '#38bdf8', 
+      'Legs': '#fbbf24',
+      'Shoulders': '#a78bfa', 
+      'Arms': '#2dd4bf', 
+      'Core': '#064e3b',
+      'Default': '#64748b'
+    };
+    return colors[group] || colors['Default'];
   }
 }
