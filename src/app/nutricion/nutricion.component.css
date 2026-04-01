@@ -177,7 +177,7 @@
 
 .badge {
   padding: 6px 12px;
-  border-radius: 20px; /* Estilo píldora */
+  border-radius: 20px; 
   font-weight: 600;
   font-size: 0.75rem;
   text-transform: uppercase;
@@ -359,9 +359,8 @@ select.ng-invalid.ng-touched {
   margin-bottom: 1rem;
 }
 
-/* Para que el botón "Add" use el color corporativo de tu app */
 .btn-success {
-  background-color: #346761 !important; /* El verde oscuro de tu header */
+  background-color: #346761 !important; 
   border-color: #346761 !important;
   transition: all 0.3s ease;
 }
@@ -371,7 +370,7 @@ select.ng-invalid.ng-touched {
   transform: translateY(-1px);
 }
 
-/* Estilo para la tarjeta del log de comidas */
+
 .meal-logger-card {
   border: none;
   border-radius: 15px;
@@ -391,6 +390,92 @@ select.ng-invalid.ng-touched {
 }
 
 .text-success {
-  color: #346761 !important; /* Kcal en el mismo tono */
+  color: #346761 !important; 
   font-weight: 600;
 }
+
+.input-protein {
+  border-left: 5px solid #2dd4bf !important; 
+}
+
+.input-carbs {
+  border-left: 5px solid #3b82f6 !important; 
+}
+
+.input-fats {
+  border-left: 5px solid #fbbf24 !important; 
+}
+
+
+.input-group .form-control {
+  border: 1px solid #e2e8f0;
+  border-left: none; 
+  transition: all 0.3s ease;
+}
+
+
+.custom-progress-bg {
+  background: rgba(255, 255, 255, 0.15) !important; 
+  height: 12px;
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.custom-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4ade80, #2dd4bf) !important; 
+  box-shadow: 0 0 10px rgba(74, 222, 128, 0.5);
+  border-radius: 20px;
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.custom-progress-fill.over-limit {
+  background: linear-gradient(90deg, #f87171, #ef4444) !important;
+  box-shadow: 0 0 15px rgba(248, 113, 113, 0.6);
+}
+
+
+.progress-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 5px;
+  color: white;
+}
+
+.input-group:has(.badge-protein) { border-bottom: 3px solid #0d9488 !important; border-radius: 0 0 8px 8px; }
+.input-group:has(.badge-carbs) { border-bottom: 3px solid #3b82f6 !important; border-radius: 0 0 8px 8px; }
+.input-group:has(.badge-fats) { border-bottom: 3px solid #fbbf24 !important; border-radius: 0 0 8px 8px; }
+
+.input-group .form-control {
+  border: 1px solid #f1f5f9 !important;
+  border-left: none !important;
+}
+
+.badge-protein { 
+  color: #0d9488 !important; 
+  background: transparent !important; 
+}
+.badge-carbs { 
+  color: #3b82f6 !important; 
+  background: transparent !important; 
+}
+.badge-fats { 
+  color: #fbbf24 !important; 
+  background: transparent !important; 
+}
+
+.input-group-text {
+  background: white !important;
+  border: 1px solid #f1f5f9 !important;
+  border-right: none !important;
+  font-weight: 800;
+}
+.custom-progress-fill.over-goal {
+  background: #f87171 !important;
+  box-shadow: 0 0 15px rgba(248, 113, 113, 0.6);
+}
+

@@ -9,7 +9,23 @@
           <p class="label">DAILY ENERGY TARGET</p>
           <h1>{{ nutricionSvc.targetCalories() }} <span class="unit">kcal</span></h1>
           <div class="goal-badge">Goal: {{ nutricionSvc.goal() | titlecase }}</div>
-          
+
+          <div class="main-progress-container mx-auto mt-4" style="max-width: 500px;">
+    <div class="d-flex justify-content-between mb-1" style="font-size: 0.85rem; opacity: 0.9;">
+      <span>Consumed: <strong>{{ nutricionSvc.caloriesConsumed() }}</strong></span>
+      <span>Remaining: <strong>{{ nutricionSvc.targetCalories() - nutricionSvc.caloriesConsumed() }}</strong></span>
+    </div>
+          <div class="custom-progress-bg">
+      <div class="custom-progress-fill" 
+           [style.width.%]="(nutricionSvc.caloriesConsumed() / (nutricionSvc.targetCalories() || 1)) * 100"
+           [class.over-limit]="nutricionSvc.caloriesConsumed() > nutricionSvc.targetCalories()">
+      </div>
+    </div>
+
+    <small class="d-block mt-2 opacity-75">
+      {{ ((nutricionSvc.caloriesConsumed() / (nutricionSvc.targetCalories() || 1)) * 100).toFixed(0) }}% of daily target
+    </small>
+  </div>
           <button type="button" class="btn-edit-float" (click)="toggleEdit()">
             <i class="bi bi-pencil-square me-1"></i> Edit Profile
           </button>
@@ -36,16 +52,25 @@
           </div>
 
           <div class="row g-2 mt-2">
-            <div class="col-4">
-              <input #fP type="number" class="form-control" placeholder="Prot (g)">
-            </div>
-            <div class="col-4">
-              <input #fC type="number" class="form-control" placeholder="Carbs (g)">
-            </div>
-            <div class="col-4">
-              <input #fF type="number" class="form-control" placeholder="Fats (g)">
-            </div>
-          </div>
+  <div class="col-4">
+    <div class="input-group mb-0">
+      <span class="input-group-text badge-protein">P</span>
+      <input #fP type="number" class="form-control" placeholder="protein">
+    </div>
+  </div>
+  <div class="col-4">
+    <div class="input-group mb-0">
+      <span class="input-group-text badge-carbs">C</span>
+      <input #fC type="number" class="form-control" placeholder="carbs">
+    </div>
+  </div>
+  <div class="col-4">
+    <div class="input-group mb-0">
+      <span class="input-group-text badge-fats">F</span>
+      <input #fF type="number" class="form-control" placeholder="fats">
+    </div>
+  </div>
+</div>
 
           <button type="button" class="btn btn-success w-100 mt-3" 
             (click)="addMeal(foodName.value, +foodCals.value, foodType.value, +fP.value, +fC.value, +fF.value); 
@@ -120,34 +145,41 @@
 
           <div class="card macros-card">
             <h3>Macronutrient Split</h3>
+
             <div class="macro-item protein">
               <div class="macro-header-row">
-                <div class="macro-text"><strong>Protein</strong><small>Muscle repair</small></div>
+                <div class="macro-text">
+                  <i class="bi bi-circle-fill me-2" style="color: #0d9488; font-size: 0.6rem;"></i>
+                  <strong>Protein</strong><small>Muscle repair</small></div>
                 <span class="macro-gram">{{ nutricionSvc.consumedMacros().protein }}g / {{ nutricionSvc.macros().protein }}g</span>
               </div>
 
               <div class="progress-container">
-                <div class="progress-bar" [style.width.%]="(nutricionSvc.consumedMacros().protein / nutricionSvc.macros().protein) * 100"></div>
+                <div class="progress-bar bg-protein" [style.width.%]="(nutricionSvc.consumedMacros().protein / nutricionSvc.macros().protein) * 100"></div>
               </div>
             </div>
 
             <div class="macro-item carbs">
               <div class="macro-header-row">
-                <div class="macro-text"><strong>Carbs</strong><small>Energy source</small></div>
+                <div class="macro-text">
+                  <i class="bi bi-circle-fill me-2" style="color: #256ebc; font-size: 0.6rem;"></i>
+                  <strong>Carbs</strong><small>Energy source</small></div>
                 <span class="macro-gram">{{ nutricionSvc.consumedMacros().carbs }}g / {{ nutricionSvc.macros().carbs }}g</span>
               </div>
               <div class="progress-container">
-                <div class="progress-bar" [style.width.%]="(nutricionSvc.consumedMacros().carbs / nutricionSvc.macros().carbs) * 100"></div>
+                <div class="progress-bar bg-carbs" [style.width.%]="(nutricionSvc.consumedMacros().carbs / nutricionSvc.macros().carbs) * 100"></div>
               </div>
             </div>
 
             <div class="macro-item fats">
               <div class="macro-header-row">
-                <div class="macro-text"><strong>Fats</strong><small>Hormonal health</small></div>
+                <div class="macro-text">
+                  <i class="bi bi-circle-fill me-2" style="color: #d97706; font-size: 0.6rem;"></i>
+                  <strong>Fats</strong><small>Hormonal health</small></div>
                 <span class="macro-gram">{{ nutricionSvc.consumedMacros().fats }}g / {{ nutricionSvc.macros().fats }}g</span>
               </div>
               <div class="progress-container">
-                <div class="progress-bar" [style.width.%]="(nutricionSvc.consumedMacros().fats / nutricionSvc.macros().fats) * 100"></div>
+                <div class="progress-bar bg-fats" [style.width.%]="(nutricionSvc.consumedMacros().fats / nutricionSvc.macros().fats) * 100"></div>
               </div>
             </div>
           </div>
