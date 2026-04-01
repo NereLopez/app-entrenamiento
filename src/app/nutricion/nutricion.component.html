@@ -123,30 +123,31 @@
             <div class="macro-item protein">
               <div class="macro-header-row">
                 <div class="macro-text"><strong>Protein</strong><small>Muscle repair</small></div>
-                <span class="macro-gram">{{ nutricionSvc.macros().protein }}g</span>
+                <span class="macro-gram">{{ nutricionSvc.consumedMacros().protein }}g / {{ nutricionSvc.macros().protein }}g</span>
               </div>
+
               <div class="progress-container">
-                <div class="progress-bar" [style.width.%]="(nutricionSvc.macros().protein / 2.5)"></div>
+                <div class="progress-bar" [style.width.%]="(nutricionSvc.consumedMacros().protein / nutricionSvc.macros().protein) * 100"></div>
               </div>
             </div>
 
             <div class="macro-item carbs">
               <div class="macro-header-row">
                 <div class="macro-text"><strong>Carbs</strong><small>Energy source</small></div>
-                <span class="macro-gram">{{ nutricionSvc.macros().carbs }}g</span>
+                <span class="macro-gram">{{ nutricionSvc.consumedMacros().carbs }}g / {{ nutricionSvc.macros().carbs }}g</span>
               </div>
               <div class="progress-container">
-                <div class="progress-bar" [style.width.%]="(nutricionSvc.macros().carbs / 4)"></div>
+                <div class="progress-bar" [style.width.%]="(nutricionSvc.consumedMacros().carbs / nutricionSvc.macros().carbs) * 100"></div>
               </div>
             </div>
 
             <div class="macro-item fats">
               <div class="macro-header-row">
                 <div class="macro-text"><strong>Fats</strong><small>Hormonal health</small></div>
-                <span class="macro-gram">{{ nutricionSvc.macros().fats }}g</span>
+                <span class="macro-gram">{{ nutricionSvc.consumedMacros().fats }}g / {{ nutricionSvc.macros().fats }}g</span>
               </div>
               <div class="progress-container">
-                <div class="progress-bar" [style.width.%]="(nutricionSvc.macros().fats / 1.5)"></div>
+                <div class="progress-bar" [style.width.%]="(nutricionSvc.consumedMacros().fats / nutricionSvc.macros().fats) * 100"></div>
               </div>
             </div>
           </div>

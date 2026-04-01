@@ -39,7 +39,17 @@ export class NutricionService {
       this.isNutritionCompleteToday.set(false);
     }
   });
-}
+  }
+
+  public consumedMacros = computed(() => {
+    return this.dailyMeals().reduce((acc, meal) => {
+      acc.protein += (Number(meal.protein) || 0);
+      acc.carbs += (Number(meal.carbs) || 0);
+      acc.fats += (Number(meal.fats) || 0);
+      return acc;
+    }, { protein: 0, carbs: 0, fats: 0 });
+  });
+
   
 
  
