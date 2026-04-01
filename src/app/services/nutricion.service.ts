@@ -95,9 +95,9 @@ export class NutricionService {
     where('date', '==', today)
   );
 
-  // 2. Escuchamos los cambios (esto es un Observable)
+ 
   collectionData(q, { idField: 'id' }).subscribe((data) => {
-    // 3. Actualizamos nuestro Signal con lo que llega de Firebase
+   
     this.dailyMeals.set(data as FoodEntry[]);
     console.log('Comidas del día cargadas:', data);
   });
@@ -119,7 +119,7 @@ export class NutricionService {
     });  
   }   
   
-  async addFoodEntry(name: string, calories: number, type: 'breakfast' | 'lunch' | 'dinner' | 'snack') {
+  async addFoodEntry(name: string, calories: number, type: any, p:number = 0, c: number = 0, f: number = 0) {
     const userId = this.auth.currentUser?.uid;
     if (!userId) return;
 
@@ -130,13 +130,25 @@ export class NutricionService {
         name: name,
         calories: calories,
         type: type,
+        protein: p,
+        carbs: c,
+        fats: f,
         date: new Date().setHours(0, 0, 0, 0)
       };
       await addDoc(colRef, {...newEntry, userId: userId});
       console.log('Meal guardada');
     } catch (error) {
       console.error('Error al guardar la comida:',error);
-    };
-    
+    }  
+  }
+  async deleteFoodEntry(id: string) {
+    try {
+      const { doc, deleteDoc } = await import('@angular/fire/firestore'); // Importación dinámica si no las tienes arriba
+      const docRef = doc(this.firestore, `food_entries/${id}`);
+      await deleteDoc(docRef);
+      console.log('Comida eliminada correctamente');
+    } catch (error) {
+      console.error('Error al eliminar la comida:', error);
+    }
   }
 }

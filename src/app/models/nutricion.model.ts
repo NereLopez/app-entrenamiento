@@ -18,5 +18,8 @@ export interface FoodEntry {
   name: string;
   calories: number;
   type: 'breakfast' | 'lunch' | 'dinner'| 'snack' ;
+  protein: number;
+  carbs: number;
+  fats: number;
   date: number;
 }

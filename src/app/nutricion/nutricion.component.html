@@ -1,8 +1,10 @@
+
 <div class="nutrition-wrapper">
   <form [formGroup]="form" (ngSubmit)="saveProfile()">
 
     @if (!isEditing) {
       <div class="dashboard-view animate__animated animate__fadeIn">
+        
         <div class="energy-header">
           <p class="label">DAILY ENERGY TARGET</p>
           <h1>{{ nutricionSvc.targetCalories() }} <span class="unit">kcal</span></h1>
@@ -13,59 +15,73 @@
           </button>
         </div>
 
-        <div class="card meal-logger-card mt-4 animate__animated animate__fadeIn">
-  <h3><i class="bi bi-plus-circle me-2"></i>Log Today's Meal</h3>
-  
-  <div class="row g-2">
-    <div class="col-md-5">
-      <input #foodName type="text" class="form-control" placeholder="What did you eat?">
-    </div>
-    <div class="col-md-3">
-      <input #foodCals type="number" class="form-control" placeholder="kcal">
-    </div>
-    <div class="col-md-2">
-      <select #foodType class="form-select">
-        <option value="breakfast">Breakfast</option>
-        <option value="lunch">Lunch</option>
-        <option value="dinner">Dinner</option>
-        <option value="snack">Snack</option>
-      </select>
-    </div>
-    <div class="col-md-2">
-      <button type="button" class="btn btn-success w-100" 
-        (click)="addMeal(foodName.value, +foodCals.value, foodType.value); foodName.value=''; foodCals.value=''">
-        Add
-      </button>
-    </div>
-  </div>
+        <div class="card meal-logger-card mt-4">
+          <h3><i class="bi bi-plus-circle me-2"></i>Log Today's Meal</h3>
+          
+          <div class="row g-2">
+            <div class="col-md-5">
+              <input #foodName type="text" class="form-control" placeholder="What did you eat?">
+            </div>
+            <div class="col-md-3">
+              <input #foodCals type="number" class="form-control" placeholder="kcal">
+            </div>
+            <div class="col-md-4">
+              <select #foodType class="form-select">
+                <option value="breakfast">Breakfast</option>
+                <option value="lunch">Lunch</option>
+                <option value="dinner">Dinner</option>
+                <option value="snack">Snack</option>
+              </select>
+            </div>
+          </div>
 
-  <div class="meal-list mt-3">
-    @for (meal of nutricionSvc.dailyMeals(); track meal.id) {
-    <div class="meal-item d-flex justify-content-between align-items-center border-bottom py-2">
-      <div class="d-flex align-items-center">
-        <i class="me-3 fs-5" [ngClass]="{
-          'bi bi-sunrise-fill text-warning': meal.type === 'breakfast',
-          'bi bi-sun-fill text-danger': meal.type === 'lunch',
-          'bi bi-moon-stars-fill text-primary': meal.type === 'dinner',
-          'bi bi-cup-hot-fill text-secondary': meal.type === 'snack'
-        }"></i>
-        
-        <div>
-          <strong>{{ meal.name }}</strong>
-          <small class="text-muted d-block" style="text-transform: capitalize">{{ meal.type }}</small>
+          <div class="row g-2 mt-2">
+            <div class="col-4">
+              <input #fP type="number" class="form-control" placeholder="Prot (g)">
+            </div>
+            <div class="col-4">
+              <input #fC type="number" class="form-control" placeholder="Carbs (g)">
+            </div>
+            <div class="col-4">
+              <input #fF type="number" class="form-control" placeholder="Fats (g)">
+            </div>
+          </div>
+
+          <button type="button" class="btn btn-success w-100 mt-3" 
+            (click)="addMeal(foodName.value, +foodCals.value, foodType.value, +fP.value, +fC.value, +fF.value); 
+                     foodName.value=''; foodCals.value=''; fP.value=''; fC.value=''; fF.value=''">
+            Add Meal
+          </button>
+
+          <div class="meal-list mt-3">
+            @for (meal of nutricionSvc.dailyMeals(); track meal.id) {
+              <div class="meal-item d-flex justify-content-between align-items-center border-bottom py-2">
+                <div class="d-flex align-items-center">
+                  <i class="me-3 fs-5" [ngClass]="{
+                    'bi bi-sunrise-fill text-warning': meal.type === 'breakfast',
+                    'bi bi-sun-fill text-danger': meal.type === 'lunch',
+                    'bi bi-moon-stars-fill text-primary': meal.type === 'dinner',
+                    'bi bi-cup-hot-fill text-secondary': meal.type === 'snack'
+                  }"></i>
+                  <div>
+                    <strong>{{ meal.name }}</strong>
+                    <small class="text-muted d-block" style="text-transform: capitalize">{{ meal.type }}</small>
+                  </div>
+                </div>
+                <div class="d-flex align-items-center gap-3">
+                  <span class="text-success">+{{ meal.calories }} kcal</span>
+                  <button type="button" class="btn btn-link text-danger p-0" (click)="deleteMeal(meal.id!)">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </div>
+              </div>
+            } @empty {
+              <p class="text-muted text-center mt-2">No meals logged yet today.</p>
+            }
+          </div>
         </div>
-      </div>
-      <span class="text-success">+{{ meal.calories }} kcal</span>
-    </div>
-  } @empty {
-    <p class="text-muted text-center mt-2">No meals logged yet today.</p>
-  }
-</div>
-    
-</div>
 
-        
-        <div class="dashboard-grid">
+        <div class="dashboard-grid mt-4">
           <div class="card biometrics-card">
             <h3>Biometrics & Goal</h3>
             <div class="metric-row">
@@ -74,9 +90,7 @@
             </div>
             <input type="range" class="weight-slider" [value]="nutricionSvc.weight()" (input)="onWeightSliderChange($event)" min="30" max="250">
 
-            
-            
-            <div class="metric-row interactive-controls">
+            <div class="metric-row interactive-controls mt-3">
               <div class="mini-control">
                 <span class="label-sm">Age</span>
                 <div class="button-group">
@@ -95,7 +109,7 @@
               </div>
             </div>
 
-            <div class="goal-selector-mini">
+            <div class="goal-selector-mini mt-3">
               <p>Current Strategy:</p>
               <div class="badge" [ngClass]="nutricionSvc.goal()">
                 {{ nutricionSvc.goal() === 'lose' ? 'Fat Loss' : 
@@ -106,7 +120,6 @@
 
           <div class="card macros-card">
             <h3>Macronutrient Split</h3>
-            
             <div class="macro-item protein">
               <div class="macro-header-row">
                 <div class="macro-text"><strong>Protein</strong><small>Muscle repair</small></div>
@@ -136,15 +149,8 @@
                 <div class="progress-bar" [style.width.%]="(nutricionSvc.macros().fats / 1.5)"></div>
               </div>
             </div>
-
           </div>
-        </div>
-      </div>
-    } 
-
-    
-    
-    @else {
+        </div> </div> } @else {
       <div class="nutrition-container card animate__animated animate__fadeIn">
         <div class="form-header mb-4">
           <div class="icon-circle mb-3">
@@ -156,36 +162,36 @@
 
         <div class="nutrition-form">
           <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-6 mb-3">
               <div class="form-group custom-input">
                 <label>Age</label>
-                <input type="number" formControlName="age">
+                <input type="number" class="form-control" formControlName="age">
               </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6 mb-3">
               <div class="form-group custom-input">
                 <label>Weight (kg)</label>
-                <input type="number" formControlName="weight">
+                <input type="number" class="form-control" formControlName="weight">
               </div>
             </div>
           </div>
 
-          <div class="form-group custom-input">
+          <div class="form-group custom-input mb-3">
             <label>Height (cm)</label>
-            <input type="number" formControlName="height">
+            <input type="number" class="form-control" formControlName="height">
           </div>
 
-          <div class="form-group custom-input">
+          <div class="form-group custom-input mb-3">
             <label>Gender</label>
-            <select formControlName="gender">
+            <select class="form-select" formControlName="gender">
               <option value="male">Male</option>
               <option value="female">Female</option>
             </select>
           </div>
 
-          <div class="form-group custom-input">
+          <div class="form-group custom-input mb-3">
             <label>Fitness Goal</label>
-            <select formControlName="goal">
+            <select class="form-select" formControlName="goal">
               <option value="lose">Lose Weight</option>
               <option value="maintain">Maintain Weight</option>
               <option value="gain">Gain Muscle</option>

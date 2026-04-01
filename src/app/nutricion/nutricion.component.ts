@@ -26,54 +26,59 @@ export class NutricionComponent implements OnInit {
   });
 
   ngOnInit() {
-    // Sincronización inteligente: solo actualiza el servicio si el formulario es válido
-    // Esto permite que el dashboard reaccione mientras editas
-    this.form.valueChanges.subscribe(val => {
-      if (this.form.valid) {
-        if (val.weight) this.nutricionSvc.weight.set(val.weight);
-        if (val.height) this.nutricionSvc.height.set(val.height);
-        if (val.age) this.nutricionSvc.age.set(val.age);
-        if (val.gender) this.nutricionSvc.gender.set(val.gender as 'male' | 'female');
-        if (val.goal) this.nutricionSvc.goal.set(val.goal as 'lose' | 'maintain' | 'gain');
-      }
-    });
+    this.syncFormWithService();
+  }
+
+  private syncFormWithService() {
+    this.form.patchValue({
+      age: this.nutricionSvc.age(),
+      weight: this.nutricionSvc.weight(),
+      height: this.nutricionSvc.height(),
+      gender: this.nutricionSvc.gender(),
+      goal: this.nutricionSvc.goal()
+    }, { emitEvent: false });
   }
 
   toggleEdit() {
     this.isEditing = !this.isEditing;
     if (this.isEditing) {
-      // Al entrar en modo edición, cargamos los datos del servicio en el form
-      // Usamos emitEvent: false para no disparar el subscribe y evitar bucles
-      this.form.patchValue({
-        age: this.nutricionSvc.age(),
-        weight: this.nutricionSvc.weight(),
-        height: this.nutricionSvc.height(),
-        gender: this.nutricionSvc.gender(),
-        goal: this.nutricionSvc.goal()
-      }, { emitEvent: false });
+      this.syncFormWithService();
     }
   }
 
-  // Función para los botones + y -
   adjust(field: string, delta: number) {
     const control = this.form.get(field);
     if (control) {
       const newVal = (Number(control.value) || 0) + delta;
-      control.setValue(newVal); 
+      control.setValue(newVal);
+      if (!this.isEditing) {
+        this.updateServiceFromForm();
+      }
     }
   }
 
-  // Función para el Slider de peso
   onWeightSliderChange(event: any) {
     const value = Number(event.target.value);
     this.form.get('weight')?.setValue(value);
+    if (!this.isEditing) {
+      this.updateServiceFromForm();
+    }
+  }
+
+  private updateServiceFromForm() {
+    const val = this.form.value;
+    if (val.age) this.nutricionSvc.age.set(val.age);
+    if (val.weight) this.nutricionSvc.weight.set(val.weight);
+    if (val.height) this.nutricionSvc.height.set(val.height);
+    if (val.gender) this.nutricionSvc.gender.set(val.gender as 'male' | 'female');
+    if (val.goal) this.nutricionSvc.goal.set(val.goal as 'lose' | 'maintain' | 'gain');
   }
 
   async saveProfile() {
     if (this.form.valid && !this.isSaving()) {
       this.isSaving.set(true);
+      this.updateServiceFromForm();
       try {
-        // Los signals ya están actualizados gracias al valueChanges
         await this.nutricionSvc.saveToFirestore();
         this.isEditing = false;
       } catch (err) {
@@ -84,23 +89,18 @@ export class NutricionComponent implements OnInit {
       }
     }
   }
-  // Esta función es la que el HTML llama cuando haces clic en "Add"
-addMeal(name: string, calories: number, type: string) {
-  // 1. Validamos que el usuario haya escrito algo coherente
-  if (!name || name.trim() === '') {
-    alert('Please enter the name of the food.');
-    return;
+
+  addMeal(name: string, calories: number, type: any, p: number = 0, c: number = 0, f: number = 0) {
+    if (!name || calories <= 0) {
+      alert('Please enter a name and calories');
+      return;
+    }
+    this.nutricionSvc.addFoodEntry(name, calories, type, p, c, f);
   }
 
-  if (!calories || calories <= 0) {
-    alert('Please enter a valid number of calories.');
-    return;
+  async deleteMeal(id: string) {
+    if (confirm('Are you sure you want to delete this entry?')) {
+      await this.nutricionSvc.deleteFoodEntry(id);
+    }
   }
-
-  // 2. Llamamos al servicio para que lo guarde en Firebase
-  // Usamos "this.nutricionSvc" porque es el nombre que le diste al inyectarlo
-  this.nutricionSvc.addFoodEntry(name, calories, type as any);
-  
-  console.log('Enviando a Firebase:', { name, calories, type });
-}
 }
