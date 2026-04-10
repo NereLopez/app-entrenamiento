@@ -26,6 +26,7 @@ export class NutricionService {
     user(this.auth).subscribe(u => {
     if (u) {
       this.fetchDailyMeals(); 
+      this.fetchUserProfile(u.uid);
     }
   });
 
@@ -50,7 +51,24 @@ export class NutricionService {
     }, { protein: 0, carbs: 0, fats: 0 });
   });
 
-  
+  private async fetchUserProfile(userId: string) {  
+    const { doc, getDoc } = await import('@angular/fire/firestore');
+  // Nota: Sería mejor usar un ID fijo para el perfil, pero probemos buscando el último
+  const colRef = collection(this.firestore, 'user_nutrition');
+  // Aquí lo ideal es que el documento tenga como ID el UID del usuario
+  const docRef = doc(this.firestore, `user_nutrition/${userId}`);
+  const snap = await getDoc(docRef);
+
+  if (snap.exists()) {
+    const data = snap.data();
+    this.weight.set(data['weight']);
+    this.height.set(data['height']);
+    this.age.set(data['age']);
+    this.gender.set(data['gender']);
+    this.goal.set(data['goal']);
+    this.activityLevel.set(data['activityLevel'] || 1.55);
+  }
+}
 
  
   public bmr = computed(() => {
@@ -115,8 +133,12 @@ export class NutricionService {
 
   
   async saveToFirestore() {
-    const colRef = collection(this.firestore, 'user_nutrition');
-    await addDoc(colRef, {
+    const userId = this.auth.currentUser?.uid;
+    if (!userId) return;
+
+    const { doc, setDoc } = await import('@angular/fire/firestore');
+    const docRef = doc(this.firestore, `user_nutrition/${userId}`);
+    await setDoc(docRef, {
       weight: this.weight(),
       height: this.height(),
       age: this.age(),
@@ -126,7 +148,7 @@ export class NutricionService {
       targetCalories: this.targetCalories(),
       macros: this.macros(),
       createdAt: new Date()
-    });  
+    }, { merge: true });  
   }   
   
   async addFoodEntry(name: string, calories: number, type: any, p:number = 0, c: number = 0, f: number = 0) {

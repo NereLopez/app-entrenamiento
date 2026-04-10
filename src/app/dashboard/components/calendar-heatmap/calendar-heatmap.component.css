@@ -102,3 +102,147 @@ cursor: pointer;
 :host-context(.dark-mode) .day-box:not(.completed) {
   border: none !important;
 }
+
+:host-context(.dark-mode) .circle-bg {
+  stroke: #334155; /* Gris oscuro para el fondo del círculo */
+}
+:host-context(.dark-mode) .rings-summary-container {
+  border-left: 1px solid #334155; /* Gris oscuro para el fondo del círculo interior */
+}
+
+:host-context(.dark-mode) .motivation-message {
+  color: #f59e0b;
+}
+
+.circular-chart {
+  display: block;
+  margin: 0 auto;
+  max-width: 70px; /* Adjust size as needed */
+  max-height: 70px;
+}
+
+.circle-bg {
+  fill: none;
+  stroke: #f1f5f9; /* Light gray background */
+  stroke-width: 3.5;
+}
+
+.circle-bg.inner {
+  stroke: #f1f5f9;
+  opacity: 0.5;
+  stroke-width: 3.5;
+}
+
+.circle {
+  fill: none;
+  stroke-width: 3.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: stroke-dasharray 0.8s ease-in-out;
+}
+
+
+.workout-ring {
+  filter: drop-shadow(0 0 1.5px rgba(45, 212, 191, 0.3));
+}
+
+.nutrition-ring {
+  stroke-width: 4.5;
+  filter: drop-shadow(0 0 1.5px rgba(251, 146, 60, 0.28));
+}
+
+.rings-summary-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 80px;
+  padding-left: 10px;
+  border-left: 1px solid #f1f5f9;
+}
+
+.rings-summary-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 120px;
+}
+
+.motivation-message {
+  margin: 0;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #0f766e;
+  text-align: center;
+  line-height: 1.2;
+  max-width: 120px;
+}
+
+@keyframes glow-pulse {
+  0% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 0 rgba(251, 191, 36, 0));
+  }
+  50% {
+    transform: scale(1.05);
+    filter: drop-shadow(0 0 12px rgba(251, 191, 36, 0.6)) drop-shadow(0 0 24px rgba(13, 148, 136, 0.3));
+  }
+  100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 0 rgba(251, 191, 36, 0));
+  }
+}
+
+.rings-summary-container.glow-pulse {
+  animation: glow-pulse 0.8s cubic-bezier(0.36, 0, 0.66, 1) infinite;
+}
+
+/* --- ESTILOS TARJETA INSTALACIÓN QR --- */
+
+.install-app-card {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  transition: all 0.3s ease;
+}
+
+/* Contenedor del QR con efecto cristal/blanco */
+.install-qr-frame {
+  background: white;
+  padding: 8px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  display: inline-block;
+}
+
+/* Estilo para los pasos (badges de números) */
+.badge.rounded-circle {
+  width: 22px;
+  height: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  font-size: 0.7rem;
+  background-color: #f1f5f9 !important;
+  color: #3b82f6 !important;
+  border: 1px solid #e2e8f0 !important;
+}
+
+/* ADAPTACIÓN MODO OSCURO */
+:host-context(.dark-mode) .install-app-card {
+  background-color: #1e293b !important; /* Gris azulado oscuro */
+  border-color: #334155 !important;
+}
+
+:host-context(.dark-mode) .install-app-card h5 {
+  color: #f1f5f9 !important;
+}
+
+:host-context(.dark-mode) .install-app-card .text-muted {
+  color: #94a3b8 !important;
+}
+
+:host-context(.dark-mode) .badge.rounded-circle {
+  background-color: #334155 !important;
+  color: #60a5fa !important;
+  border-color: #475569 !important;
+}

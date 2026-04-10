@@ -19,6 +19,8 @@ export class DashboardComponent {
   public entrenamientoService = inject(EntrenamientoService);
   private router = inject(Router);
 
+  showInstallCard: boolean = true;
+
   @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
 
   currentMetric: 'Volume' | 'Frequency' = 'Volume';
@@ -75,23 +77,9 @@ export class DashboardComponent {
 
   getWorkoutsThisWeek(): number {
     const oneWeekAgo = Date.now() - (7 * 24 * 60 * 60 * 1000);
-    return this.entrenamientoService.history().filter((w:any) => w.createdAt > oneWeekAgo).length;
+    return this.entrenamientoService.history().filter((w: any) => w.createdAt > oneWeekAgo).length;
   }
 
-  getTotalVolume(): number {
-    let total = 0;
-    this.entrenamientoService.history().forEach((w:any) => {
-      w.exercises?.forEach((ex: any) => {
-        ex.sets?.forEach((s: any) => {
-          const weight= Number(s.weight) || 0;
-          const reps = Number(s.reps) || 0;
-          total += weight * reps;
-        });
-      });
-    });
-    return total;
-  }
-
-  }
+ }
 
 

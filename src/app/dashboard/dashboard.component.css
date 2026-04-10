@@ -75,3 +75,109 @@
 .btn-history i, .btn-history .text-primary {
   color: var(--dark-teal) !important;
 }
+
+.install-app-card {
+  background:
+    radial-gradient(circle at top right, rgba(45, 212, 191, 0.16), transparent 30%),
+    linear-gradient(135deg, #ffffff 0%, #f8fffd 100%);
+  border: 1px solid rgba(13, 148, 136, 0.08);
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
+}
+
+.install-device-only {
+  display: block;
+}
+
+.install-qr-frame {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 148px;
+  height: 148px;
+  padding: 10px;
+  border-radius: 28px;
+  background: linear-gradient(145deg, #ffffff, #ecfeff);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 12px 24px rgba(13, 148, 136, 0.12);
+}
+
+.install-qr-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 20px;
+  background: #ffffff;
+}
+
+.install-app-content {
+  flex: 1;
+}
+
+.install-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(13, 148, 136, 0.1);
+  color: var(--primary-teal);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.install-steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.install-step {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 10px 14px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  color: #334155;
+  font-weight: 600;
+  backdrop-filter: blur(8px);
+}
+
+.install-step-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--main-gradient);
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+@media (max-width: 767.98px) {
+  .install-app-card {
+    padding: 1.25rem !important;
+  }
+
+  .install-qr-frame {
+    width: 128px;
+    height: 128px;
+  }
+
+  .install-steps {
+    justify-content: center;
+  }
+}
+
+@media (min-width: 1025px) {
+  .install-device-only {
+    display: none;
+  }
+}

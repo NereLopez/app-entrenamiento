@@ -70,7 +70,8 @@
     <div class="col-md-4">
       <div class="stat-card p-4 shadow-sm border-0 rounded-4 bg-white">
         <h6 class="text-muted small text-uppercase fw-bold">Total Volume</h6>
-        <h3 class="fw-bold mb-0">{{ getTotalVolume() }} <small class="fs-6">kg</small></h3>
+        <h3 class="fw-bold mb-0">
+          {{ entrenamientoService.totalVolume() | number }} <small class="fs-6">kg</small></h3>
         <p class="small text-primary mb-0 mt-1">Lifetime</p>
       </div>
     </div>
@@ -79,6 +80,35 @@
         <h6 class="text-muted small text-uppercase fw-bold">Streak</h6>
         <h3 class="fw-bold mb-0">3 <small class="fs-6">days</small></h3>
         <p class="small text-warning mb-0 mt-1"><i class="bi bi-fire"></i> Keep it up!</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="install-app-card install-device-only rounded-4 p-4 mb-5">
+    <div class="d-flex flex-column flex-md-row align-items-center gap-4">
+      <div class="install-qr-frame">
+        <img src="assets/install-app-qr.png" alt="QR code to install app" class="install-qr-image">
+      </div>
+
+      <div class="install-app-content text-center text-md-start">
+        <span class="install-badge">Install App</span>
+        <h5 class="fw-bold mt-3 mb-2">Save Kinetic to your home screen</h5>
+        <p class="text-muted mb-3">Fast access, full-screen feel, and a more app-like experience on your phone.</p>
+
+        <div class="install-steps">
+          <div class="install-step">
+            <span class="install-step-number">1</span>
+            <span>Scan QR</span>
+          </div>
+          <div class="install-step">
+            <span class="install-step-number">2</span>
+            <span>Tap Share</span>
+          </div>
+          <div class="install-step">
+            <span class="install-step-number">3</span>
+            <span>Add to Home Screen</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -103,4 +133,37 @@
       <p class="text-muted text-center mb-0">No activity yet. Let's train!</p>
     }
   </div>
+  @if (showInstallCard) {
+  <div class="install-app-card rounded-4 p-4 mt-4 shadow-sm bg-white position-relative">
+    <button class="btn-close btn-sm position-absolute top-0 end-0 m-2" 
+            (click)="showInstallCard = false" 
+            style="font-size: 0.6rem;"></button>
+
+    <div class="d-flex flex-column flex-md-row align-items-center gap-4">
+      <div class="install-qr-frame">
+        <img src="icons/install-app-qr.jpg" alt="QR code" class="install-qr-image" style="width: 120px; height: 120px; border-radius: 10px;">
+      </div>
+
+      <div class="install-app-content text-center text-md-start">
+        <h5 class="fw-bold mb-2" style="color: #334155;">Install Kinetic App</h5>
+        <p class="text-muted small mb-3">Get a full-screen experience on your device.</p>
+
+        <div class="d-flex gap-3 justify-content-center justify-content-md-start">
+          <div class="text-center">
+            <span class="badge rounded-circle bg-light text-primary border mb-1">1</span>
+            <p style="font-size: 0.6rem;" class="m-0 text-uppercase fw-bold">Scan QR</p>
+          </div>
+          <div class="text-center">
+            <span class="badge rounded-circle bg-light text-primary border mb-1">2</span>
+            <p style="font-size: 0.6rem;" class="m-0 text-uppercase fw-bold">Tap Share</p>
+          </div>
+          <div class="text-center">
+            <span class="badge rounded-circle bg-light text-primary border mb-1">3</span>
+            <p style="font-size: 0.6rem;" class="m-0 text-uppercase fw-bold">Add Home</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+}
 </div>

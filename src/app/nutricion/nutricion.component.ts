@@ -98,6 +98,8 @@ export class NutricionComponent implements OnInit {
     this.nutricionSvc.addFoodEntry(name, calories, type, p, c, f);
   }
 
+  
+
   async deleteMeal(id: string) {
     if (confirm('Are you sure you want to delete this entry?')) {
       await this.nutricionSvc.deleteFoodEntry(id);

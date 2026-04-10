@@ -1,59 +1,57 @@
-# AppEntrenamiento
+# Kinetic Training App
+
+**Kinetic** es una Aplicación Web Progresiva (PWA) diseñada para deportistas que buscan un seguimiento visual, rápido y profesional de sus entrenamientos. Desarrollada con **Angular 19**, integra análisis de datos en tiempo real y una experiencia de usuario optimizada para dispositivos móviles.
+
+---
+
+## 🚀 Características Principales
+
+* **Dashboard Dinámico:** Visualización de métricas clave (Volumen y Frecuencia) mediante gráficas interactivas con `Chart.js`.
+* **Heatmap de Actividad:** Seguimiento visual del progreso semanal inspirado en los anillos de actividad de Apple Health.
+* **Experiencia PWA:** Instalable en iOS y Android. Funciona a pantalla completa, eliminando la interfaz del navegador para una experiencia 100% nativa.
+* **Gestión de Entrenamientos:** Sistema de carga de ejercicios y rutinas conectado a servicios reactivos.
+* **Modo Oscuro:** Interfaz adaptativa diseñada para entrenamientos en cualquier condición de luz.
+* **Acceso mediante QR:** Sistema de invitación para instalación rápida en dispositivos móviles.
+
+---
+
+## 🛠️ Stack Tecnológico
+
+* **Framework:** [Angular 19](https://angular.dev/) (Standalone Components & Signals).
+* **Gráficas:** [Chart.js](https://www.chartjs.org/) con `ng2-charts`.
+* **Estilos:** Bootstrap 5.3 + CSS3 Custom Properties (Variables para temas).
+* **Iconografía:** Bootstrap Icons.
+* **PWA:** Angular Service Worker (`@angular/pwa`).
+
+---
+
+## 📱 Instalación (Modo PWA)
+
+Para disfrutar de la experiencia completa en tu smartphone:
+1. Escanea el **Código QR** presente en el Dashboard.
+2. En iPhone: Pulsa **"Compartir"** y selecciona **"Añadir a la pantalla de inicio"**.
+3. En Android: Pulsa en el banner **"Instalar aplicación"** que aparecerá automáticamente.
+
+---
+
+## 🔧 Desarrollo
+
+Para ejecutar el proyecto localmente:
+
+1. Instala las dependencias:
+   ```bash
+   npm install
+2. Levanatar el servidor de desarrollo:
+    ```bash
+    ng serve
+3. Accede a http://localhost:4200
+
+
+Desarrollado por Nerea Elvira López-2026. Proyecto Final de DAM
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.22.
 
-## Development server
 
-To start a local development server, run:
 
-```bash
-ng serve
-```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.

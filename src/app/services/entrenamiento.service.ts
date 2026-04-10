@@ -11,6 +11,8 @@ export interface UserStats {
   personalRecords: { [key: string]: number };
   currentStreak: number;
   lastSessionDate: number;
+  dailyCaloriesTarget: number;
+  weeklyActivity?: { [weekId: string]: any[] };
 }
 
 @Injectable({ providedIn: 'root' })
@@ -30,7 +32,8 @@ export class EntrenamientoService {
     experiencePoints: 0,
     personalRecords: {},
     currentStreak: 0,
-    lastSessionDate: 0
+    lastSessionDate: 0,
+    dailyCaloriesTarget: 0
   });
 
   constructor() {
@@ -50,6 +53,20 @@ export class EntrenamientoService {
     let name = u?.displayName || u?.email?.split('@')[0] || 'User';
     name = name.replace(/\./g, ' ').trim();
     return name.length > 0 ? name.charAt(0).toUpperCase() + name.slice(1).toLowerCase() : 'User';
+  });
+
+  public totalVolume = computed(() => {
+    let total = 0;
+    this.history().forEach((w: any) => {
+      w.exercises?.forEach((ex: any) => {
+        ex.sets?.forEach((s: any) => {
+          const weight = Number(s.weight) || 0;
+          const reps = Number(s.repetitions) || 0;
+          total += weight * reps;
+        });
+      });
+    });
+    return total;
   });
 
   
@@ -78,6 +95,14 @@ export class EntrenamientoService {
 
       if (today === lastSession) {
         this.isWorkoutCompletedToday.set(true);
+      } else {
+        this.statsSignal.set({
+          experiencePoints: 0,
+          personalRecords: {},
+          currentStreak: 0,
+          lastSessionDate: Date.now(),
+          dailyCaloriesTarget: 2000
+        });
       }
     }
   }
@@ -125,12 +150,19 @@ export class EntrenamientoService {
     const oneDayInMs = 86400000;
 
     if (today > lastSession) {
-      if (today - lastSession <= oneDayInMs) {
+      const daysSinceLastSession = (today - lastSession) / oneDayInMs;
+      if (daysSinceLastSession === 1) {
         currentStats.currentStreak += 1;
       } else {
         currentStats.currentStreak = 1;
       }
       currentStats.lastSessionDate = today;
+      //if (today - lastSession <= oneDayInMs) {
+       // currentStats.currentStreak += 1;
+     // } else {
+     //   currentStats.currentStreak = 1;
+     // }
+    //  currentStats.lastSessionDate = today;
     }
 
     currentStats.experiencePoints += newXP;
@@ -140,6 +172,26 @@ export class EntrenamientoService {
 
     this.isWorkoutCompletedToday.set(true);
     return { brokeRecord, earnedXP: newXP };
+  }
+
+  async syncWeekActivity(weekId: string, activity: any[]) {
+    const currentUser = this.userSignal();
+    if (!currentUser) return;
+
+    const statsRef = doc(this.firestore, `stats/${currentUser.uid}`);
+    await setDoc(
+      statsRef,
+      {
+        weeklyActivity: {
+          [weekId]: activity
+        }
+      },
+      { merge: true }
+    );
+  }
+
+  async syncWeeklyActivity(weekId: string, activity: any[]) {
+    return this.syncWeekActivity(weekId, activity);
   }
 
   async saveFromForm(formData: any) {
