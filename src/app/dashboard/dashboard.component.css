@@ -3,7 +3,8 @@
   --dark-teal: #115e59;
   --main-gradient: linear-gradient(135deg, #0d9488 0%, #115e59 100%);
   --bg-light-teal: #f0fdfa;
-  --card-shadow: 0 10px 20px rgba(13, 148, 136, 0.1);
+  --card-shadow: 0 10px 20px rgba(13, 148, 136, 0.1)
+
 }
 
 .btn-start .btn-primary {
@@ -159,6 +160,25 @@
   font-size: 0.75rem;
   font-weight: 800;
   flex-shrink: 0;
+}
+
+.btn-install-custom {
+  background: var(--main-gradient) !important;
+  color: white !important;
+  border: none !important;
+  padding: 12px 24px;
+  border-radius: 18px;
+  font-weight: 700;
+  margin-top: 20px; /* Esto es lo que lo separa (el "aire") */
+  transition: all 0.3s ease;
+  width: 100%; /* Si quieres que ocupe el ancho disponible */
+  max-width: 300px;
+}
+
+.btn-install-custom:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+  cursor: pointer;
 }
 
 @media (max-width: 767.98px) {

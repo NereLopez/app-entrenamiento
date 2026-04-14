@@ -19,7 +19,18 @@ export class DashboardComponent {
   public entrenamientoService = inject(EntrenamientoService);
   private router = inject(Router);
 
+  showModal: boolean = false;
   showInstallCard: boolean = true;
+  closeInstallCard() {
+    this.showInstallCard = false;
+    localStorage.setItem('installCardDismissed', 'true');
+  }
+  showInstall() {
+  localStorage.removeItem('installCardDismissed');
+  this.router.navigate(['/dashboard']).then(() => {
+    window.location.reload(); 
+  });
+}
 
   @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
 

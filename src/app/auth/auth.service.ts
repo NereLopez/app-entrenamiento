@@ -22,7 +22,6 @@ export class EntrenamientoService {
       }
     });
   }
-
   
   async signUp(email: string, pass: string) {
     return createUserWithEmailAndPassword(this.auth, email, pass);

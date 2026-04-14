@@ -4,7 +4,7 @@ import { routes } from './app.routes';
 
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app'; // Necesario para arrancar Firebase
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
-import { provideAuth, getAuth } from '@angular/fire/auth';
+import { provideAuth, getAuth, browserSessionPersistence, setPersistence } from '@angular/fire/auth';
 import { environment } from './environments/environment';
 import { provideServiceWorker } from '@angular/service-worker';
 
@@ -16,11 +16,11 @@ export const appConfig: ApplicationConfig = {
    provideRouter(routes),
   provideFirebaseApp(() => initializeApp(environment.firebase)),
   provideFirestore(() => getFirestore()),
-  provideAuth (() => getAuth()), provideServiceWorker('ngsw-worker.js', {
-            enabled: !isDevMode(),
-            registrationStrategy: 'registerWhenStable:30000'
-          })
-
+  provideAuth(() => {
+    const auth = getAuth();
+    setPersistence(auth, browserSessionPersistence);
+    return auth;
+  }),
   ]
    
 };

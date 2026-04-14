@@ -81,34 +81,3 @@
 
   </div>
 
-  @if (!isExporting()) {
-    <button (click)="exportAsImage($event)" class="btn-share-icon position-absolute top-0 end-0 m-2 border-0 bg-transparent">
-       <i class="bi bi-share-fill" style="color: #94a3b8; font-size: 1.1rem;"></i>
-    </button>
-  }
-  </div> <div class="install-app-card rounded-4 p-4 mt-4 shadow-sm bg-white">
-  <div class="d-flex flex-column flex-md-row align-items-center gap-4">
-    <div class="install-qr-frame">
-<img src="icons/install-app-qr.jpg" alt="QR code" class="install-qr-image" style="width: 120px; height: 120px; border-radius: 10px;">    </div>
-
-    <div class="install-app-content text-center text-md-start">
-      <h5 class="fw-bold mb-2" style="color: #334155;">Install Kinetic App</h5>
-      <p class="text-muted small mb-3">Get a full-screen experience on your iPhone.</p>
-
-      <div class="d-flex gap-3 justify-content-center justify-content-md-start">
-        <div class="text-center">
-          <span class="badge rounded-circle bg-light text-primary border mb-1">1</span>
-          <p style="font-size: 0.6rem;" class="m-0 text-uppercase fw-bold">Scan QR</p>
-        </div>
-        <div class="text-center">
-          <span class="badge rounded-circle bg-light text-primary border mb-1">2</span>
-          <p style="font-size: 0.6rem;" class="m-0 text-uppercase fw-bold">Tap Share</p>
-        </div>
-        <div class="text-center">
-          <span class="badge rounded-circle bg-light text-primary border mb-1">3</span>
-          <p style="font-size: 0.6rem;" class="m-0 text-uppercase fw-bold">Add Home</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
