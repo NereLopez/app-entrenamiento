@@ -41,7 +41,7 @@ Para ejecutar el proyecto localmente:
 1. Instala las dependencias:
    ```bash
    npm install
-2. Levanatar el servidor de desarrollo:
+2. Levantar el servidor de desarrollo:
     ```bash
     ng serve
 3. Accede a http://localhost:4200
@@ -49,7 +49,7 @@ Para ejecutar el proyecto localmente:
 
 Desarrollado por Nerea Elvira López-2026. Proyecto Final de DAM
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.22.
+
 
 
 
