@@ -94,17 +94,24 @@ export class HistorialComponent {
     });
     return total;
   }
+  getDaysTrainedThisMonth(): number {
+    const ahora = new Date();
+    const mesActual = ahora.getMonth();
+    const anioActual = ahora.getFullYear();
+    
+    const diasUnicos = new Set<string>();
 
-  getPersonalRecord(): number {
-    let max = 0;
-    this.entrenamientoService.history().forEach(w => {
-      w.exercises?.forEach((ex: any) => {
-        ex.sets?.forEach((s: any) => {
-          if (Number(s.weight) > max) max = Number(s.weight);
-        });
-      });
+    this.entrenamientoService.history().forEach(workout => {
+      const fecha = new Date(workout.createdAt);
+      
+      if (fecha.getMonth() === mesActual && fecha.getFullYear() === anioActual) {
+        // Formateamos a YYYY-MM-DD para contar días únicos
+        const diaString = fecha.toISOString().split('T')[0];
+        diasUnicos.add(diaString);
+      }
     });
-    return max;
+
+    return diasUnicos.size;
   }
 
   // --- GRÁFICAS ---
@@ -134,44 +141,57 @@ export class HistorialComponent {
     };
   }
 
-  renderChart(data: any[]) {
-    const ctx = this.statsChart.nativeElement.getContext('2d');
-    if (this.chart) this.chart.destroy();
+renderChart(data: any[]) {
+  const ctx = this.statsChart.nativeElement.getContext('2d');
+  if (this.chart) this.chart.destroy();
 
-    const sorted = [...data].sort((a, b) => a.createdAt - b.createdAt);
-    const isVolume = this.currentMetric === 'Volume';
+  const isVolume = this.currentMetric === 'Volume';
+  
+  // 1. Agrupamos los datos por FECHA (Día)
+  const groupedData = new Map<string, number>();
+  
+  data.forEach(w => {
+    const dateKey = new Date(w.createdAt).toLocaleDateString();
+    
+    if (isVolume) {
+      // Si es volumen, sumamos los kilos de ese día
+      groupedData.set(dateKey, (groupedData.get(dateKey) || 0) + this.calculateVolume(w));
+    } else {
+      // Si es frecuencia, solo contamos 1 por cada sesión (no por ejercicio)
+      groupedData.set(dateKey, (groupedData.get(dateKey) || 0) + 1);
+    }
+  });
 
-    const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-    gradient.addColorStop(0, 'rgba(13, 148, 136, 0.4)');
-    gradient.addColorStop(1, 'transparent');
+  // 2. Convertimos el Map a arrays ordenados
+  const labels = Array.from(groupedData.keys());
+  const chartData = Array.from(groupedData.values());
 
-    this.chart = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: sorted.map(w => new Date(w.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })),
-        datasets: [{
-          label: isVolume ? 'Volume (kg)' : 'Workouts',
-          data: sorted.map(w => isVolume ? this.calculateVolume(w) : 1),
-          borderColor: '#0d9488',
-          borderWidth: 3,
-          fill: true,
-          backgroundColor: gradient,
-          tension: 0.4,
-          pointRadius: 4,
-          pointBackgroundColor: '#0d9488'
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: { legend: { display: false } },
-        scales: {
-          x: { grid: { display: false } },
-          y: { beginAtZero: true }
-        }
+  // 3. Renderizamos
+  this.chart = new Chart(ctx, {
+    type: isVolume ? 'line' : 'bar',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: isVolume ? 'Volumen (kg)' : 'Sesiones',
+        data: chartData,
+        backgroundColor: isVolume ? 'rgba(13, 148, 136, 0.4)' : '#0d9488',
+        borderColor: '#0d9488',
+        borderWidth: 2,
+        tension: 0.4
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        y: { beginAtZero: true, ticks: { stepSize: 1 } }
       }
-    });  
-  }
+    }
+  });  
+}
+
+    
 
   renderMuscleChart() {
     const ctx = this.muscleChart.nativeElement.getContext('2d');
