@@ -37,7 +37,11 @@ export class HistorialComponent {
     });
   }
 
-  // --- LÓGICA DE AGRUPACIÓN (LA CLAVE DEL ORDEN) ---
+     async deleteSession(workoutId: string) {
+      if (!confirm('¿Are you sure? This action cannot be undone.')) return;
+      await this.entrenamientoService.deleteWorkout(workoutId);
+      // Después de eliminar, el efecto que escucha el historial se encargará de redibujar las gráficas automáticamente.
+    }
   
   get groupedWorkouts() {
     const rawHistory = this.entrenamientoService.history();

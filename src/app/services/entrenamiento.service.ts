@@ -1,7 +1,7 @@
 import { Injectable, signal, inject, computed } from '@angular/core';
 import { 
   Firestore, collection, addDoc, query, where, orderBy, 
-  collectionData, doc, getDoc, setDoc, updateDoc 
+  collectionData, doc, getDoc, setDoc, updateDoc, deleteDoc 
 } from '@angular/fire/firestore'; 
 import { Auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, user } from '@angular/fire/auth';
 
@@ -37,12 +37,20 @@ export class EntrenamientoService {
   });
 
   constructor() {
+    // 1. "user(this.auth)" es una herramienta de Firebase que observa
+    // constantemente si alguien entra o sale de la sesión.
     user(this.auth).subscribe(u => {
+      // 2. Si hay cambios, actualizamos tu "señal" (userSignal).
+      // Esto hace que toda la app se entere de que el usuario ha cambiado.
       this.userSignal.set(u);
+      // 3. Si el usuario existe (u), le pedimos al servicio que vaya
+      // a la base de datos a buscar su historial y sus estadísticas.
       if (u) {
         this.fetchHistory(u.uid);
         this.fetchUserStats(u.uid); 
       } else {
+        // 4. Si el usuario sale (se desloguea), limpiamos el historial
+        // para que no se quede la info de la sesión anterior.
         this.history.set([]);
       }
     });
@@ -157,12 +165,7 @@ export class EntrenamientoService {
         currentStats.currentStreak = 1;
       }
       currentStats.lastSessionDate = today;
-      //if (today - lastSession <= oneDayInMs) {
-       // currentStats.currentStreak += 1;
-     // } else {
-     //   currentStats.currentStreak = 1;
-     // }
-    //  currentStats.lastSessionDate = today;
+     
     }
 
     currentStats.experiencePoints += newXP;
@@ -174,7 +177,7 @@ export class EntrenamientoService {
     return { brokeRecord, earnedXP: newXP };
   }
 
-  async syncWeekActivity(weekId: string, activity: any[]) {
+  async syncWeeklyActivity(weekId: string, activity: any[]) {
     const currentUser = this.userSignal();
     if (!currentUser) return;
 
@@ -190,8 +193,9 @@ export class EntrenamientoService {
     );
   }
 
-  async syncWeeklyActivity(weekId: string, activity: any[]) {
-    return this.syncWeekActivity(weekId, activity);
+    async deleteWorkout(workoutId: string) {
+     const docRef = doc(this.firestore, `workouts/${workoutId}`);
+     await deleteDoc(docRef);
   }
 
   async saveFromForm(formData: any) {

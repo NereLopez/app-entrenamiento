@@ -100,9 +100,13 @@
                   </div>
                   
                   <div>
-                    <h6 class="fw-bold text-dark mb-1">Session Day</h6>
-                    @if (expandedSessionId !== session.id) {
-                      <div class="d-flex gap-1 flex-wrap">
+                    <h6 class="fw-bold text-dark mb-1">Session Day</h6>  </div>
+                    <div class="d-flex align-items-center">
+                      <button type="button" (click)="deleteSession(session.id); $event.stopPropagation();" 
+                              class="btn btn-sm text-danger border-0 opacity-50 hover-opacity-100">
+                            <i class="bi bi-trash"></i></button>" 
+                           
+                  
                         @for (ex of session.allExercises.slice(0, 4); track $index) {
                           <span class="badge rounded-pill fw-normal" style="background: #f1f5f9; color: #64748b; font-size: 0.7rem;">
                             {{ ex.name }}
@@ -114,8 +118,8 @@
                           </span>
                         }
                       </div>
-                    }
-                  </div>
+                
+                 
                 </div>
 
                 <div class="d-flex align-items-center">

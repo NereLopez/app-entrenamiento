@@ -12,15 +12,14 @@ import { provideServiceWorker } from '@angular/service-worker';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-  provideZoneChangeDetection({ eventCoalescing: true }),
-   provideRouter(routes),
-  provideFirebaseApp(() => initializeApp(environment.firebase)),
-  provideFirestore(() => getFirestore()),
-  provideAuth(() => {
-    const auth = getAuth();
-    setPersistence(auth, browserSessionPersistence);
-    return auth;
-  }),
-  ]
-   
+    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideRouter(routes),
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideFirestore(() => getFirestore()),
+    provideAuth(() => {
+      const auth = getAuth();
+      setPersistence(auth, browserSessionPersistence);
+      return auth;
+    }),
+  ],
 };

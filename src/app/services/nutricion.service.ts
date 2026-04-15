@@ -2,6 +2,7 @@ import { Injectable, signal, computed, inject, effect } from '@angular/core';
 import { Firestore, collection, addDoc, collectionData, query, where } from '@angular/fire/firestore';
 import { FoodEntry } from '../models/nutricion.model';
 import { Auth, user } from '@angular/fire/auth';
+import { EntrenamientoService } from './entrenamiento.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +10,7 @@ import { Auth, user } from '@angular/fire/auth';
 export class NutricionService {
   private firestore = inject(Firestore);
   private auth = inject(Auth);
+  private entrenamientoService = inject(EntrenamientoService);
 
   public weight = signal<number | null>(null);
   public height = signal<number | null>(null);
@@ -29,9 +31,18 @@ export class NutricionService {
       this.fetchUserProfile(u.uid);
     }
   });
+    effect(() => {
+      const isWorkoutComplete = this.entrenamientoService.isWorkoutCompletedToday();
+      console.log('NutricionService detectó cambio en entrenamiento:', isWorkoutComplete); 
+      if (isWorkoutComplete) {
+        this.isWorkoutDay.set(true);
+        console.log('Training Day! Ajusting nutrition goals...');    
+
+      }
+    });
 
     effect(() => {
-    const target = this.targetCalories(); // Tu computed de kcal objetivo
+    const target = this.targetCalories(); 
     const consumed = this.caloriesConsumed();
 
     if(consumed > 0 && consumed >= (target * 0.8)) {
@@ -52,9 +63,10 @@ export class NutricionService {
   });
 
   private async fetchUserProfile(userId: string) {  
+   // "Solo carga el código para leer documentos cuando realmente alguien vaya a consultar su perfil". 
+   // Esto hace que tu app arranque mucho más rápido en el móvil
     const { doc, getDoc } = await import('@angular/fire/firestore');
-  // Nota: Sería mejor usar un ID fijo para el perfil, pero probemos buscando el último
-  const colRef = collection(this.firestore, 'user_nutrition');
+   const colRef = collection(this.firestore, 'user_nutrition');
   // Aquí lo ideal es que el documento tenga como ID el UID del usuario
   const docRef = doc(this.firestore, `user_nutrition/${userId}`);
   const snap = await getDoc(docRef);
