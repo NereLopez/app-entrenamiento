@@ -11,7 +11,7 @@ Chart.register(...registerables);
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterLink, RouterModule, BaseChartDirective, CalendarHeatmapComponent],
+  imports: [CommonModule, RouterLink, RouterModule, CalendarHeatmapComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
