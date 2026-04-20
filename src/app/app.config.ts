@@ -20,6 +20,9 @@ export const appConfig: ApplicationConfig = {
       const auth = getAuth();
       setPersistence(auth, browserSessionPersistence);
       return auth;
-    }),
+    }), provideServiceWorker('ngsw-worker.js', {
+            enabled: !isDevMode(),
+            registrationStrategy: 'registerWhenStable:30000'
+          }),
   ],
 };
