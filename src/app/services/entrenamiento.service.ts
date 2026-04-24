@@ -26,7 +26,7 @@ export class EntrenamientoService {
   public history = signal<any[]>([]);
   public userLevel = signal<string>('Intermediate');
   public isWorkoutCompletedToday = signal<boolean>(false);
-  
+  public isAuthReady = signal<boolean>(false);
   
   public statsSignal = signal<UserStats>({
     experiencePoints: 0,
@@ -45,6 +45,7 @@ export class EntrenamientoService {
       this.userSignal.set(u);
       // 3. Si el usuario existe (u), le pedimos al servicio que vaya
       // a la base de datos a buscar su historial y sus estadísticas.
+      this.isAuthReady.set(true);
       if (u) {
         this.fetchHistory(u.uid);
         this.fetchUserStats(u.uid); 
