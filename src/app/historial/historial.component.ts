@@ -2,6 +2,8 @@ import { Component, inject, effect, ElementRef, ViewChild } from '@angular/core'
 import { CommonModule } from '@angular/common';
 import { EntrenamientoService } from '../services/entrenamiento.service'; 
 import { Chart, registerables } from 'chart.js';
+import { Firestore, collection, collectionData, query, where } from '@angular/fire/firestore';
+import { Auth, user } from '@angular/fire/auth';
 
 Chart.register(...registerables);
 
@@ -14,6 +16,8 @@ Chart.register(...registerables);
 })
 export class HistorialComponent {
   public entrenamientoService = inject(EntrenamientoService);
+  private firestore = inject(Firestore);
+  private auth = inject(Auth);
   
   @ViewChild('statsChart') statsChart!: ElementRef;
   private chart: any;
@@ -22,11 +26,43 @@ export class HistorialComponent {
 
   public expandedSessionId: string | null = null;
   public currentMetric: 'Volume' | 'Frequency' = 'Volume';
+  public displayedMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+  public selectedDateKey: string | null = null;
+  public nutritionDayMap = new Map<string, { calories: number; complete: boolean }>();
 
   constructor() {
+    user(this.auth).subscribe(currentUser => {
+      if (!currentUser) {
+        this.nutritionDayMap = new Map();
+        return;
+      }
+
+      const entriesRef = collection(this.firestore, 'food_entries');
+      const entriesQuery = query(entriesRef, where('userId', '==', currentUser.uid));
+
+      collectionData(entriesQuery, { idField: 'id' }).subscribe(entries => {
+        const groupedNutrition = new Map<string, { calories: number; complete: boolean }>();
+        const calorieTarget = this.entrenamientoService.statsSignal().dailyCaloriesTarget || 2000;
+
+        entries.forEach((entry: any) => {
+          const dateKey = this.toDateKey(new Date(entry.date));
+          const current = groupedNutrition.get(dateKey) ?? { calories: 0, complete: false };
+          current.calories += Number(entry.calories) || 0;
+          current.complete = current.calories >= calorieTarget * 0.8;
+          groupedNutrition.set(dateKey, current);
+        });
+
+        this.nutritionDayMap = groupedNutrition;
+      });
+    });
+
     // Escucha cambios en el historial para redibujar gráficas automáticamente
     effect(() => {
       const historyData = this.entrenamientoService.history();
+
+      if (historyData.length > 0 && !this.selectedDateKey) {
+        this.selectedDateKey = this.groupedWorkouts[0]?.dateKey ?? null;
+      }
       
       if (historyData.length > 0) {
         setTimeout(() => {
@@ -48,14 +84,15 @@ export class HistorialComponent {
     const grouped = new Map<string, any>();
 
     rawHistory.forEach(workout => {
-      // Agrupamos por fecha (DD/MM/YYYY) para que varias entradas del mismo día sean una sola tarjeta
-      const dateKey = new Date(workout.createdAt).toLocaleDateString();
+      const workoutDate = new Date(workout.createdAt);
+      const dateKey = this.toDateKey(workoutDate);
       
       if (!grouped.has(dateKey)) {
         grouped.set(dateKey, {
           id: workout.id, // Usamos el ID original para el toggle
+          dateKey,
           dateGroup: dateKey,
-          displayDate: workout.createdAt,
+          displayDate: workoutDate,
           allExercises: [...workout.exercises],
         });
       } else {
@@ -68,10 +105,85 @@ export class HistorialComponent {
     return Array.from(grouped.values()).sort((a, b) => b.displayDate - a.displayDate);
   }
 
+  get calendarTitle(): string {
+    return this.displayedMonth.toLocaleDateString(undefined, {
+      month: 'long',
+      year: 'numeric'
+    });
+  }
+
+  get currentStreak(): number {
+    return this.entrenamientoService.statsSignal().currentStreak || 0;
+  }
+
+  get calendarDays() {
+    const year = this.displayedMonth.getFullYear();
+    const month = this.displayedMonth.getMonth();
+    const firstDayOfMonth = new Date(year, month, 1);
+    const lastDayOfMonth = new Date(year, month + 1, 0);
+    const firstWeekday = (firstDayOfMonth.getDay() + 6) % 7;
+    const totalDays = lastDayOfMonth.getDate();
+    const groupedByDate = new Map(this.groupedWorkouts.map(session => [session.dateKey, session]));
+    const days: Array<any> = [];
+
+    for (let i = 0; i < firstWeekday; i++) {
+      days.push({ inMonth: false });
+    }
+
+    for (let day = 1; day <= totalDays; day++) {
+      const currentDate = new Date(year, month, day);
+      const dateKey = this.toDateKey(currentDate);
+      const session = groupedByDate.get(dateKey);
+
+      days.push({
+        inMonth: true,
+        dayNumber: day,
+        dateKey,
+        session,
+        nutrition: this.nutritionDayMap.get(dateKey),
+        isToday: this.toDateKey(new Date()) === dateKey,
+        isSelected: this.selectedCalendarDateKey === dateKey,
+        volume: session ? this.calculateVolume(session) : 0,
+        exerciseCount: session?.allExercises?.length ?? 0,
+        muscleGroups: session ? this.getSessionMuscleGroups(session) : []
+      });
+    }
+
+    while (days.length % 7 !== 0) {
+      days.push({ inMonth: false });
+    }
+
+    return days;
+  }
+
+  get selectedCalendarDateKey(): string | null {
+    const selectedExists = this.selectedDateKey && this.groupedWorkouts.some(session => session.dateKey === this.selectedDateKey);
+    return selectedExists ? this.selectedDateKey : this.groupedWorkouts[0]?.dateKey ?? null;
+  }
+
+  get selectedCalendarSession() {
+    const selectedKey = this.selectedCalendarDateKey;
+    return this.groupedWorkouts.find(session => session.dateKey === selectedKey) ?? null;
+  }
+
+  get selectedCalendarNutrition() {
+    const selectedKey = this.selectedCalendarDateKey;
+    return selectedKey ? this.nutritionDayMap.get(selectedKey) ?? null : null;
+  }
+
   // --- MÉTODOS DE CÁLCULO ---
 
   toggleSession(sessionId: string) {
     this.expandedSessionId = this.expandedSessionId === sessionId ? null : sessionId;
+  }
+
+  changeMonth(delta: number) {
+    this.displayedMonth = new Date(this.displayedMonth.getFullYear(), this.displayedMonth.getMonth() + delta, 1);
+  }
+
+  selectCalendarDay(dateKey: string | undefined) {
+    if (!dateKey) return;
+    this.selectedDateKey = dateKey;
   }
 
   setMetric(metric: 'Volume' | 'Frequency') {
@@ -95,9 +207,8 @@ export class HistorialComponent {
     return total;
   }
   getDaysTrainedThisMonth(): number {
-    const ahora = new Date();
-    const mesActual = ahora.getMonth();
-    const anioActual = ahora.getFullYear();
+    const mesActual = this.displayedMonth.getMonth();
+    const anioActual = this.displayedMonth.getFullYear();
     
     const diasUnicos = new Set<string>();
 
@@ -106,7 +217,7 @@ export class HistorialComponent {
       
       if (fecha.getMonth() === mesActual && fecha.getFullYear() === anioActual) {
         // Formateamos a YYYY-MM-DD para contar días únicos
-        const diaString = fecha.toISOString().split('T')[0];
+        const diaString = this.toDateKey(fecha);
         diasUnicos.add(diaString);
       }
     });
@@ -120,7 +231,7 @@ export class HistorialComponent {
     const counts: { [key: string]: number } = {};
     this.entrenamientoService.history().forEach(w => {
       w.exercises?.forEach((ex: any) => {
-        const group = ex.muscleGroup || 'Default';
+        const group = ex.muscleGroup || ex.grupoMuscular || 'Default';
         counts[group] = (counts[group] || 0) + 1;
       });
     });
@@ -151,7 +262,7 @@ renderChart(data: any[]) {
   const groupedData = new Map<string, number>();
   
   data.forEach(w => {
-    const dateKey = new Date(w.createdAt).toLocaleDateString();
+    const dateKey = this.toDateKey(new Date(w.createdAt));
     
     if (isVolume) {
       // Si es volumen, sumamos los kilos de ese día
@@ -213,6 +324,10 @@ renderChart(data: any[]) {
       }
     });
   }
+
+  private toDateKey(date: Date): string {
+    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+  }
  getGroupColor(group: string): string {
     const colors: { [key: string]: string } = {
       'Chest': '#fb7185', 
@@ -224,5 +339,15 @@ renderChart(data: any[]) {
       'Default': '#64748b'
     };
     return colors[group] || colors['Default'];
+  }
+
+  getSessionMuscleGroups(session: any): string[] {
+    const groups = new Set<string>();
+
+    (session.allExercises || session.exercises || []).forEach((exercise: any) => {
+      groups.add(exercise.muscleGroup || exercise.grupoMuscular || 'Default');
+    });
+
+    return Array.from(groups).slice(0, 4);
   }
 }
