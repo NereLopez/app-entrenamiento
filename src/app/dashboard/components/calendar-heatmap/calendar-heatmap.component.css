@@ -1,11 +1,10 @@
-
 .day-cell-container {
-  display: flex; 
-  flex-direction: column; 
+  display: flex;
+  flex-direction: column;
   gap: 4px;
   width: 32px;
   border-radius: 6px;
-  overflow: hidden; 
+  overflow: hidden;
 }
 
 .day-label.is-today {
@@ -30,11 +29,11 @@
 
 .day-box {
   cursor: pointer;
-  width: 32px; 
+  width: 32px;
   height: 28px;
   border-radius: 4px;
   transition: all 0.2s ease;
-  background-color: #f1f5f9; 
+  background-color: #f1f5f9;
 }
 
 .day-box:active {
@@ -42,24 +41,46 @@
 }
 
 .day-box:hover {
-transform: translateY(-2px); 
-filter: brightness(1.1);
-cursor: pointer;
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+  cursor: pointer;
 }
 
-.workout-intensity-0 { background-color: #e2e8f0; } 
-.workout-intensity-1 { background-color: #dcfce7; } 
-.workout-intensity-2 { background-color: #86efac; } 
-.workout-intensity-3 { background-color: #22c55e; } 
+.workout-intensity-0 {
+  background-color: #e2e8f0;
+}
+
+.workout-intensity-1 {
+  background-color: #dcfce7;
+}
+
+.workout-intensity-2 {
+  background-color: #86efac;
+}
+
+.workout-intensity-3 {
+  background-color: #22c55e;
+}
 
 
-.nutrition-intensity-0 { background-color: #e2e8f0; } 
-.nutrition-intensity-1 { background-color: #fff7ed; } 
-.nutrition-intensity-2 { background-color: #fed7aa; } 
-.nutrition-intensity-3 { background-color: #fb923c; } 
+.nutrition-intensity-0 {
+  background-color: #e2e8f0;
+}
+
+.nutrition-intensity-1 {
+  background-color: #fff7ed;
+}
+
+.nutrition-intensity-2 {
+  background-color: #fed7aa;
+}
+
+.nutrition-intensity-3 {
+  background-color: #fb923c;
+}
 
 .share-only-header {
-  display: flex; 
+  display: flex;
 }
 
 .btn-share-icon {
@@ -79,6 +100,7 @@ cursor: pointer;
   border-bottom-left-radius: 6px;
   border-bottom-right-radius: 6px;
 }
+
 .nutrition-box.completed {
   background: linear-gradient(135deg, #fb923c, #ea580c) !important;
   box-shadow: 0 4px 10px rgba(251, 146, 60, 0.3);
@@ -92,11 +114,13 @@ cursor: pointer;
 }
 
 :host-context(.dark-mode) .day-label {
-  color: #94a3b8 !important; /* Gris claro */
+  color: #94a3b8 !important;
+  /* Gris claro */
 }
 
 :host-context(.dark-mode) .day-label.is-today {
-  color: #2dd4bf !important; /* Teal brillante para resaltar hoy */
+  color: #2dd4bf !important;
+  /* Teal brillante para resaltar hoy */
 }
 
 :host-context(.dark-mode) .day-box:not(.completed) {
@@ -104,10 +128,13 @@ cursor: pointer;
 }
 
 :host-context(.dark-mode) .circle-bg {
-  stroke: #334155; /* Gris oscuro para el fondo del círculo */
+  stroke: #334155;
+  /* Gris oscuro para el fondo del círculo */
 }
+
 :host-context(.dark-mode) .rings-summary-container {
-  border-left: 1px solid #334155; /* Gris oscuro para el fondo del círculo interior */
+  border-left: 1px solid #334155;
+  /* Gris oscuro para el fondo del círculo interior */
 }
 
 :host-context(.dark-mode) .motivation-message {
@@ -117,13 +144,15 @@ cursor: pointer;
 .circular-chart {
   display: block;
   margin: 0 auto;
-  max-width: 70px; /* Adjust size as needed */
+  max-width: 70px;
+  /* Adjust size as needed */
   max-height: 70px;
 }
 
 .circle-bg {
   fill: none;
-  stroke: #f1f5f9; /* Light gray background */
+  stroke: #f1f5f9;
+  /* Light gray background */
   stroke-width: 3.5;
 }
 
@@ -182,10 +211,12 @@ cursor: pointer;
     transform: scale(1);
     filter: drop-shadow(0 0 0 rgba(251, 191, 36, 0));
   }
+
   50% {
     transform: scale(1.05);
     filter: drop-shadow(0 0 12px rgba(251, 191, 36, 0.6)) drop-shadow(0 0 24px rgba(13, 148, 136, 0.3));
   }
+
   100% {
     transform: scale(1);
     filter: drop-shadow(0 0 0 rgba(251, 191, 36, 0));
@@ -229,7 +260,8 @@ cursor: pointer;
 
 /* ADAPTACIÓN MODO OSCURO */
 :host-context(.dark-mode) .install-app-card {
-  background-color: #1e293b !important; /* Gris azulado oscuro */
+  background-color: #1e293b !important;
+  /* Gris azulado oscuro */
   border-color: #334155 !important;
 }
 

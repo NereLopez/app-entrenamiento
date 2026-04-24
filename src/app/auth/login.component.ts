@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { EntrenamientoService } from '../services/entrenamiento.service';
 import { Router } from '@angular/router';
+import { Auth, authState } from '@angular/fire/auth';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -21,10 +23,10 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     
-    if (this.trainingService.userSignal()) {
-      this.router.navigate(['/dashboard']);
-    }
-  }
+    authState(inject(Auth)).pipe(take(1)).subscribe(user => {
+    if (user) this.router.navigate(['/dashboard']);
+  });
+}
 
   async onLogin() {
     if (!this.email || !this.pass) return;
