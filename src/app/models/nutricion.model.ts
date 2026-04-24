@@ -23,3 +23,12 @@ export interface FoodEntry {
   fats: number;
   date: number;
 }
+
+export interface FoodPreset {
+  name: string;
+  calories: number;
+  protein: number;
+  carbs: number;
+  fats: number;
+  type: 'breakfast' | 'lunch' | 'dinner'| 'snack' ;
+}

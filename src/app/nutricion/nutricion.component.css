@@ -479,3 +479,129 @@ select.ng-invalid.ng-touched {
   box-shadow: 0 0 15px rgba(248, 113, 113, 0.6);
 }
 
+.meal-label {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #64748b;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.preset-dropdown {
+  position: relative;
+}
+
+.preset-toggle {
+  width: 100%;
+  min-height: 46px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  background: #f8fafc;
+  color: #1e293b;
+  padding: 10px 12px;
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+.preset-toggle:hover {
+  border-color: #94a3b8;
+  background: #f1f5f9;
+}
+
+.preset-toggle:focus {
+  outline: none;
+  border-color: #0d9488;
+  box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.12);
+}
+
+.preset-toggle-icon {
+  font-size: 1.05rem;
+  min-width: 18px;
+  text-align: center;
+}
+
+.preset-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  max-height: 260px;
+  overflow-y: auto;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.12);
+  padding: 6px;
+  z-index: 1000;
+}
+
+.preset-item {
+  width: 100%;
+  border: none;
+  background: transparent;
+  text-align: left;
+  padding: 9px 10px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #1e293b;
+  font-weight: 600;
+  transition: all 0.16s ease;
+}
+
+.preset-item:hover {
+  background: #ecfeff;
+  color: #0f766e;
+}
+
+.preset-item-icon {
+  width: 24px;
+  text-align: center;
+  font-size: 1rem;
+}
+
+.meal-name-input,
+.meal-type-select {
+  border: 1.5px solid #e2e8f0 !important;
+  border-radius: 12px !important;
+  background: #ffffff !important;
+}
+
+.meal-name-input:focus,
+.meal-type-select:focus {
+  border-color: #0d9488 !important;
+  box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.12) !important;
+  outline: none;
+}
+
+.dark-mode .meal-label {
+  color: #94a3b8;
+}
+
+.dark-mode .preset-toggle,
+.dark-mode .meal-name-input,
+.dark-mode .meal-type-select {
+  background: #1f2937 !important;
+  border-color: #334155 !important;
+  color: #e2e8f0 !important;
+}
+
+.dark-mode .preset-menu {
+  background: #111827;
+  border-color: #334155;
+}
+
+.dark-mode .preset-item {
+  color: #e2e8f0;
+}
+
+.dark-mode .preset-item:hover {
+  background: #134e4a;
+  color: #ccfbf1;
+}
