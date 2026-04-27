@@ -18,15 +18,15 @@ export class LoginComponent implements OnInit {
   pass = '';
   isPending = false; 
 
+  private auth = inject(Auth);
   private trainingService = inject(EntrenamientoService);
   private router = inject(Router);
 
   ngOnInit() {
-    
-    authState(inject(Auth)).pipe(take(1)).subscribe(user => {
-    if (user) this.router.navigate(['/dashboard']);
-  });
-}
+    authState(this.auth).pipe(take(1)).subscribe(user => {
+      if (user) this.router.navigate(['/dashboard']);
+    });
+  }
 
   async onLogin() {
     if (!this.email || !this.pass) return;
