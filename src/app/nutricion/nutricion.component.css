@@ -489,57 +489,6 @@ select.ng-invalid.ng-touched {
   letter-spacing: 0.04em;
 }
 
-.preset-dropdown {
-  position: relative;
-}
-
-.preset-toggle {
-  width: 100%;
-  min-height: 46px;
-  border: 1.5px solid #e2e8f0;
-  border-radius: 12px;
-  background: #f8fafc;
-  color: #1e293b;
-  padding: 10px 12px;
-  font-weight: 600;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  transition: all 0.2s ease;
-}
-
-.preset-toggle:hover {
-  border-color: #94a3b8;
-  background: #f1f5f9;
-}
-
-.preset-toggle:focus {
-  outline: none;
-  border-color: #0d9488;
-  box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.12);
-}
-
-.preset-toggle-icon {
-  font-size: 1.05rem;
-  min-width: 18px;
-  text-align: center;
-}
-
-.preset-menu {
-  position: absolute;
-  top: calc(100% + 6px);
-  left: 0;
-  right: 0;
-  max-height: 260px;
-  overflow-y: auto;
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 14px;
-  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.12);
-  padding: 6px;
-  z-index: 1000;
-}
-
 .preset-item {
   width: 100%;
   border: none;
@@ -553,10 +502,17 @@ select.ng-invalid.ng-touched {
   color: #1e293b;
   font-weight: 600;
   transition: all 0.16s ease;
+  border-left: 4px solid transparent;
+  transition: all 0.2s ease;
 }
 
+.preset-item.breakfast { border-left-color: #f59e0b; }
+.preset-item.lunch { border-left-color: #ef4444; }
+.preset-item.dinner { border-left-color: #3b82f6; }
+.preset-item.snack { border-left-color: #64748b; }
+
 .preset-item:hover {
-  background: #ecfeff;
+  background: #f1f5f9;
   color: #0f766e;
 }
 
@@ -584,17 +540,11 @@ select.ng-invalid.ng-touched {
   color: #94a3b8;
 }
 
-.dark-mode .preset-toggle,
 .dark-mode .meal-name-input,
 .dark-mode .meal-type-select {
   background: #1f2937 !important;
   border-color: #334155 !important;
   color: #e2e8f0 !important;
-}
-
-.dark-mode .preset-menu {
-  background: #111827;
-  border-color: #334155;
 }
 
 .dark-mode .preset-item {
@@ -604,4 +554,112 @@ select.ng-invalid.ng-touched {
 .dark-mode .preset-item:hover {
   background: #134e4a;
   color: #ccfbf1;
+}
+
+.preset-accordion-container {
+  display: grid;
+  gap: 10px;
+}
+
+.preset-group {
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.preset-group-toggle {
+  width: 100%;
+  border: none;
+  background: #f8fafc;
+  padding: 9px 12px;
+  min-height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.preset-group-toggle:hover {
+  background: #f1f5f9;
+}
+
+.preset-group-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.preset-group-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  border: 1px solid #e2e8f0;
+  font-size: 0.88rem;
+}
+
+.preset-group-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1.1;
+}
+
+.preset-group-text strong {
+  color: #334155;
+  font-size: 0.9rem;
+}
+
+.preset-group-text small {
+  color: #94a3b8;
+  font-size: 0.68rem;
+}
+
+.preset-group-chevron {
+  color: #64748b;
+  font-size: 0.82rem;
+}
+
+.preset-menu-list {
+  display: grid;
+  gap: 5px;
+  padding: 6px;
+  background: #fff;
+}
+
+.preset-item {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #eef2f7;
+  background: #fff;
+  padding: 8px 10px;
+  border-radius: 10px;
+  font-size: 0.92rem;
+}
+
+.preset-item::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background: #cbd5e1;
+}
+
+.preset-item.breakfast::after { background: linear-gradient(90deg, #fbbf24, #f59e0b); }
+.preset-item.lunch::after { background: linear-gradient(90deg, #fb7185, #ef4444); }
+.preset-item.dinner::after { background: linear-gradient(90deg, #60a5fa, #256ebc); }
+.preset-item.snack::after { background: linear-gradient(90deg, #2dd4bf, #0d9488); }
+
+.preset-item:hover {
+  background: #f8fafc;
+  color: #0f766e;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
 }

@@ -36,31 +36,45 @@
           
    <div class="row g-2 align-items-end">
   <div class="col-12">
-    <label class="meal-label">Food Preset</label>
+    
 
-    <div class="preset-dropdown">
-      <button type="button" class="preset-toggle" (click)="togglePresetMenu()">
-        <span class="d-flex align-items-center gap-2">
-          <i class="preset-toggle-icon" [ngClass]="selectedMealIconClass()"></i>
-          <span>{{ selectedPresetLabel() }}</span>
+
+<label class="meal-label">Food Preset</label>
+
+<div class="preset-accordion-container mb-3">
+  @for (cat of categories; track cat) {
+    <div class="preset-group">
+      <button type="button" 
+              class="preset-group-toggle" 
+              (click)="toggleCategory(cat)">
+        <span class="preset-group-label">
+          <span class="preset-group-icon">
+            <i [ngClass]="categoryIconClass(cat)"></i>
+          </span>
+          <span class="preset-group-text">
+            <strong>{{ cat | titlecase }}</strong>
+            <small>Choose a preset meal</small>
+          </span>
         </span>
-        <i class="bi" [class.bi-chevron-down]="!isPresetMenuOpen()" [class.bi-chevron-up]="isPresetMenuOpen()"></i>
+        <i class="bi preset-group-chevron" [class.bi-chevron-down]="activeCategory !== cat" [class.bi-chevron-up]="activeCategory === cat"></i>
       </button>
 
-      @if (isPresetMenuOpen()) {
-        <div class="preset-menu">
-          @for (food of foodPresets; track food.name) {
-            <button
-              type="button"
-              class="preset-item"
-              (click)="selectPreset(food, foodName, foodCals, fP, fC, fF, foodType)">
-              <i class="preset-item-icon" [ngClass]="mealIconClass(food.type)"></i>
-              <span>{{ food.name }}</span>
+      @if (activeCategory === cat) {
+        <div class="preset-menu-list animate__animated animate__fadeInDown animate__faster">
+          @for (food of getFoodsByType(cat); track food.name) {
+            <button type="button" 
+                    class="preset-item {{food.type}}" 
+                    (click)="selectPreset(food, foodName, foodCals, fP, fC, fF, foodType)">
+              <i class="me-2" [ngClass]="mealIconClass(food.type)"></i>
+              {{ food.name }}
             </button>
           }
         </div>
       }
     </div>
+  }
+</div>
+
   </div>
 
   <div class="col-md-5">
@@ -103,8 +117,8 @@
 
           <button type="button" class="btn btn-success w-100 mt-3" 
             (click)="addMeal(foodName.value, +foodCals.value, foodType.value, +fP.value, +fC.value, +fF.value); 
-                     foodName.value=''; foodCals.value=''; fP.value=''; fC.value=''; fF.value=''">
-            Add Meal
+                     foodName.value=''; foodCals.value=''; fP.value=''; fC.value=''; fF.value='';" [disabled]="nutricionSvc.isLoading()">
+                      Add Meal
           </button>
 
           <div class="meal-list mt-3">
@@ -124,7 +138,7 @@
                 </div>
                 <div class="d-flex align-items-center gap-3">
                   <span class="text-success">+{{ meal.calories }} kcal</span>
-                  <button type="button" class="btn btn-link text-danger p-0" (click)="deleteMeal(meal.id!)">
+                  <button type="button" class="btn btn-link text-danger p-0" (click)="deleteMeal(meal.id!)" [disabled]="nutricionSvc.isLoading()">
                     <i class="bi bi-trash"></i>
                   </button>
                 </div>
@@ -212,7 +226,9 @@
               </div>
             </div>
           </div>
-        </div> </div> } @else {
+        </div>
+      </div>
+      } @else {
       <div class="nutrition-container card animate__animated animate__fadeIn">
         <div class="form-header mb-4">
           <div class="icon-circle mb-3">

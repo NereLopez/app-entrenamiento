@@ -1,8 +1,9 @@
 import { Injectable, signal, computed, inject, effect } from '@angular/core';
-import { Firestore, collection, addDoc, collectionData, query, where } from '@angular/fire/firestore';
+import { Firestore, collection, addDoc, collectionData, query, where, doc, deleteDoc } from '@angular/fire/firestore';
 import { FoodEntry } from '../models/nutricion.model';
 import { Auth, user } from '@angular/fire/auth';
 import { EntrenamientoService } from './entrenamiento.service';
+import { ToastController } from '@ionic/angular/standalone';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +12,9 @@ export class NutricionService {
   private firestore = inject(Firestore);
   private auth = inject(Auth);
   private entrenamientoService = inject(EntrenamientoService);
+  private toastController = inject(ToastController);
+   
+
 
   public weight = signal<number | null>(null);
   public height = signal<number | null>(null);
@@ -21,6 +25,12 @@ export class NutricionService {
   public isWorkoutDay = signal<boolean>(false);
   public isNutritionCompleteToday = signal<boolean>(false);
   public dailyMeals = signal<FoodEntry[]>([]);
+
+  public isLoading = signal<boolean>(false);
+
+  private get userId(): string | undefined {
+    return this.auth.currentUser?.uid;
+  }
 
 
   constructor (){
@@ -124,14 +134,13 @@ export class NutricionService {
   });
 
   public fetchDailyMeals() {
-  const userId = this.auth.currentUser?.uid;
-  if (!userId) return;
+  if (!this.userId) return;
 
   const today = new Date().setHours(0, 0, 0, 0);
   const colRef = collection(this.firestore, 'food_entries');
   const q = query(
     colRef, 
-    where('userId', '==', userId), 
+    where('userId', '==', this.userId), 
     where('date', '==', today)
   );
 
@@ -145,11 +154,10 @@ export class NutricionService {
 
   
   async saveToFirestore() {
-    const userId = this.auth.currentUser?.uid;
-    if (!userId) return;
+    if (!this.userId) return;
 
     const { doc, setDoc } = await import('@angular/fire/firestore');
-    const docRef = doc(this.firestore, `user_nutrition/${userId}`);
+    const docRef = doc(this.firestore, `user_nutrition/${this.userId}`);
     await setDoc(docRef, {
       weight: this.weight(),
       height: this.height(),
@@ -164,8 +172,8 @@ export class NutricionService {
   }   
   
   async addFoodEntry(name: string, calories: number, type: any, p:number = 0, c: number = 0, f: number = 0) {
-    const userId = this.auth.currentUser?.uid;
-    if (!userId) return;
+    if (!this.userId) return;
+    this.isLoading.set(true);
 
     try {
       const colRef = collection(this.firestore, 'food_entries');
@@ -179,20 +187,36 @@ export class NutricionService {
         fats: f,
         date: new Date().setHours(0, 0, 0, 0)
       };
-      await addDoc(colRef, {...newEntry, userId: userId});
-      console.log('Meal guardada');
+      await addDoc(colRef, {...newEntry, userId: this.userId});
+      this.showToast('Meal guardada');
     } catch (error) {
-      console.error('Error al guardar la comida:',error);
-    }  
+      this.showToast('No se pudo guardar la comida', 'danger');
+    } finally {
+      this.isLoading.set(false);
+    }
   }
   async deleteFoodEntry(id: string) {
     try {
-      const { doc, deleteDoc } = await import('@angular/fire/firestore'); // Importación dinámica si no las tienes arriba
+      this.isLoading.set(true);
       const docRef = doc(this.firestore, `food_entries/${id}`);
       await deleteDoc(docRef);
-      console.log('Comida eliminada correctamente');
+      this.showToast('Comida eliminada correctamente');
     } catch (error) {
       console.error('Error al eliminar la comida:', error);
+      this.showToast('No se pudo eliminar la comida', 'danger');
+    } finally {
+      this.isLoading.set(false);
     }
+  }
+
+ async showToast(message: string, color: string = 'success') {
+    const toast = await this.toastController.create({
+      message,
+      duration: 2200,
+      color: color,
+      position: 'bottom'
+    });
+
+    await toast.present();
   }
 }
