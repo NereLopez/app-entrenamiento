@@ -113,34 +113,6 @@
   border: none;
 }
 
-:host-context(.dark-mode) .day-label {
-  color: #94a3b8 !important;
-  /* Gris claro */
-}
-
-:host-context(.dark-mode) .day-label.is-today {
-  color: #2dd4bf !important;
-  /* Teal brillante para resaltar hoy */
-}
-
-:host-context(.dark-mode) .day-box:not(.completed) {
-  border: none !important;
-}
-
-:host-context(.dark-mode) .circle-bg {
-  stroke: #334155;
-  /* Gris oscuro para el fondo del círculo */
-}
-
-:host-context(.dark-mode) .rings-summary-container {
-  border-left: 1px solid #334155;
-  /* Gris oscuro para el fondo del círculo interior */
-}
-
-:host-context(.dark-mode) .motivation-message {
-  color: #f59e0b;
-}
-
 .circular-chart {
   display: block;
   margin: 0 auto;
@@ -258,23 +230,54 @@
   border: 1px solid #e2e8f0 !important;
 }
 
-/* ADAPTACIÓN MODO OSCURO */
-:host-context(.dark-mode) .install-app-card {
-  background-color: #1e293b !important;
-  /* Gris azulado oscuro */
-  border-color: #334155 !important;
+
+
+:host-context(.dark-mode) .day-box:hover {
+  filter: brightness(1.15);
 }
 
-:host-context(.dark-mode) .install-app-card h5 {
-  color: #f1f5f9 !important;
-}
+/* Workout intensity scale (dark mode) */
+:host-context(.dark-mode) .workout-intensity-0 { background-color: #334155; }
+:host-context(.dark-mode) .workout-intensity-1 { background-color: #134e4a; }
+:host-context(.dark-mode) .workout-intensity-2 { background-color: #0f766e; }
+:host-context(.dark-mode) .workout-intensity-3 { background-color: #14b8a6; }
 
-:host-context(.dark-mode) .install-app-card .text-muted {
+/* Nutrition intensity scale (dark mode) */
+:host-context(.dark-mode) .nutrition-intensity-0 { background-color: #334155; }
+:host-context(.dark-mode) .nutrition-intensity-1 { background-color: #7c2d12; }
+:host-context(.dark-mode) .nutrition-intensity-2 { background-color: #9a3412; }
+:host-context(.dark-mode) .nutrition-intensity-3 { background-color: #ea580c; }
+
+:host-context(.dark-mode) .day-label {
   color: #94a3b8 !important;
 }
 
-:host-context(.dark-mode) .badge.rounded-circle {
-  background-color: #334155 !important;
-  color: #60a5fa !important;
-  border-color: #475569 !important;
+:host-context(.dark-mode) .day-label.is-today {
+  color: #2dd4bf !important;
+}
+
+:host-context(.dark-mode) .day-label.is-today::after {
+  background-color: #2dd4bf;
+  box-shadow: 0 0 6px rgba(45, 212, 191, 0.55);
+}
+
+:host-context(.dark-mode) .circle-bg {
+  stroke: #334155;
+}
+
+:host-context(.dark-mode) .circle-bg.inner {
+  stroke: #334155;
+  opacity: 0.7;
+}
+
+:host-context(.dark-mode) .rings-summary-container {
+  border-left: 1px solid #334155;
+}
+
+:host-context(.dark-mode) .motivation-message {
+  color: #fbbf24;
+}
+
+:host-context(.dark-mode) .btn-share-icon {
+  color: #94a3b8;
 }

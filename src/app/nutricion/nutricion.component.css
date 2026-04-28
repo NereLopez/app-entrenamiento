@@ -150,7 +150,7 @@
 
 .progress-container {
   height: 8px;
-  background: rgba(0, 0, 0, 0,05);
+  background: rgba(0, 0, 0, 0.05);
   border-radius: 10px;
   overflow: hidden;
 }
@@ -201,16 +201,27 @@
   display: block;
   font-weight: 600;
   margin-bottom: 8px;
-  color: #475569;
+  color: var(--main-text);
+  opacity: 0.85;
 }
 
 .nutrition-form input, .nutrition-form select {
   width: 100%;
   padding: 14px;
-  border: 2px solid #f1f5f9;
+  border: 2px solid var(--border-color);
   border-radius: 14px;
-  background: #f8fafc;
+  background: var(--card-bg);
+  color: var(--main-text);
   margin-bottom: 20px;
+}
+
+.nutrition-form input::placeholder {
+  color: color-mix(in srgb, var(--main-text) 55%, transparent);
+}
+
+.nutrition-form select option {
+  background: var(--card-bg);
+  color: var(--main-text);
 }
 
 .btn-submit {
@@ -536,26 +547,6 @@ select.ng-invalid.ng-touched {
   outline: none;
 }
 
-.dark-mode .meal-label {
-  color: #94a3b8;
-}
-
-.dark-mode .meal-name-input,
-.dark-mode .meal-type-select {
-  background: #1f2937 !important;
-  border-color: #334155 !important;
-  color: #e2e8f0 !important;
-}
-
-.dark-mode .preset-item {
-  color: #e2e8f0;
-}
-
-.dark-mode .preset-item:hover {
-  background: #134e4a;
-  color: #ccfbf1;
-}
-
 .preset-accordion-container {
   display: grid;
   gap: 10px;
@@ -662,4 +653,67 @@ select.ng-invalid.ng-touched {
   background: #f8fafc;
   color: #0f766e;
   box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
+}
+
+/* Better block readability in dark mode */
+:host-context(.dark-mode) .card,
+:host-context(.dark-mode) .meal-logger-card,
+:host-context(.dark-mode) .nutrition-container,
+:host-context(.dark-mode) .preset-group,
+:host-context(.dark-mode) .preset-menu-list {
+  background: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+:host-context(.dark-mode) .mini-control,
+:host-context(.dark-mode) .preset-group-toggle,
+:host-context(.dark-mode) .preset-item,
+:host-context(.dark-mode) .button-group button,
+:host-context(.dark-mode) .nutrition-form input,
+:host-context(.dark-mode) .nutrition-form select,
+:host-context(.dark-mode) .custom-input input,
+:host-context(.dark-mode) .custom-input select,
+:host-context(.dark-mode) .meal-name-input,
+:host-context(.dark-mode) .meal-type-select,
+:host-context(.dark-mode) .input-group-text {
+  background: #0f172a !important;
+  border-color: #334155 !important;
+  color: #e2e8f0 !important;
+}
+
+:host-context(.dark-mode) .card h3,
+:host-context(.dark-mode) .metric-row,
+:host-context(.dark-mode) .macro-text strong,
+:host-context(.dark-mode) .macro-gram,
+:host-context(.dark-mode) .meal-item strong,
+:host-context(.dark-mode) .button-group strong,
+:host-context(.dark-mode) .value-highlight,
+:host-context(.dark-mode) .preset-group-text strong,
+:host-context(.dark-mode) .preset-item {
+  color: #e2e8f0 !important;
+}
+
+:host-context(.dark-mode) .meal-label,
+:host-context(.dark-mode) .macro-text small,
+:host-context(.dark-mode) .meal-item .text-muted,
+:host-context(.dark-mode) .label-sm,
+:host-context(.dark-mode) .form-group label,
+:host-context(.dark-mode) .custom-input label,
+:host-context(.dark-mode) .goal-selector-mini p,
+:host-context(.dark-mode) .preset-group-text small,
+:host-context(.dark-mode) .preset-group-chevron {
+  color: #94a3b8 !important;
+}
+
+:host-context(.dark-mode) .macro-item,
+:host-context(.dark-mode) .meal-item {
+  border-bottom-color: #334155;
+}
+
+:host-context(.dark-mode) .progress-container {
+  background: #334155;
+}
+
+:host-context(.dark-mode) .text-success {
+  color: #34d399 !important;
 }
