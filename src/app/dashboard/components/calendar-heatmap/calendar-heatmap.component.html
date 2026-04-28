@@ -64,14 +64,14 @@
             <stop offset="100%" stop-color="#c2410c"/>
           </linearGradient>
         </defs>
-        <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
-        <path class="circle workout-ring"
+        <path class="circle-bg" pathLength="100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+        <path class="circle workout-ring" pathLength="100"
               stroke="url(#workoutRingGradient)"
               [style.stroke-dasharray]="totalWorkoutProgress() + ', 100'"
               d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
         
-        <path class="circle-bg inner" d="M18 7.5 a 10.5 10.5 0 0 1 0 21 a 10.5 10.5 0 0 1 0 -21"/>
-        <path class="circle nutrition-ring"
+        <path class="circle-bg inner" pathLength="100" d="M18 7.5 a 10.5 10.5 0 0 1 0 21 a 10.5 10.5 0 0 1 0 -21"/>
+        <path class="circle nutrition-ring" pathLength="100"
               stroke="url(#nutritionRingGradient)"
               [style.stroke-dasharray]="totalNutritionProgress() + ', 100'"
               d="M18 7.5 a 10.5 10.5 0 0 1 0 21 a 10.5 10.5 0 0 1 0 -21"/>

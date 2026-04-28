@@ -77,26 +77,30 @@ export class NuevaSesionComponent implements OnInit, OnDestroy {
 
   addExercise(name: string, group: string = 'Default') {
     if (!name) return;
-    let autoGroup = group;
+    /*let autoGroup = group;*/
+
+    let finalGroup = group;
+    if (group === 'Default' || !group) {
     const lowerName = name.toLowerCase();
 
     if (lowerName.includes('abs') || lowerName.includes('core') || lowerName.includes('plank') || lowerName.includes('raise')) {
-    autoGroup = 'Core';
+    finalGroup = 'Core';
   } else if (lowerName.includes('squat') || lowerName.includes('leg') || lowerName.includes('lunge')) {
-    autoGroup = 'Legs';
+    finalGroup = 'Legs';
   } else if (lowerName.includes('bench') || lowerName.includes('chest') || lowerName.includes('press')) {
-    autoGroup = 'Chest';
+    finalGroup = 'Chest';
   } else if (lowerName.includes('deadlift') || lowerName.includes('row') || lowerName.includes('pull')) {
-    autoGroup = 'Back';
+    finalGroup = 'Back';
   } else if (lowerName.includes('curl') || lowerName.includes('tricep') || lowerName.includes('bicep') || lowerName.includes('arm')) {
-    autoGroup = 'Arms';
+    finalGroup = 'Arms';
   } else if (lowerName.includes('shoulder') || lowerName.includes('lateral')) {
-    autoGroup = 'Shoulders';
+    finalGroup = 'Shoulders';
   }
+}
 
     const exerciseGroup = this.fb.group({
       name: [name, Validators.required],
-      muscleGroup: [autoGroup],
+      muscleGroup: [finalGroup],
       sets: this.fb.array([])
     });
 
