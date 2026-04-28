@@ -91,6 +91,7 @@ export class NutricionComponent implements OnInit {
     typeSelect.value = food.type;
     this.selectedPresetLabel.set(food.name);
     this.selectedPresetType.set(food.type);
+    this.activeCategory = null;
     this.isPresetMenuOpen.set(false);
   }
 

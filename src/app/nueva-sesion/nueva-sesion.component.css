@@ -199,4 +199,91 @@
   to { transform: translateY(0); opacity: 1; }
 }
 
+.session-main-card {
+  background: linear-gradient(45deg, #0d9488, #115e59);
+}
+
+.session-status-badge {
+  background: #ffffff;
+  color: #0d9488;
+}
+
+.session-title {
+  color: #ffffff;
+}
+
+.session-date {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.session-finish-btn {
+  border-radius: 15px;
+  background: #ffffff;
+  color: #0d9488;
+}
+
+.library-toggle-btn {
+  background: #ffffff;
+}
+
+.library-toggle-btn.is-open {
+  background: #f8f9fa;
+}
+
+.library-toggle-text {
+  color: #6c757d;
+}
+
+.library-toggle-btn.is-open .library-toggle-text {
+  color: #0d9488;
+}
+
+.library-toggle-icon {
+  color: #0d9488;
+}
+
+:host-context(.dark-mode) .container {
+  background: #0f172a;
+}
+
+:host-context(.dark-mode) .session-main-card {
+  background: #1e293b;
+  border: 1px solid #334155;
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.35);
+}
+
+:host-context(.dark-mode) .session-status-badge {
+  background: #0f172a;
+  color: #2dd4bf;
+}
+
+:host-context(.dark-mode) .session-title {
+  color: #f1f5f9;
+}
+
+:host-context(.dark-mode) .session-date {
+  color: #94a3b8;
+}
+
+:host-context(.dark-mode) .session-finish-btn {
+  background: #0f172a;
+  color: #2dd4bf;
+}
+
+:host-context(.dark-mode) .library-toggle-btn {
+  background: #1e293b;
+  border: 1px solid #334155;
+}
+
+:host-context(.dark-mode) .library-toggle-btn.is-open {
+  background: #0f172a;
+}
+
+:host-context(.dark-mode) .library-toggle-text {
+  color: #cbd5e1;
+}
+
+:host-context(.dark-mode) .library-toggle-btn.is-open .library-toggle-text {
+  color: #2dd4bf;
+}
 
