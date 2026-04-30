@@ -3,12 +3,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f8fafc;
+  background: var(--bg-body);
   padding: 20px;
 }
 
 .login-card {
-  background: white;
+  background: var(--card-bg);
   padding: 2.5rem;
   border-radius: 24px;
   box-shadow: 0 20px 40px rgba(0,0,0,0.05);
@@ -19,7 +19,7 @@
 .brand-logo {
   width: 60px;
   height: 60px;
-  background: #0d9488;
+  background: var(--primary-teal);
   color: white;
   border-radius: 16px;
   display: flex;
@@ -31,8 +31,8 @@
 }
 
 .btn-login {
-  background: #0d9488 !important;
-  color: white !important;
+  background: var(--primary-teal);
+  color: white;
   border: none;
   border-radius: 14px;
   font-weight: 700;
@@ -40,14 +40,14 @@
 }
 
 .btn-login:hover:not(:disabled) {
-  background: #0f766e !important;
+  background: var(--primary-teal-dark);
   transform: translateY(-2px);
 }
 
 .btn-register {
   background: transparent;
   color: #64748b;
-  border: 2px solid #e2e8f0;
+  border: 2px solid var(--border-color);
   border-radius: 14px;
   font-weight: 600;
 }
@@ -59,10 +59,10 @@
 
 .form-control {
   border-radius: 12px;
-  border: 1.5px solid #e2e8f0;
+  border: 1.5px solid var(--border-color);
 }
 
 .form-control:focus {
-  border-color: #0d9488;
+  border-color: var(--primary-teal);
   box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.1);
 }

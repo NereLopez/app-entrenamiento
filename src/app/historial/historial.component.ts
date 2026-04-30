@@ -113,7 +113,38 @@ export class HistorialComponent {
   }
 
   get currentStreak(): number {
-    return this.entrenamientoService.statsSignal().currentStreak || 0;
+    const history = this.entrenamientoService.history();
+    if (!history.length) return 0;
+
+    const trainedDays = new Set<string>();
+    history.forEach(workout => {
+      trainedDays.add(this.toDateKey(new Date(workout.createdAt)));
+    });
+
+    const today = new Date();
+    const todayKey = this.toDateKey(today);
+    const yesterday = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1);
+    const yesterdayKey = this.toDateKey(yesterday);
+
+    let startDate: Date | null = null;
+
+    if (trainedDays.has(todayKey)) {
+      startDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    } else if (trainedDays.has(yesterdayKey)) {
+      startDate = yesterday;
+    } else {
+      return 0;
+    }
+
+    let streak = 0;
+    const cursor = new Date(startDate);
+
+    while (trainedDays.has(this.toDateKey(cursor))) {
+      streak += 1;
+      cursor.setDate(cursor.getDate() - 1);
+    }
+
+    return streak;
   }
 
   get calendarDays() {
@@ -268,14 +299,22 @@ renderChart(data: any[]) {
       // Si es volumen, sumamos los kilos de ese día
       groupedData.set(dateKey, (groupedData.get(dateKey) || 0) + this.calculateVolume(w));
     } else {
-      // Si es frecuencia, solo contamos 1 por cada sesión (no por ejercicio)
-      groupedData.set(dateKey, (groupedData.get(dateKey) || 0) + 1);
+      // Si es frecuencia, sumamos el total de ejercicios realizados ese día
+      const exerciseCount = Array.isArray(w.exercises) ? w.exercises.length : 0;
+      groupedData.set(dateKey, (groupedData.get(dateKey) || 0) + exerciseCount);
     }
   });
 
-  // 2. Convertimos el Map a arrays ordenados
-  const labels = Array.from(groupedData.keys());
-  const chartData = Array.from(groupedData.values());
+  // 2. Convertimos el Map a arrays ordenados por fecha ascendente
+  const sortedEntries = Array.from(groupedData.entries()).sort(([dateA], [dateB]) => dateA.localeCompare(dateB));
+  const labels = sortedEntries.map(([dateKey]) => {
+    const [year, month, day] = dateKey.split('-').map(Number);
+    return new Date(year, month - 1, day).toLocaleDateString(undefined, {
+      day: '2-digit',
+      month: 'short'
+    });
+  });
+  const chartData = sortedEntries.map(([, value]) => value);
 
   // 3. Renderizamos
   this.chart = new Chart(ctx, {
@@ -283,12 +322,34 @@ renderChart(data: any[]) {
     data: {
       labels: labels,
       datasets: [{
-        label: isVolume ? 'Volumen (kg)' : 'Sesiones',
+        label: isVolume ? 'Volumen (kg)' : 'Ejercicios',
         data: chartData,
-        backgroundColor: isVolume ? 'rgba(13, 148, 136, 0.4)' : '#0d9488',
+        backgroundColor: isVolume
+          ? (context: any) => {
+              const chart = context.chart;
+              const chartArea = chart.chartArea;
+
+              if (!chartArea) {
+                return 'rgba(13, 148, 136, 0.30)';
+              }
+
+              const gradient = chart.ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+              gradient.addColorStop(0, 'rgba(13, 148, 136, 0.65)');
+              gradient.addColorStop(0.45, 'rgba(13, 148, 136, 0.28)');
+              gradient.addColorStop(1, 'rgba(13, 148, 136, 0)');
+              return gradient;
+            }
+          : '#0d9488',
         borderColor: '#0d9488',
         borderWidth: 2,
-        tension: 0.4
+        cubicInterpolationMode: isVolume ? 'monotone' : undefined,
+        tension: isVolume ? 0.4 : 0,
+        fill: isVolume,
+        pointRadius: isVolume ? 4 : 0,
+        pointHoverRadius: isVolume ? 6 : 0,
+        pointBackgroundColor: '#0d9488',
+        pointBorderColor: '#ffffff',
+        pointBorderWidth: isVolume ? 2 : 0
       }]
     },
     options: {
@@ -296,7 +357,20 @@ renderChart(data: any[]) {
       maintainAspectRatio: false,
       plugins: { legend: { display: false } },
       scales: {
-        y: { beginAtZero: true, ticks: { stepSize: 1 } }
+        x: {
+          grid: {
+            display: false
+          }
+        },
+        y: {
+          beginAtZero: true,
+          ticks: isVolume
+            ? { stepSize: 5, autoSkip: false, precision: 0 }
+            : { stepSize: 1 },
+          grid: {
+            color: 'rgba(15, 23, 42, 0.08)'
+          }
+        }
       }
     }
   });  

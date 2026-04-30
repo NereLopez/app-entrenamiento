@@ -17,7 +17,7 @@
   cursor: pointer;
   z-index: 1000;
   box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-}å©
+}
 
 .btn-group .active {
   background: var(--main-gradient) !important; 
@@ -43,6 +43,7 @@
 
 .workout-master-brand {
   background: var(--main-gradient);
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-weight: 900;

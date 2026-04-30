@@ -2,7 +2,7 @@ import { Component, inject, Output, EventEmitter, ViewChild, OnInit } from '@ang
 import { CommonModule } from '@angular/common';
 import { RouterLink, Router, RouterModule } from '@angular/router';
 import { EntrenamientoService } from '../services/entrenamiento.service';
-import { Chart, plugins, registerables } from 'chart.js';
+import { Chart, registerables } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 import { CalendarHeatmapComponent } from './components/calendar-heatmap/calendar-heatmap.component';
 

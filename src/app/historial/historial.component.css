@@ -1,38 +1,31 @@
-:host {
+/*:host {
   --primary-teal: #0d9488;
   --dark-teal: #115e59;
   --main-gradient: linear-gradient(135deg, #0d9488 0%, #115e59 100%);
   --bg-soft-teal: #f0fdfa; 
-}
+}*/
 
 .pr-card {
-  background: var(--main-gradient) !important; 
+  background: var(--main-gradient); 
   position: relative;
   overflow: hidden;
   border-radius: 24px; 
-  box-shadow: 0 12px 30px rgba(13, 148, 136, 0.2) !important;
+  box-shadow: 0 12px 30px rgba(13, 148, 136, 0.2);
 }
 
-.workout-card {
+.workout-card, .workout-session-card {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  border-left: 6px solid var(--primary-teal) !important; 
+  border-left: 6px solid var(--primary-teal); 
   border-radius: 20px;
   background: white;
-  border: 1px solid #f1f5f9;
 }
-
-.workout-session-card {
-  background: white;
-  border-radius: 20px;
-  padding: 20px;
-  margin-bottom: 20px;
-  border-left: 6px solid var(--primary-teal) !important;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+.workout-card {
+  border: 1px solid #f1f5f9;
 }
 
 .workout-card:hover {
   transform: translateX(8px);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.05) !important;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
   border-color: var(--primary-teal);
 }
 
@@ -46,8 +39,8 @@
 }
 
 .exercise-tag {
-  background: #f0fdfa;
-  color: #0d9488;
+  background: var(--bg-soft-teal);
+  color: var(--primary-teal);
   padding: 5px 12px;
   border-radius: 50px;
   font-size: 0.85rem;
@@ -56,7 +49,7 @@
 }
 
 .date-badge {
-  background: var(--bg-soft-teal) !important; 
+  background: var(--bg-soft-teal); 
   padding: 10px;
   border-radius: 14px;
   display: flex;
@@ -112,15 +105,15 @@
 }
 
 .btn-group {
-  background: #f1f5f9 !important; 
-  border-radius: 50px !important;
-  padding: 5px !important;
+  background: #f1f5f9; 
+  border-radius: 50px;
+  padding: 5px;
 }
 
 .btn-group .btn.active {
-  background: var(--main-gradient) !important;
-  color: white !important;
-  box-shadow: 0 4px 10px rgba(13, 148, 136, 0.2) !important;
+  background: var(--main-gradient);
+  color: white;
+  box-shadow: 0 4px 10px rgba(13, 148, 136, 0.2);
 }
 
 .chart-line {
@@ -133,8 +126,7 @@
   gap: 24px;
 }
 
-.calendar-panel,
-.selected-day-panel {
+.calendar-panel, .selected-day-panel {
   padding: 24px;
   background: white;
 }

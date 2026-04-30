@@ -102,17 +102,8 @@ export class EntrenamientoService {
       const today = new Date().setHours(0, 0, 0, 0);
       const lastSession = new Date(stats.lastSessionDate ||0).setHours(0, 0, 0, 0);
 
-      if (today === lastSession) {
-        this.isWorkoutCompletedToday.set(true);
-      } else {
-        this.statsSignal.set({
-          experiencePoints: 0,
-          personalRecords: {},
-          currentStreak: 0,
-          lastSessionDate: Date.now(),
-          dailyCaloriesTarget: 2000
-        });
-      }
+      // Keep stored streak/history intact; only toggle whether today's workout is already done.
+      this.isWorkoutCompletedToday.set(today === lastSession);
     }
   }
 
@@ -166,7 +157,10 @@ export class EntrenamientoService {
         currentStats.currentStreak = 1;
       }
       currentStats.lastSessionDate = today;
-     
+    } else if (today === lastSession && (currentStats.currentStreak || 0) === 0) {
+      // Recovery path for previously corrupted stats (session today but streak persisted as 0).
+      currentStats.currentStreak = 1;
+      currentStats.lastSessionDate = today;
     }
 
     currentStats.experiencePoints += newXP;

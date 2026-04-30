@@ -1,11 +1,11 @@
-:host {
+/*:host {
   --primary-teal: #0d9488;
   --dark-teal: #115e59;
   --main-gradient: linear-gradient(135deg, #0d9488 0%, #115e59 100%);
   --bg-light-teal: #f0fdfa;
   --card-shadow: 0 10px 20px rgba(13, 148, 136, 0.1)
 
-}
+}*/
 
 .btn-start .btn-primary {
   background: var(--main-gradient) !important;
@@ -163,9 +163,9 @@
 }
 
 .btn-install-custom {
-  background: var(--main-gradient) !important;
-  color: white !important;
-  border: none !important;
+  background: var(--main-gradient);
+  color: #ffffff ;
+  border: none ;
   padding: 12px 24px;
   border-radius: 18px;
   font-weight: 700;
@@ -182,23 +182,12 @@
 }
 
 @media (max-width: 767.98px) {
-  .install-app-card {
-    padding: 1.25rem !important;
-  }
-
-  .install-qr-frame {
-    width: 128px;
-    height: 128px;
-  }
-
-  .install-steps {
-    justify-content: center;
-  }
+  .install-app-card {padding: 1.25rem !important;}
+  .install-qr-frame {width: 128px;height: 128px;}
+  .install-steps { justify-content: center;}
 }
 
 @media (min-width: 1025px) {
-  .install-device-only {
-    display: none;
-  }
+  .install-device-only {display: none; }
 }
 
