@@ -1,11 +1,18 @@
-/*:host {
+:host {
   --primary-teal: #0d9488;
   --dark-teal: #115e59;
   --main-gradient: linear-gradient(135deg, #0d9488 0%, #115e59 100%);
   --bg-light-teal: #f0fdfa;
-  --card-shadow: 0 10px 20px rgba(13, 148, 136, 0.1)
+  --card-shadow: 0 10px 20px rgba(13, 148, 136, 0.1);
+}
 
-}*/
+.quick-card-primary {
+  background: var(--main-gradient) !important;
+}
+
+.quick-icon-teal {
+  color: var(--primary-teal) !important;
+}
 
 .btn-start .btn-primary {
   background: var(--main-gradient) !important;

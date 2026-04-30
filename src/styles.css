@@ -1,15 +1,11 @@
 
 :root {
-  
   --bg-body: #f8fafc;
   --card-bg: #ffffff;
   --main-text: #1e293b;
   --border-color: #e2e8f0;
-
-  --main-gradient: linear-gradient(135deg, #0d9488 0%, #075985 100%);
+  --main-gradient: linear-gradient(135deg, #0d9488 0%, #115e59 100%);
   --primary-teal: #0d9488;
-  --dark-teal: #0ea5e9;
-  --light-teal: #f0fdf4;
 }
 
 .dark-mode {
@@ -17,9 +13,7 @@
   --card-bg: #1a202c;
   --main-text: #edf2f7;
   --border-color: #334155;
-
-  --main-gradient: linear-gradient(135deg, #115e59 0%, #0c4a6e 100%);
-  --light-teal: #134e4a;
+  --main-gradient: linear-gradient(135deg, #115e59 0%, #134e4a 100%);
 }
 
 body {
@@ -60,7 +54,6 @@ body {
   letter-spacing: -1px;
 }
 
-/* Botón estilo pastilla para la Navbar */
 .btn-theme-pill {
   display: flex;
   align-items: center;
@@ -94,7 +87,6 @@ body {
 .bi-sun-fill { color: #facc15; }
 .bi-moon-fill { color: #3b82f6; }
 
-/* Efecto al pasar el ratón */
 .btn-theme-pill:hover {
   filter: brightness(0.9);
   transform: translateY(-1px);
@@ -115,9 +107,9 @@ body {
 .navbar-sticky {
   position: sticky;
   top: 0;
-  z-index: 1030; /* Asegura que esté por encima de todo */
-  background-color: white; /* O el color de tu fondo */
-  border-bottom: 1px solid #e2e8f0; /* Opcional: para que se note la separación */
+  z-index: 1030;
+  background-color: white;
+  border-bottom: 1px solid #e2e8f0;
   width: 100%;
 }
 

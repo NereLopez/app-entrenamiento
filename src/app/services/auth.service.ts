@@ -1,10 +1,9 @@
 import { Injectable, signal, inject } from '@angular/core';
 import { Firestore, collection, addDoc, collectionData, query, orderBy, where } from '@angular/fire/firestore';
 import { Auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, user } from '@angular/fire/auth';
-import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
-export class EntrenamientoService {
+export class AuthService {
   private firestore = inject(Firestore);
   private auth = inject(Auth);
 
@@ -57,6 +56,7 @@ export class EntrenamientoService {
       await addDoc(workoutsRef, newWorkout);
       return true;
     } catch (error) {
+      console.error('Error saving workout:', error);
       return false;
     }
   }

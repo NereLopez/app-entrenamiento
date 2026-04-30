@@ -1,6 +1,6 @@
 <div class="user-card d-flex align-items-center p-3 mb-4 bg-white shadow-sm rounded-4">
   <div class="me-3">
-    <img [src]="'https://ui-avatars.com/api/?name=' + entrenamientoService.userName() + '&background=6366f1&color=fff'" 
+    <img [src]="'https://ui-avatars.com/api/?name=' + entrenamientoService.userName() + '&background=0d9488&color=fff'" 
          class="rounded-circle shadow-sm" width="55" alt="Avatar">
   </div>
 
@@ -22,14 +22,14 @@
 
 <div class="row g-3 mb-5">
   <div class="col-6">
-    <button (click)="startWithExercise()" class="quick-card bg-primary text-white border-0 w-100 shadow-sm rounded-4 py-3">
+    <button (click)="startWithExercise()" class="quick-card quick-card-primary text-white border-0 w-100 shadow-sm rounded-4 py-3">
       <div class="quick-icon"><i class="bi bi-plus-lg"></i></div>
       <span class="fw-bold">Start Workout</span>
     </button>
   </div>
   <div class="col-6">
     <a routerLink="/historial" class="quick-card bg-white text-dark border-0 w-100 shadow-sm rounded-4 py-3 text-decoration-none d-block text-center">
-      <div class="quick-icon text-primary"><i class="bi bi-bar-chart-fill"></i></div>
+      <div class="quick-icon quick-icon-teal"><i class="bi bi-bar-chart-fill"></i></div>
       <span class="fw-bold">View History</span>
     </a>
   </div>
