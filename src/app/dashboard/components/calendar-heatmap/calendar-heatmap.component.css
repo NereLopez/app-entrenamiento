@@ -2,7 +2,8 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
-  width: 32px;
+  flex: 1;
+  min-width: 25px;
   border-radius: 6px;
   overflow: hidden;
 }
@@ -29,7 +30,7 @@
 
 .day-box {
   cursor: pointer;
-  width: 32px;
+  width: 100%;
   height: 28px;
   border-radius: 4px;
   transition: all 0.2s ease;
@@ -280,4 +281,27 @@
 
 :host-context(.dark-mode) .btn-share-icon {
   color: #94a3b8;
+}
+
+@media (max-width: 768px) {
+  .heatmap-main-row {
+    flex-direction: column;
+    align-items: stretch !important;
+  }
+
+  .weekly-days-row {
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+
+  .rings-summary-wrapper {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .rings-summary-container {
+    border-left: none;
+    padding-left: 0;
+  }
 }

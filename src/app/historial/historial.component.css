@@ -358,6 +358,34 @@
 }
 
 @media (max-width: 576px) {
+  .history-topbar {
+    flex-wrap: wrap;
+    align-items: flex-start !important;
+    gap: 12px;
+  }
+
+  .history-subtitle {
+    margin-left: 0 !important;
+  }
+
+  .metric-toggle {
+    width: 100%;
+    max-width: none;
+    margin-left: 0;
+    margin-right: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+    border-radius: 16px !important;
+  }
+
+  .metric-toggle .btn {
+    width: 100%;
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+    font-size: 0.85rem;
+  }
+
   .streak-pill {
     margin-top: 10px;
     margin-left: 0 !important;

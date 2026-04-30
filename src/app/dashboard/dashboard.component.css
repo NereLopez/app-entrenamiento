@@ -198,3 +198,29 @@
   .install-device-only {display: none; }
 }
 
+@media (max-width: 768px) {
+  .dashboard-user-card {
+    flex-direction: column;
+    align-items: stretch !important;
+    gap: 12px;
+  }
+
+  .dashboard-heatmap {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .quick-start-row {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px !important;
+    overflow: visible !important;
+    padding-bottom: 0 !important;
+  }
+
+  .btn-exercise-quick {
+    min-width: 0;
+    width: 100%;
+  }
+}
+

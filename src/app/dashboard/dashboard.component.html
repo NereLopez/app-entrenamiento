@@ -1,4 +1,4 @@
-<div class="user-card d-flex align-items-center p-3 mb-4 bg-white shadow-sm rounded-4">
+<div class="user-card d-flex align-items-center p-3 mb-4 bg-white shadow-sm rounded-4 dashboard-user-card">
   <div class="me-3">
     <img [src]="'https://ui-avatars.com/api/?name=' + entrenamientoService.userName() + '&background=0d9488&color=fff'" 
          class="rounded-circle shadow-sm" width="55" alt="Avatar">
@@ -16,7 +16,7 @@
     </div>
   </div>
 
-<app-calendar-heatmap></app-calendar-heatmap>
+<app-calendar-heatmap class="dashboard-heatmap"></app-calendar-heatmap>
  
 </div>
 
@@ -43,7 +43,7 @@
 
   <div class="mb-5">
     <h5 class="fw-bold mb-3">Quick Start</h5>
-    <div class="d-flex gap-3 overflow-auto pb-2" style="scrollbar-width: none;">
+    <div class="d-flex gap-3 overflow-auto pb-2 quick-start-row" style="scrollbar-width: none;">
       
       <button (click)="startWithExercise()" class="btn-exercise-quick active shadow-sm border-0">
         <div class="icon-circle mb-2"><i class="bi bi-plus-lg"></i></div>
@@ -113,7 +113,7 @@
     
     <div class="d-flex flex-column align-items-center text-center gap-4">
       <div class="install-qr-frame">
-        <img src="icons/install-app.jpg" alt="QR" class="install-qr-image">
+        <img src="icons/kinetic-app.jpg" alt="QR" class="install-qr-image">
       </div>
 
       <div class="install-app-content">

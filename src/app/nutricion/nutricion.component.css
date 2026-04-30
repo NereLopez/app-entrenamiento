@@ -1,8 +1,4 @@
-.nutrition-wrapper {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 20px;
-}
+.nutrition-wrapper{max-width:1000px;margin:0 auto;padding:20px}
 
 .energy-header {
   background: linear-gradient(135deg, #0d9488 0%, #115e59 100%) !important;
@@ -39,6 +35,25 @@
 .btn-edit-float:hover { 
   background: white !important; 
   color: #0d9488 !important; 
+}
+
+@media (max-width: 576px) {
+  .energy-header {
+    padding: 1.4rem 1rem 1.2rem;
+    border-radius: 18px;
+  }
+
+  .energy-header h1 {
+    font-size: 2.6rem;
+  }
+
+  .btn-edit-float {
+    top: 10px;
+    right: 10px;
+    padding: 6px 12px;
+    font-size: 0.92rem;
+    max-width: calc(100% - 20px);
+  }
 }
 
 .dashboard-grid {

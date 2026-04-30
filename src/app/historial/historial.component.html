@@ -1,5 +1,5 @@
 <div class="container py-4">
-  <div class="d-flex justify-content-between align-items-center mb-5 mt-2">
+  <div class="d-flex justify-content-between align-items-center mb-5 mt-2 history-topbar">
     <div>
       <div class="d-flex align-items-center">
         <div class="icon-box shadow-sm me-3 p-2 rounded-3" style="background-color: #0d9488;">
@@ -11,12 +11,12 @@
           {{ currentStreak }} day streak
         </div>
       </div>
-      <p class="text-muted small mb-0 mt-2 ms-5">
+      <p class="text-muted small mb-0 mt-2 ms-5 history-subtitle">
         You have completed <strong>{{ groupedWorkouts.length }}</strong> days of training.
       </p>
     </div>
     
-    <div class="btn-group shadow-sm bg-white rounded-pill p-1">
+    <div class="btn-group shadow-sm bg-white rounded-pill p-1 metric-toggle">
       <button type="button"
           (click)="setMetric('Volume')" 
           [style.background-color]="currentMetric === 'Volume' ? '#0d9488' : 'white'"
