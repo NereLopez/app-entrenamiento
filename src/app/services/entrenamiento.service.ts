@@ -193,6 +193,21 @@ export class EntrenamientoService {
      await deleteDoc(docRef);
   }
 
+    async deleteExerciseFromWorkout(workoutId: string, exerciseIndex: number) {
+      const workout = this.history().find(entry => entry.id === workoutId);
+      if (!workout) return;
+
+      const nextExercises = (workout.exercises || []).filter((_: any, index: number) => index !== exerciseIndex);
+
+      if (nextExercises.length === 0) {
+        await this.deleteWorkout(workoutId);
+        return;
+      }
+
+      const docRef = doc(this.firestore, `workouts/${workoutId}`);
+      await updateDoc(docRef, { exercises: nextExercises });
+    }
+
   async saveFromForm(formData: any) {
     const currentUser = this.userSignal();
     if (!currentUser) return false;

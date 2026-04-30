@@ -238,6 +238,40 @@
   color: #0d9488;
 }
 
+.manual-group-selector {
+  position: relative;
+}
+
+.form-select-like {
+  border-radius: 12px;
+  background: #ffffff;
+  color: #334155;
+}
+
+.manual-group-menu {
+  overflow: hidden;
+  border-radius: 14px;
+}
+
+.manual-group-option {
+  width: 100%;
+  border: none;
+  background: #ffffff;
+  padding: 10px 12px;
+  text-align: left;
+  color: #334155;
+  font-weight: 600;
+}
+
+.manual-group-option + .manual-group-option {
+  border-top: 1px solid #f1f5f9;
+}
+
+.manual-group-option:hover {
+  background: #f0fdfa;
+  color: #0d9488;
+}
+
 .library-toggle-icon {
   color: #0d9488;
 }

@@ -15,6 +15,9 @@ export class NuevaSesionComponent implements OnInit, OnDestroy {
   public entrenamientoService = inject(EntrenamientoService); 
   
   public showLibrary = false;
+  public showManualGroupMenu = false;
+  public selectedManualGroup = 'Chest';
+  public manualGroupOptions = ['Chest', 'Back', 'Legs', 'Shoulders', 'Arms', 'Core'];
   public workoutForm: FormGroup; 
   
   // Lógica del Cronómetro
@@ -70,9 +73,14 @@ export class NuevaSesionComponent implements OnInit, OnDestroy {
 
   getMuscleIcon(group: string): string {
     const icons: {[key: string]: string } = {
-      'Chest': '🔥', 'Back': '📐', 'Legs': '🍗', 'Shoulders': '🧥', 'Arms': '💪', 'Core': '🧩'
+      'Chest': '🏋️‍♂️', 'Back': '📐', 'Legs': '🍗', 'Shoulders': '🧥', 'Arms': '💪', 'Core': '🧩'
     };
-    return icons[group] || '🏋️‍♂️';
+    return icons[group] || '🔥';
+  }
+
+  chooseManualGroup(group: string) {
+    this.selectedManualGroup = group;
+    this.showManualGroupMenu = false;
   }
 
   addExercise(name: string, group: string = 'Default') {

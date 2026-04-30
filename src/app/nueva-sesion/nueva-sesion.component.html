@@ -72,19 +72,27 @@
     <div class="col-md-7">
       <input #nameInput placeholder="Or type manually: Ex: Bench Press" class="form-control shadow-sm border-0 py-2" style="border-radius: 12px;">
     </div>
-    <div class="col-md-3">
-      <select #groupInput class="form-select shadow-sm border-0 py-2" style="border-radius: 12px;">
-        <option value="Chest">🏋️‍♂️ Chest</option>
-        <option value="Back">📐 Back</option>
-        <option value="Legs">🍗 Legs</option>
-        <option value="Shoulders">🧥 Shoulders</option>
-        <option value="Arms">💪 Arms</option>
-        <option value="Core">🧩 Core</option>
-      </select>
+    <div class="col-md-3 manual-group-selector">
+      <button type="button"
+              class="btn w-100 d-flex justify-content-between align-items-center shadow-sm border-0 py-2 form-select-like"
+              (click)="showManualGroupMenu = !showManualGroupMenu">
+        <span>{{ getMuscleIcon(selectedManualGroup) }} {{ selectedManualGroup }}</span>
+        <i class="bi" [class.bi-chevron-up]="showManualGroupMenu" [class.bi-chevron-down]="!showManualGroupMenu"></i>
+      </button>
+
+      @if (showManualGroupMenu) {
+        <div class="manual-group-menu card border-0 shadow-sm mt-2">
+          @for (group of manualGroupOptions; track group) {
+            <button type="button" class="manual-group-option" (click)="chooseManualGroup(group)">
+              {{ getMuscleIcon(group) }} {{ group }}
+            </button>
+          }
+        </div>
+      }
     </div>
     <div class="col-md-2">
       <button type="button" 
-              (click)="addExercise(nameInput.value, groupInput.value); nameInput.value=''" 
+              (click)="addExercise(nameInput.value, selectedManualGroup); nameInput.value=''" 
               class="btn fw-bold w-100 shadow-sm py-2"
               style="border-radius: 12px; background: #0d9488; color: white; border: none">
         Add

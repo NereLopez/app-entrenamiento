@@ -78,6 +78,11 @@ export class HistorialComponent {
       await this.entrenamientoService.deleteWorkout(workoutId);
       // Después de eliminar, el efecto que escucha el historial se encargará de redibujar las gráficas automáticamente.
     }
+
+    async deleteExercise(workoutId: string, exerciseIndex: number, exerciseName: string) {
+      if (!confirm(`Delete ${exerciseName}?`)) return;
+      await this.entrenamientoService.deleteExerciseFromWorkout(workoutId, exerciseIndex);
+    }
   
   get groupedWorkouts() {
     const rawHistory = this.entrenamientoService.history();
@@ -93,11 +98,21 @@ export class HistorialComponent {
           dateKey,
           dateGroup: dateKey,
           displayDate: workoutDate,
-          allExercises: [...workout.exercises],
+          allExercises: (workout.exercises || []).map((exercise: any, exerciseIndex: number) => ({
+            ...exercise,
+            workoutId: workout.id,
+            exerciseIndex
+          })),
         });
       } else {
         // Si el día ya existe en el mapa, añadimos los ejercicios a la lista de ese día
-        grouped.get(dateKey).allExercises.push(...workout.exercises);
+        grouped.get(dateKey).allExercises.push(
+          ...(workout.exercises || []).map((exercise: any, exerciseIndex: number) => ({
+            ...exercise,
+            workoutId: workout.id,
+            exerciseIndex
+          }))
+        );
       }
     });
 
