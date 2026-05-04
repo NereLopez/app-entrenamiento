@@ -10,7 +10,7 @@
       </div>
             <button type="button" (click)="finishWorkout()"
               class="btn shadow-sm fw-bold bg-white border-0 px-4 py-2 session-finish-action">
-        Finish
+       {{ 'FINISH_BTN' | translate }}
       </button>
     </div>
   </div>
@@ -23,7 +23,7 @@
   
   <span class="fw-bold library-toggle-text">
     <i class="bi bi-plus-lg me-2"></i>
-    {{ showLibrary ? 'Choose an exercise' : 'Add Exercise from Library' }}
+    {{ showLibrary ? ('CHOOSE_EXE' | translate) : ('ADD_LIBRARY' | translate) }}
   </span>
 
   <i class="bi" 

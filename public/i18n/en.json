@@ -1,0 +1,14 @@
+{
+  "APP": {
+    "CHOOSE_LANGUAGE": "Choose language",
+    "LIGHT_MODE": "Light Mode",
+    "DARK_MODE": "Dark Mode",
+    "NAV_HOME": "Home",
+    "NAV_WORKOUT": "Workout",
+    "NAV_NUTRITION": "Nutrition",
+    "NAV_HISTORY": "History"
+  },
+  "FINISH_BTN": "Finish",
+  "ADD_LIBRARY": "Add Exercise from Library",
+  "CHOOSE_EXE": "Choose an exercise"
+}

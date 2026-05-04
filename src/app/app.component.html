@@ -9,9 +9,23 @@
       <span class="fw-bold" style="color: #0d9488 !important; font-size: 1.5rem; letter-spacing: -1px">Kinetic</span>
 
       <div class="d-flex align-items-center gap-3">
+      <div class="lang-switch" role="group" [attr.aria-label]="'APP.CHOOSE_LANGUAGE' | translate">
+        <button
+          class="lang-btn"
+          [class.is-active]="currentLang() === 'en'"
+          (click)="setLanguage('en')"
+          type="button"
+        >EN</button>
+        <button
+          class="lang-btn"
+          [class.is-active]="currentLang() === 'es'"
+          (click)="setLanguage('es')"
+          type="button"
+        >ES</button>
+      </div>
        <button (click)="toogleDarkMode()" class="btn-theme-pill">
         <i [class]="darkMode() ? 'bi bi-sun-fill' : 'bi bi-moon-fill'"></i>
-        {{ darkMode() ? 'Light Mode' : 'Dark Mode' }}
+        {{ darkMode() ? ('APP.LIGHT_MODE' | translate) : ('APP.DARK_MODE' | translate) }}
       </button>
       <button (click)="entrenamientoService.logout()" class="btn btn-sm btn-outline-danger border-0">
         <i class="bi bi-box-arrow-right fs-5"></i>
@@ -24,19 +38,19 @@
     <div class="btn-group w-100 shadow-sm rounded-4 overflow-hidden border">
       <a routerLink="/dashboard" routerLinkActive="active" class="btn btn-light py-2 fw-bold flex-fill border-end">
        <i class="bi bi-house-door fs-5"></i>
-        <span class="d-none d-sm-inline"> Home</span>
+        <span class="d-none d-sm-inline">{{ 'APP.NAV_HOME' | translate }}</span>
       </a>
       <a routerLink="/training" routerLinkActive="active" class="btn btn-light py-2 fw-bold flex-fill border-end">
         <i class="bi bi-lightning-charge fs-5"></i> 
-        <span class="d-none d-sm-inline">Workout</span>
+        <span class="d-none d-sm-inline">{{ 'APP.NAV_WORKOUT' | translate }}</span>
        </a>
        <a routerLink="/nutricion" routerLinkActive="active" class="btn btn-light py-2 fw-bold flex-fill border-end">
         <i class="bi bi-apple fs-5"></i>
-         <span class="d-none d-sm-inline">Nutrition</span>
+         <span class="d-none d-sm-inline">{{ 'APP.NAV_NUTRITION' | translate }}</span>
        </a>
       <a routerLink="/historial" routerLinkActive="active" class="btn btn-light py-2 fw-bold flex-fill border-end">
         <i class="bi bi-clock-history fs-5"></i>
-        <span class="d-none d-sm-inline">History</span>
+        <span class="d-none d-sm-inline">{{ 'APP.NAV_HISTORY' | translate }}</span>
       </a>
     </div>
   </div>

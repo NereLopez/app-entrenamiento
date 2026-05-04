@@ -2,11 +2,12 @@ import { Component, inject, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { EntrenamientoService } from '../services/entrenamiento.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-nueva-sesion',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, TranslateModule],
   templateUrl: './nueva-sesion.component.html',
   styleUrl: './nueva-sesion.component.css',
 })

@@ -1,0 +1,14 @@
+{
+	"APP": {
+		"CHOOSE_LANGUAGE": "Elegir idioma",
+		"LIGHT_MODE": "Modo claro",
+		"DARK_MODE": "Modo oscuro",
+		"NAV_HOME": "Inicio",
+		"NAV_WORKOUT": "Entreno",
+		"NAV_NUTRITION": "Nutricion",
+		"NAV_HISTORY": "Historial"
+	},
+	"FINISH_BTN": "Finalizar",
+	"ADD_LIBRARY": "Añadir ejercicio de la biblioteca",
+	"CHOOSE_EXE": "Elige un ejercicio"
+}
