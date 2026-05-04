@@ -1,138 +1,7 @@
-/*:host {
-  --primary-teal: #0d9488;
-  --dark-teal: #115e59;
-  --bg-light: #f8fafc;
-}*/
-
 .container {
   max-width: 800px /*!important;*/;
   background: var(--bg-light);
   min-height: 100vh;
-}
-
-.exercise-card {
-  background: white;
-  border-radius: 20px;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-  transition: transform 0.2s ease;
-  overflow: hidden;
-}
-
-.exercise-header {
-  border-bottom: 1px solid #f1f5f9;
-  padding: 1.25rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-/* El Badge del grupo muscular */
-.muscle-badge {
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  font-weight: 800;
-  padding: 4px 12px;
-  border-radius: 50px;
-  letter-spacing: 0.5px;
-}
-
-/* Tabla de Series (Sets) */
-.sets-table {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0 8px;
-}
-
-.set-row {
-  background: #f8fafc;
-  border-radius: 10px;
-}
-
-.set-number {
-  width: 40px;
-  font-weight: 800;
-  color: #94a3b8;
-  text-align: center;
-}
-
-.input-minimal {
-  border: 2px solid #e2e8f0;
-  border-radius: 10px;
-  padding: 8px;
-  text-align: center;
-  font-weight: 700;
-  width: 80px;
-  transition: all 0.2s;
-}
-
-.input-minimal:focus {
-  border-color: var(--primary-teal);
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
-}
-
-.btn-add-set {
-  background: #f0fdfa;
-  color: var(--primary-teal);
-  border: 1px dashed var(--primary-teal);
-  width: 100%;
-  padding: 10px;
-  border-radius: 12px;
-  font-weight: 600;
-  transition: all 0.2s;
-}
-
-.btn-add-set:hover {
-  background: var(--primary-teal);
-  color: white;
-}
-
-.rest-timer-overlay {
-  position: fixed;
-  bottom: 30px;
-  right: 30px;
-  background: var(--dark-teal);
-  color: white;
-  padding: 15px 25px;
-  border-radius: 50px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  z-index: 1000;
-  animation: slideIn 0.3s ease;
-}
-
-@keyframes slideIn {
-  from { transform: translateY(100px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
-
-
-.btn-finish {
-  background: linear-gradient(135deg, #0d9488 0%, #115e59 100%);
-  color: white;
-  border: none;
-  padding: 16px;
-  border-radius: 16px;
-  font-weight: 800;
-  font-size: 1.1rem;
-  box-shadow: 0 10px 20px rgba(13, 148, 136, 0.3);
-}
-
-.timer-viewport-wrapper {
-  position: fixed !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100vw !important;
-  height: 100vh !important;
-  z-index: 99999 !important;
-  pointer-events: none; /* Allows you to click things BEHIND the wrapper */
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  padding-bottom: 30px;
 }
 
 .timer-floating-card {
@@ -199,31 +68,28 @@
   to { transform: translateY(0); opacity: 1; }
 }
 
-.session-main-card {
+.session-header-card {
   background: linear-gradient(45deg, #0d9488, #115e59);
+  border-radius: 20px;
 }
 
-.session-status-badge {
+.session-header-badge {
   background: #ffffff;
   color: var(--primary-teal);
 }
 
-.session-title {
+.session-header-title {
   color: #ffffff;
 }
 
-.session-date {
-  color: rgba(255, 255, 255, 0.75);
-}
-
-.session-finish-btn {
+.session-finish-action {
   border-radius: 15px;
-  background: #ffffff;
   color: #0d9488;
 }
 
 .library-toggle-btn {
   background: #ffffff;
+  transition: background 0.2s ease, border-color 0.2s ease;
 }
 
 .library-toggle-btn.is-open {
@@ -240,17 +106,30 @@
 
 .manual-group-selector {
   position: relative;
+  z-index: 20;
 }
 
 .form-select-like {
   border-radius: 12px;
   background: #ffffff;
   color: #334155;
+  min-height: 42px;
+}
+
+.manual-name-input {
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
 }
 
 .manual-group-menu {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 0;
+  right: 0;
   overflow: hidden;
   border-radius: 14px;
+  z-index: 30;
+  background: #ffffff;
 }
 
 .manual-group-option {
@@ -261,10 +140,16 @@
   text-align: left;
   color: #334155;
   font-weight: 600;
+  transition: background 0.2s ease, color 0.2s ease;
 }
 
 .manual-group-option + .manual-group-option {
   border-top: 1px solid #f1f5f9;
+}
+
+.manual-group-option.is-selected {
+  background: #ccfbf1;
+  color: #0f766e;
 }
 
 .manual-group-option:hover {
@@ -272,52 +157,170 @@
   color: #0d9488;
 }
 
+.manual-group-check {
+  font-size: 1rem;
+}
+
 .library-toggle-icon {
   color: #0d9488;
 }
 
-:host-context(.dark-mode) .container {
-  background: #0f172a;
+.library-dropdown {
+  z-index: 1000;
+  overflow: hidden;
+  border-radius: 20px;
+  background: #ffffff;
 }
 
-:host-context(.dark-mode) .session-main-card {
-  background: #1e293b;
-  border: 1px solid #334155;
+.library-dropdown-body {
+  background: #ffffff;
+}
+
+.muscle-group-label {
+  letter-spacing: 1px;
+  font-size: 0.7rem;
+  color: #64748b;
+}
+
+.library-exercise-btn {
+  color: #ffffff;
+  font-weight: 700;
+  padding: 8px 15px;
+  border-radius: 12px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+.library-exercise-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.16);
+}
+
+.manual-add-btn {
+  border-radius: 12px;
+  background: #0d9488;
+  color: #ffffff;
+  border: none;
+}
+
+:host-context(.dark-mode) {
+  --dm-bg-0: #0f172a;
+  --dm-bg-1: #111827;
+  --dm-bg-2: #1e293b;
+  --dm-border: #334155;
+  --dm-text: #e2e8f0;
+  --dm-muted: #94a3b8;
+  --dm-accent: #2dd4bf;
+}
+
+:host-context(.dark-mode) .container { background: var(--dm-bg-0); }
+
+:host-context(.dark-mode) .session-header-card {
+  background: var(--dm-bg-2);
+  border: 1px solid var(--dm-border);
   box-shadow: 0 12px 26px rgba(0, 0, 0, 0.35);
 }
 
-:host-context(.dark-mode) .session-status-badge {
-  background: #0f172a;
-  color: #2dd4bf;
+:host-context(.dark-mode) .session-header-badge,
+:host-context(.dark-mode) .session-finish-action {
+  background: var(--dm-bg-0);
+  color: var(--dm-accent);
 }
 
-:host-context(.dark-mode) .session-title {
-  color: #f1f5f9;
-}
-
-:host-context(.dark-mode) .session-date {
-  color: #94a3b8;
-}
-
-:host-context(.dark-mode) .session-finish-btn {
-  background: #0f172a;
-  color: #2dd4bf;
-}
+:host-context(.dark-mode) .session-header-title { color: #f1f5f9; }
 
 :host-context(.dark-mode) .library-toggle-btn {
-  background: #1e293b;
-  border: 1px solid #334155;
+  background: var(--dm-bg-2);
+  border: 1px solid var(--dm-border);
 }
 
-:host-context(.dark-mode) .library-toggle-btn.is-open {
-  background: #0f172a;
+:host-context(.dark-mode) .library-toggle-btn.is-open,
+:host-context(.dark-mode) .library-dropdown,
+:host-context(.dark-mode) .library-dropdown-body,
+:host-context(.dark-mode) .manual-group-menu,
+:host-context(.dark-mode) .manual-group-option,
+:host-context(.dark-mode) .exercise-list .card,
+:host-context(.dark-mode) .exercise-list .card-body {
+  background: var(--dm-bg-0);
 }
 
-:host-context(.dark-mode) .library-toggle-text {
+:host-context(.dark-mode) .library-dropdown,
+:host-context(.dark-mode) .manual-group-menu,
+:host-context(.dark-mode) .exercise-list .card {
+  border: 1px solid var(--dm-border);
+}
+
+:host-context(.dark-mode) .library-dropdown {
+  box-shadow: 0 18px 32px rgba(2, 8, 23, 0.45);
+}
+
+:host-context(.dark-mode) .manual-group-menu {
+  box-shadow: 0 16px 30px rgba(15, 23, 42, 0.45);
+}
+
+:host-context(.dark-mode) .library-toggle-text,
+:host-context(.dark-mode) .manual-group-option {
   color: #cbd5e1;
 }
 
-:host-context(.dark-mode) .library-toggle-btn.is-open .library-toggle-text {
-  color: #2dd4bf;
+:host-context(.dark-mode) .library-toggle-btn.is-open .library-toggle-text,
+:host-context(.dark-mode) .manual-group-option:hover,
+:host-context(.dark-mode) .manual-group-option.is-selected {
+  color: #5eead4;
 }
 
+:host-context(.dark-mode) .muscle-group-label,
+:host-context(.dark-mode) .manual-name-input::placeholder,
+:host-context(.dark-mode) .exercise-list .form-control::placeholder,
+:host-context(.dark-mode) .exercise-list .small.text-muted {
+  color: var(--dm-muted) !important;
+}
+
+:host-context(.dark-mode) .manual-name-input,
+:host-context(.dark-mode) .form-select-like {
+  background: var(--dm-bg-2);
+  color: var(--dm-text);
+  border: 1px solid var(--dm-border) !important;
+}
+
+:host-context(.dark-mode) .manual-group-option + .manual-group-option {
+  border-top-color: var(--dm-bg-2);
+}
+
+:host-context(.dark-mode) .manual-group-option:hover {
+  background: #132f2b;
+}
+
+:host-context(.dark-mode) .manual-group-option.is-selected {
+  background: rgba(45, 212, 191, 0.18);
+}
+
+:host-context(.dark-mode) .manual-add-btn {
+  box-shadow: 0 10px 18px rgba(13, 148, 136, 0.22) !important;
+}
+
+:host-context(.dark-mode) .library-exercise-btn {
+  box-shadow: 0 8px 18px rgba(2, 8, 23, 0.28) !important;
+}
+
+:host-context(.dark-mode) .library-exercise-btn:hover {
+  box-shadow: 0 12px 24px rgba(2, 8, 23, 0.38);
+}
+
+:host-context(.dark-mode) .exercise-list .card-header {
+  background: var(--dm-bg-1) !important;
+  border-bottom: 1px solid var(--dm-border) !important;
+}
+
+:host-context(.dark-mode) .exercise-list .card-header .text-dark {
+  color: var(--dm-text) !important;
+}
+
+:host-context(.dark-mode) .exercise-list .bg-light {
+  background: var(--dm-bg-2) !important;
+}
+
+:host-context(.dark-mode) .exercise-list .input-group-text,
+:host-context(.dark-mode) .exercise-list .form-control {
+  background: var(--dm-bg-1) !important;
+  color: var(--dm-text) !important;
+}

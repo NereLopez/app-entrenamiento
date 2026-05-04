@@ -1,10 +1,3 @@
-/*:host {
-  --primary-teal: #0d9488;
-  --dark-teal: #115e59;
-  --main-gradient: linear-gradient(135deg, #0d9488 0%, #115e59 100%);
-  --bg-soft-teal: #f0fdfa; 
-}*/
-
 .pr-card {
   background: var(--main-gradient); 
   position: relative;
@@ -19,9 +12,7 @@
   border-radius: 20px;
   background: white;
 }
-.workout-card {
-  border: 1px solid #f1f5f9;
-}
+.workout-card {border: 1px solid #f1f5f9}
 
 .workout-card:hover {
   transform: translateX(8px);
@@ -418,4 +409,67 @@
   .selected-day-actions {
     flex-wrap: wrap;
   }
+}
+
+:host-context(.dark-mode) .card,
+:host-context(.dark-mode) .calendar-panel,
+:host-context(.dark-mode) .selected-day-panel,
+:host-context(.dark-mode) .selected-exercise-card {
+  background: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+:host-context(.dark-mode) .card-header,
+:host-context(.dark-mode) .card-header.bg-white,
+:host-context(.dark-mode) .selected-day-header {
+  background: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+:host-context(.dark-mode) .calendar-panel,
+:host-context(.dark-mode) .selected-day-panel {
+  box-shadow: 0 12px 26px rgba(2, 8, 23, 0.35);
+}
+
+:host-context(.dark-mode) h5,
+:host-context(.dark-mode) h6,
+:host-context(.dark-mode) .fw-bold,
+:host-context(.dark-mode) .day-number,
+:host-context(.dark-mode) .selected-day-volume,
+:host-context(.dark-mode) .selected-exercise-card .text-dark,
+:host-context(.dark-mode) .selected-exercise-card .fw-bold {
+  color: #e2e8f0 !important;
+}
+
+:host-context(.dark-mode) .selected-day-label,
+:host-context(.dark-mode) .calendar-weekdays,
+:host-context(.dark-mode) .text-muted,
+:host-context(.dark-mode) .history-subtitle {
+  color: #94a3b8 !important;
+}
+
+:host-context(.dark-mode) .calendar-day {
+  background: #0f172a;
+  border-color: #334155;
+}
+
+:host-context(.dark-mode) .calendar-nav,
+:host-context(.dark-mode) .calendar-nav-btn {
+  background: #0f172a;
+  border-color: #334155;
+}
+
+:host-context(.dark-mode) .calendar-title,
+:host-context(.dark-mode) .calendar-nav-btn {
+  color: #cbd5e1;
+}
+
+:host-context(.dark-mode) .selected-day-volume {
+  background: rgba(45, 212, 191, 0.12);
+}
+
+:host-context(.dark-mode) .set-pill {
+  background: #0f172a !important;
+  color: #cbd5e1 !important;
+  border-color: #334155 !important;
 }

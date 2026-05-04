@@ -1,321 +1,113 @@
-
 :root {
   --bg-body: #f8fafc;
   --card-bg: #ffffff;
   --main-text: #1e293b;
+  --muted-text: #64748b;
   --border-color: #e2e8f0;
-  --main-gradient: linear-gradient(135deg, #0d9488 0%, #115e59 100%);
   --primary-teal: #0d9488;
+  --main-gradient: linear-gradient(135deg, #0d9488 0%, #115e59 100%);
+  --input-bg: #ffffff;
 }
 
 .dark-mode {
-  --bg-body: #2d3748;
-  --card-bg: #1a202c;
-  --main-text: #edf2f7;
+  --bg-body: #0f172a; /* Un pelín más oscuro para más contraste */
+  --card-bg: #1e293b;
+  --main-text: #f1f5f9;
+  --muted-text: #94a3b8;
   --border-color: #334155;
-  --main-gradient: linear-gradient(135deg, #115e59 0%, #134e4a 100%);
+  --input-bg: #0f172a;
 }
 
 body {
   background-color: var(--bg-body) !important;
   color: var(--main-text) !important;
-  transition: background-color 0.4s ease, color 0.4s ease;
+  font-family: sans-serif;
 }
 
-.btn-primary {
+* { box-sizing: border-box; max-width: 100vw; }
+
+.card, .calendar-panel, .selected-day-panel, .meal-logger-card, 
+.user-card, .quick-card, .exercise-card, .preset-group {
+  background-color: var(--card-bg) !important;
+  border: 1px solid var(--border-color) !important;
+  color: var(--main-text);
+}
+
+.text-muted, .selected-day-label, .meal-label, .label-sm {
+  color: var(--muted-text) !important;
+}
+
+.form-control, .form-select, .input-minimal, .meal-name-input {
+  background-color: var(--input-bg);
+  border: 1px solid var(--border-color);
+  color: var(--main-text);
+  border-radius: 12px;
+}
+
+.btn-primary, .bg-primary {
   background: var(--main-gradient) !important;
   border: none !important;
-  box-shadow: 0 4px 12px rgba(13, 148, 136, 0.2) !important;
 }
 
-.text-primary, .fa-bolt, .bi-lightning-fill {
-  color: var(--primary-teal) !important;
-  background: none !important;
-  -webkit-text-fill-color: initial !important;
-}
-
-.bg-primary {
-  background: var(--main-gradient) !important;
-}
-
-.btn-group .btn-light.active {
-  background: var(--main-gradient) !important;
-  color: white !important;
-}
-
-.navbar-brand, h1.logo, .app-title {
-  color: #0d9488 !important; 
-  background: linear-gradient(135deg, #0d9488, #115e59);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  font-weight: 900 !important;
-  font-size: 1.5rem;
-  letter-spacing: -1px;
-}
+.text-primary { color: var(--primary-teal) !important; }
 
 .btn-theme-pill {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 6px 14px;
-  border-radius: 20px;
-  border: 1px solid #e2e8f0;
-  background-color: #f8fafc;
-  color: #1e293b !important;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border-color);
+  background: #f8fafc;
+  color: #0f172a;
   font-size: 0.85rem;
-  font-weight: 600;
-  transition: all 0.4s ease;
-  cursor: pointer;
+  font-weight: 700;
+  line-height: 1;
+  transition: all 0.25s ease;
+}
+
+.btn-theme-pill:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(15, 23, 42, 0.12);
+  border-color: rgba(13, 148, 136, 0.35);
 }
 
 .btn-theme-pill i {
-  font-size: 1rem;
+  color: var(--primary-teal);
 }
 
-
 .dark-mode .btn-theme-pill {
-  background-color: #334155; 
-  border-color: #475569;
-  color: #ffffff !important;
+  background: #1e293b;
+  color: #e2e8f0;
+  border-color: #334155;
 }
 
 .dark-mode .btn-theme-pill i {
-  color: #fbbf24;
+  color: #2dd4bf;
 }
 
-.bi-sun-fill { color: #facc15; }
-.bi-moon-fill { color: #3b82f6; }
-
-.btn-theme-pill:hover {
-  filter: brightness(0.9);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-}
-
-
-.btn-nav-logout {
-  background: none;
-  border: none;
-  color: #ef4444;
-  font-size: 1.3rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
+@media (max-width: 576px) {
+  .app-title { font-size: 1.1rem !important; }
+  .container, .content { padding: 0 10px !important; }
+  ion-card, .card { margin: 10px 5px !important; }
 }
 
 .navbar-sticky {
   position: sticky;
   top: 0;
   z-index: 1030;
-  background-color: white;
-  border-bottom: 1px solid #e2e8f0;
-  width: 100%;
+  background-color: var(--card-bg);
+  border-bottom: 1px solid var(--border-color);
 }
 
-html, body {
-  overscroll-behavior-y: contain;
-  width: 100% !important;
-  position: relative;
+.workout-main-card { 
+  background-color: var(--card-bg) !important; 
+  color: var(--main-text);
+  border: 1px solid var(--border-color);
 }
 
-/* 2. Forzar a que todos los contenedores respeten el ancho */
-* {
-  box-sizing: border-box !important;
-  max-width: 100vw !important;
-}
-
-/* 3. Ajustes específicos para móviles pequeños */
-@media (max-width: 576px) {
-  /* Reducir el logo si es muy grande */
-  .bar-brand, h1.logo, .app-title {font-size: 1.1rem !important;}
-}
-
-  /* Asegurar que las cards no toquen los bordes */
-  ion-card, .card {
-    margin-left: 5px !important;
-    margin-right: 5px !important;
-  }
-  
-  /* Reducir paddings exagerados */
-  .container, .content {
-    padding-left: 10px !important;
-    padding-right: 10px !important;
-  }
-
-
-/* 4. Si tienes tablas o gráficos, esto evitará que rompan el diseño */
-table, canvas {
-  width: 100% !important;
-  display: block !important;
-}
-
-/* ════════════════════════════════════════
-   DARK MODE — single source of truth
-   Applied via .dark-mode class on <html>
-   ════════════════════════════════════════ */
-
-/* Typography */
-.dark-mode h2,
-.dark-mode h5,
-.dark-mode h6 { color: #f1f5f9; }
-
-.dark-mode .text-dark { color: #e2e8f0 !important; }
-.dark-mode .text-muted,
-.dark-mode p.text-muted { color: #94a3b8 !important; }
-.dark-mode .text-secondary { color: #94a3b8 !important; }
-
-/* Cards & panels */
-.dark-mode .card,
-.dark-mode .card-body,
-.dark-mode .card-header,
-.dark-mode .calendar-panel,
-.dark-mode .selected-day-panel,
-.dark-mode .meal-logger-card,
-.dark-mode .library-dropdown {
-  background: #1e293b !important;
-  border-color: #334155 !important;
-}
-
-.dark-mode .card h3 { color: #f1f5f9 !important; }
-
-/* Dashboard specific */
-.dark-mode .dashboard-intro h2 { color: #f8fafc; }
-.dark-mode .dashboard-intro-subtitle { color: #cbd5e1 !important; }
-.dark-mode .user-card { background: #1e293b !important; border-color: #334155 !important; }
-.dark-mode .quick-card { background: #1e293b !important; color: #e2e8f0 !important; border-color: #334155 !important; }
-.dark-mode .btn-exercise-quick { background: #1e293b; color: #e2e8f0; border-color: #334155; }
-
-/* Install card (dashboard) */
-.dark-mode .install-app-card { background: #1e293b !important; border-color: #334155 !important; }
-.dark-mode .install-app-card h5 { color: #f1f5f9 !important; }
-.dark-mode .install-app-card .text-muted { color: #94a3b8 !important; }
-.dark-mode .install-step { background: #0f172a; border-color: #334155; color: #e2e8f0; }
-.dark-mode .install-qr-frame { background: #0f172a; box-shadow: 0 12px 24px rgba(0,0,0,0.4); }
-.dark-mode .install-badge { background: rgba(13,148,136,0.2); }
-.dark-mode .badge.rounded-circle { background-color: #334155 !important; color: #60a5fa !important; border-color: #475569 !important; }
-
-/* Calendar heatmap (dashboard widget) */
-.dark-mode .day-label { color: #94a3b8 !important; }
-.dark-mode .day-label.is-today { color: #2dd4bf !important; }
-.dark-mode .day-box:not(.completed) { border: none !important; }
-.dark-mode .circle-bg { stroke: #334155; }
-.dark-mode .rings-summary-container { border-left: 1px solid #334155; }
-.dark-mode .motivation-message { color: #f59e0b; }
-
-/* Nueva sesión */
-.dark-mode .exercise-card { background: #1e293b; border-color: #334155; }
-.dark-mode .exercise-header { border-bottom-color: #334155; }
-.dark-mode .set-row { background: #0f172a; }
-.dark-mode .input-minimal { background: #0f172a; border-color: #334155; color: #e2e8f0; }
-.dark-mode .btn-add-set { background: #134e4a; border-color: #0d9488; }
-.dark-mode .bg-light { background: #0f172a !important; }
-
-/* Historial */
-.dark-mode .day-number { color: #e2e8f0; }
-.dark-mode .selected-exercise-card { background: #0f172a; border-color: #334155; }
-.dark-mode .selected-day-header { border-bottom-color: #334155; }
-.dark-mode .calendar-nav-btn { background: #1e293b; color: #94a3b8; border-color: #334155; }
-.dark-mode .calendar-title { color: #f1f5f9; }
-.dark-mode .calendar-weekdays span { color: #64748b; }
-.dark-mode .calendar-day { color: #e2e8f0; background: #0f172a; border-color: #1e293b; }
-.dark-mode .calendar-day.outside-month { opacity: 0.2; }
-.dark-mode .selected-day-label { color: #64748b; }
-.dark-mode .selected-day-volume { background: #134e4a; }
-.dark-mode .nutrition-badge { background: #064e3b; color: #6ee7b7; }
-.dark-mode .empty-history-state { color: #64748b; }
-
-/* Nutrition page */
-.dark-mode .meal-label { color: #94a3b8 !important; }
-.dark-mode .meal-item { border-bottom-color: #334155 !important; }
-.dark-mode .meal-item strong,
-.dark-mode .macro-text strong,
-.dark-mode .macro-gram { color: #e2e8f0 !important; }
-.dark-mode .meal-item small,
-.dark-mode .meal-item .text-muted { color: #94a3b8 !important; }
-.dark-mode .macro-text small { color: #94a3b8 !important; }
-.dark-mode .mini-control { background: #0f172a !important; }
-.dark-mode .label-sm { color: #94a3b8 !important; }
-.dark-mode .mini-control strong { color: #e2e8f0 !important; }
-.dark-mode .goal-selector-mini p { color: #94a3b8 !important; }
-.dark-mode .metric-row { color: #e2e8f0 !important; }
-.dark-mode .metric-row span:first-child { color: #94a3b8 !important; }
-.dark-mode .button-group button { background: #0f172a !important; color: #0d9488 !important; box-shadow: 0 2px 5px rgba(0,0,0,0.3) !important; }
-.dark-mode .macro-text strong { color: #e2e8f0 !important; }
-.dark-mode .macro-text small { color: #94a3b8 !important; }
-.dark-mode .macro-gram { color: #e2e8f0 !important; }
-.dark-mode .progress-container { background: #334155 !important; }
-.dark-mode .preset-group { background: #1e293b !important; border-color: #334155 !important; }
-.dark-mode .preset-group-toggle { background: #1e293b !important; color: #e2e8f0 !important; }
-.dark-mode .preset-group-toggle:hover { background: #0f172a !important; }
-.dark-mode .preset-group-text strong { color: #e2e8f0 !important; }
-.dark-mode .preset-group-text small { color: #94a3b8 !important; }
-.dark-mode .preset-group-icon { background: #0f172a !important; border-color: #334155 !important; }
-.dark-mode .preset-group-chevron { color: #94a3b8 !important; }
-.dark-mode .preset-menu-list { background: #1e293b !important; }
-.dark-mode .preset-item { background: #1e293b !important; color: #e2e8f0 !important; border-color: #334155 !important; }
-.dark-mode .preset-item:hover { background: #134e4a !important; color: #ccfbf1 !important; }
-.dark-mode .btn-cancel-outline { border-color: #334155 !important; color: #94a3b8 !important; }
-.dark-mode .btn-cancel-outline:hover { background: #0f172a !important; color: #cbd5e1 !important; border-color: #475569 !important; }
-
-/* Forms (all pages) */
-.dark-mode .form-control,
-.dark-mode .form-select,
-.dark-mode .meal-name-input,
-.dark-mode .meal-type-select,
-.dark-mode .nutrition-form input,
-.dark-mode .nutrition-form select,
-.dark-mode .custom-input input,
-.dark-mode .custom-input select,
-.dark-mode .input-group .form-control {
-  background: #0f172a !important;
-  border-color: #334155 !important;
-  color: #e2e8f0 !important;
-}
-
-.dark-mode .form-control::placeholder { color: #475569; }
-.dark-mode .input-group-text { background: #1e293b !important; border-color: #334155 !important; color: #94a3b8; }
-.dark-mode .form-group label,
-.dark-mode .custom-input label { color: #94a3b8; }
-
-/* Nutrition profile form hard override */
-.dark-mode .nutrition-container .custom-input input,
-.dark-mode .nutrition-container .custom-input select,
-.dark-mode .nutrition-container .form-control,
-.dark-mode .nutrition-container .form-select,
-.dark-mode .nutrition-container .nutrition-form input,
-.dark-mode .nutrition-container .nutrition-form select {
-  background: #0f172a !important;
-  border-color: #334155 !important;
-  color: #e2e8f0 !important;
-}
-
-.dark-mode .nutrition-container .form-control::placeholder,
-.dark-mode .nutrition-container .form-select::placeholder {
-  color: #94a3b8 !important;
-  opacity: 1;
-}
-
-.dark-mode .nutrition-container select option {
-  background: #0f172a;
-  color: #e2e8f0;
-}
-
-.dark-mode .nutrition-container .form-header p,
-.dark-mode .nutrition-container .text-muted {
-  color: #94a3b8 !important;
-}
-
-/* Navbar sticky */
-.dark-mode .navbar-sticky { background-color: #1e293b; border-bottom-color: #334155; }
-
-/* Workout page dar-mode */
-.dark-mode app-nueva-sesion .bg-white {
-  background: #1e293b !important;
-  border-color: #334155 !important;
-}
-.dark-mode app-nueva-sesion  .input-group-text {
-  background: #0f172a !important;
-  border-color: #334155 !important;
-  color: #94a3b8 !important;
+.dark-mode .workout-main-card input {
+  background-color: var(--input-bg);
+  color: var(--main-text);
+  border: 1px solid var(--border-color);
 }

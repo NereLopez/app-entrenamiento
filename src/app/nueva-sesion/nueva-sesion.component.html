@@ -1,29 +1,27 @@
 <div class="container py-4">
-  <div class="card p-4 shadow-lg border-0 mb-4" 
-       style="background: linear-gradient(45deg, #0d9488, #115e59) !important; border-radius: 20px;">
+  <div class="card p-4 shadow-lg border-0 mb-4 session-header-card">
     <div class="d-flex justify-content-between align-items-center text-white">
       <div>
-        <span class="badge bg-white mb-2 shadow-sm" style="color: #0d9488 !important;">🚀 ACTIVE SESSION</span>
-        <h2 class="display-6 fw-bold mb-0" style="color: white !important">{{ workoutForm.get('title')?.value }}</h2> 
+        <span class="badge bg-white mb-2 shadow-sm session-header-badge">🚀 ACTIVE SESSION</span>
+        <h2 class="display-6 fw-bold mb-0 session-header-title">{{ workoutForm.get('title')?.value }}</h2> 
         <p class="text-white-50 small mt-1 mb-0">
           {{ workoutForm.get('date')?.value | date:'EEEE, MMM d, yyyy' }}
         </p>
       </div>
-      <button type="button" (click)="finishWorkout()"
-              class="btn shadow-sm fw-bold bg-white border-0 px-4 py-2" 
-              style="border-radius: 15px; color: #0d9488 !important;">
+            <button type="button" (click)="finishWorkout()"
+              class="btn shadow-sm fw-bold bg-white border-0 px-4 py-2 session-finish-action">
         Finish
       </button>
     </div>
   </div>
 
-<div class="position-relative mb-4 px-1">
+<div class="position-relative mb-4 px-1 exercise-library-section">
   <button type="button" 
         (click)="showLibrary = !showLibrary"
-        class="btn w-100 d-flex justify-content-between align-items-center shadow-sm py-3 px-4 rounded-4 border-0"
-        [style.background]="showLibrary ? '#f8f9fa' : 'white'">
+        class="btn w-100 d-flex justify-content-between align-items-center shadow-sm py-3 px-4 rounded-4 border-0 library-toggle-btn"
+        [class.is-open]="showLibrary">
   
-  <span class="fw-bold" [style.color]="showLibrary ? '#0d9488' : '#6c757d'">
+  <span class="fw-bold library-toggle-text">
     <i class="bi bi-plus-lg me-2"></i>
     {{ showLibrary ? 'Choose an exercise' : 'Add Exercise from Library' }}
   </span>
@@ -31,12 +29,12 @@
   <i class="bi" 
      [class.bi-chevron-up]="showLibrary" 
      [class.bi-dash-lg]="!showLibrary"
-     [style.color]="'#0d9488'"></i>
+     class="library-toggle-icon"></i>
 </button>
 
     @if (showLibrary) {
-    <div class="card shadow-xl border-0 position-absolute w-100 mt-2 z-3 library-dropdown animate__animated animate__fadeInUp" style="z-index: 1000;">
-      <div class="card-body p-3">
+    <div class="card shadow-xl border-0 position-absolute w-100 mt-2 z-3 library-dropdown animate__animated animate__fadeInUp">
+      <div class="card-body p-3 library-dropdown-body">
         @for (group of exerciseLibrary; track group.muscle) {
           <div class="muscle-group-section mb-3">
             <div class="d-flex align-items-center mb-2">
@@ -45,7 +43,7 @@
                     [style.color]="getGroupColor(group.muscle)">
                 {{ getMuscleIcon(group.muscle) }}
               </span>
-              <span class="text-uppercase fw-bold text-muted" style="letter-spacing: 1px; font-size: 0.7rem;">
+              <span class="text-uppercase fw-bold muscle-group-label">
                 {{ group.muscle }}
               </span>
             </div>
@@ -53,10 +51,9 @@
             <div class="d-flex flex-wrap gap-2">
            @for (ex of group.exercises; track ex) {
                 <button type="button" 
-                        (click)="addExercise(ex, group.muscle)"
-                        class="btn btn-sm border-0 shadow-sm"
-                        [style.backgroundColor]="getGroupColor(group.muscle)"
-                        style="color: white; font-weight: 700; padding: 8px 15px; border-radius: 12px;">
+                  (click)="addExercise(ex, group.muscle)"
+                  class="btn btn-sm border-0 shadow-sm library-exercise-btn"
+                  [style.backgroundColor]="getGroupColor(group.muscle)">
                   {{ ex }}
                 </button>
               }
@@ -68,9 +65,9 @@
   }
 </div>
 
-  <div class="row g-2 mb-4 align-items-center">
+  <div class="row g-2 mb-4 align-items-start manual-entry-row">
     <div class="col-md-7">
-      <input #nameInput placeholder="Or type manually: Ex: Bench Press" class="form-control shadow-sm border-0 py-2" style="border-radius: 12px;">
+      <input #nameInput placeholder="Or type manually: Ex: Bench Press" class="form-control shadow-sm py-2 manual-name-input">
     </div>
     <div class="col-md-3 manual-group-selector">
       <button type="button"
@@ -83,25 +80,30 @@
       @if (showManualGroupMenu) {
         <div class="manual-group-menu card border-0 shadow-sm mt-2">
           @for (group of manualGroupOptions; track group) {
-            <button type="button" class="manual-group-option" (click)="chooseManualGroup(group)">
-              {{ getMuscleIcon(group) }} {{ group }}
+            <button type="button"
+                    class="manual-group-option d-flex align-items-center justify-content-between"
+                    [class.is-selected]="group === selectedManualGroup"
+                    (click)="chooseManualGroup(group)">
+              <span>{{ getMuscleIcon(group) }} {{ group }}</span>
+              @if (group === selectedManualGroup) {
+                <i class="bi bi-check2 manual-group-check"></i>
+              }
             </button>
           }
         </div>
       }
     </div>
     <div class="col-md-2">
-      <button type="button" 
+            <button type="button" 
               (click)="addExercise(nameInput.value, selectedManualGroup); nameInput.value=''" 
-              class="btn fw-bold w-100 shadow-sm py-2"
-              style="border-radius: 12px; background: #0d9488; color: white; border: none">
+              class="btn fw-bold w-100 shadow-sm py-2 manual-add-btn">
         Add
       </button>
     </div>
   </div>
 
   <form [formGroup]="workoutForm">
-    <div formArrayName="exercises">
+    <div formArrayName="exercises" class="exercise-list">
       @for (ej of exercises.controls; let i = $index; track i) {
         <div [formGroupName]="i" class="card border-0 shadow-sm mb-4 rounded-4 overflow">
           <div [style.height]="'6px'" [style.backgroundColor]="getGroupColor(ej.get('muscleGroup')?.value)"></div>

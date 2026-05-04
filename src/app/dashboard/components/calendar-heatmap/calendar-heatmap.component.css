@@ -118,14 +118,12 @@
   display: block;
   margin: 0 auto;
   max-width: 70px;
-  /* Adjust size as needed */
   max-height: 70px;
 }
 
 .circle-bg {
   fill: none;
   stroke: #f1f5f9;
-  /* Light gray background */
   stroke-width: 3.5;
 }
 
@@ -281,6 +279,36 @@
 
 :host-context(.dark-mode) .btn-share-icon {
   color: #94a3b8;
+}
+
+:host-context(.dark-mode) .calendar-card {
+  background: #1e293b !important;
+  border: 1px solid #334155 !important;
+}
+
+:host-context(.dark-mode) .calendar-card h5,
+:host-context(.dark-mode) .calendar-card h6,
+:host-context(.dark-mode) .calendar-card .fw-bold {
+  color: #e2e8f0 !important;
+}
+
+:host-context(.dark-mode) .share-only-header {
+  border-bottom-color: #334155 !important;
+}
+
+:host-context(.dark-mode) .install-app-card {
+  background: #1e293b;
+  border-color: #334155;
+}
+
+:host-context(.dark-mode) .install-qr-frame {
+  background: #0f172a;
+}
+
+:host-context(.dark-mode) .badge.rounded-circle {
+  background-color: #0f172a !important;
+  color: #93c5fd !important;
+  border-color: #334155 !important;
 }
 
 @media (max-width: 768px) {

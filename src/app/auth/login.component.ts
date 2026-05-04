@@ -17,7 +17,6 @@ export class LoginComponent implements OnInit {
   email = '';
   pass = '';
   isPending = false; 
-
   private auth = inject(Auth);
   private trainingService = inject(EntrenamientoService);
   private router = inject(Router);

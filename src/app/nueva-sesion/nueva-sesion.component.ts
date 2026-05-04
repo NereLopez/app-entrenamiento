@@ -24,6 +24,8 @@ export class NuevaSesionComponent implements OnInit, OnDestroy {
   public isResting = false;
   public restTime = 60;
   private timer: any;
+  private audioContext: AudioContext | null = null;
+  
 
   public exerciseLibrary = [
     { muscle: 'Chest', exercises: ['Bench Press', 'Incline Press', 'Chest Flys'] },
@@ -137,18 +139,51 @@ export class NuevaSesionComponent implements OnInit, OnDestroy {
     this.timer = setInterval(() => {
       if (this.restTime > 0) {
         this.restTime--;
+
+        if (this.restTime > 0 && this.restTime <= 5) {
+          this.playCountdownBeep();
+        }
+    
       } else {
         this.stopRest();
       }
     }, 1000);
   }
 
+  private playCountdownBeep() {
+    try {
+      if (!this.audioContext) {
+        this.audioContext = new AudioContext();
+      }
+
+      const oscillator = this.audioContext.createOscillator();
+      const gain = this.audioContext.createGain();
+
+      oscillator.type = 'sine';
+      oscillator.frequency.value = 880;
+      gain.gain.setValueAtTime(0.001, this.audioContext.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.12, this.audioContext.currentTime + 0.01);
+      gain.gain.exponentialRampToValueAtTime(0.001, this.audioContext.currentTime + 0.18);
+
+      oscillator.connect(gain);
+      gain.connect(this.audioContext.destination);
+      oscillator.start();
+      oscillator.stop(this.audioContext.currentTime + 0.18);
+    } catch {
+      // Ignore audio initialization errors.
+    }
+  }
+    
+
   stopRest() {
     this.isResting = false;
     if (this.timer) clearInterval(this.timer);
+    this.timer = null;
   }
 
   async finishWorkout() {
+    if (this.isResting) this.stopRest();
+
     if (this.exercises.length === 0) return;
     if (!confirm('¿Terminar sesión?')) return;
 
@@ -162,6 +197,7 @@ export class NuevaSesionComponent implements OnInit, OnDestroy {
     const success = await this.entrenamientoService.saveFromForm(sessionData);
     if (success) {
       this.exercises.clear();
+      this.restTime = 60;
       this.entrenamientoService.currentTab.set('dashboard');
     }
   }
