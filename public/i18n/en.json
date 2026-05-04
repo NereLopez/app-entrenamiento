@@ -1,14 +1,43 @@
 {
-  "APP": {
-    "CHOOSE_LANGUAGE": "Choose language",
-    "LIGHT_MODE": "Light Mode",
-    "DARK_MODE": "Dark Mode",
-    "NAV_HOME": "Home",
-    "NAV_WORKOUT": "Workout",
-    "NAV_NUTRITION": "Nutrition",
-    "NAV_HISTORY": "History"
-  },
-  "FINISH_BTN": "Finish",
-  "ADD_LIBRARY": "Add Exercise from Library",
-  "CHOOSE_EXE": "Choose an exercise"
+    "APP": {
+        "CHOOSE_LANGUAGE": "Choose language",
+        "LIGHT_MODE": "Light Mode",
+        "DARK_MODE": "Dark Mode",
+        "NAV_HOME": "Home",
+        "NAV_WORKOUT": "Workout",
+        "NAV_NUTRITION": "Nutrition",
+        "NAV_HISTORY": "History"
+    },
+    "DASHBOARD": {
+        "WELCOME_USER": "Welcome, {{name}}!",
+        "LEVEL": "Intermediate",
+        "WEEKLY_ACTIVITY": "WEEKLY ACTIVITY",
+        "MOTIVATION": "Great start... keep it up!",
+        "START_WORKOUT": "Start Workout",
+        "WELCOME_BACK": "Welcome back!",
+        "SUBTITLE": "Let's crush your fitness goals together.",
+        "QUICK_START": "Quick Start",
+        "NEW_SESSION": "New Session",
+        "VIEW_HISTORY": "View History",
+        "THIS_WEEK": "THIS WEEK",
+        "SESSIONS": "Sessions",
+        "TOTAL_VOLUME": "TOTAL VOLUME",
+        "LIFETIME": "Lifetime",
+        "STREAK": "STREAK",
+        "DAYS": "days",
+        "KEEP_IT_UP": "Keep it up!",
+        "LAST_EXERCISE": "Last Exercise",
+        "WORKOUT_SESSION": "Workout Session"
+
+    },
+    "INSTALL": {
+        "TITLE": "Install Kinetic App",
+        "SCAN": "Scan QR",
+        "SHARE": "Tap Share",
+        "ADD": "Add Home",
+        "ANOTHER_DEVICE": "Install App on another device"
+    },
+    "FINISH_BTN": "Finish",
+    "ADD_LIBRARY": "Add Exercise from Library",
+    "CHOOSE_EXE": "Choose an exercise"
 }

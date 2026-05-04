@@ -70,7 +70,7 @@ export class EntrenamientoService {
       w.exercises?.forEach((ex: any) => {
         ex.sets?.forEach((s: any) => {
           const weight = Number(s.weight) || 0;
-          const reps = Number(s.repetitions) || 0;
+          const reps = Number(s.reps || s.repetitions) || 0;
           total += weight * reps;
         });
       });

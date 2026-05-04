@@ -5,88 +5,76 @@
   </div>
 
   <div class="flex-grow-1">
-    <h5 class="fw-bold mb-0 text-dark">Welcome ! {{ entrenamientoService.userName() }}!</h5>
+    <h5 class="fw-bold mb-0 text-dark">
+      {{ 'DASHBOARD.WELCOME_USER' | translate:{ name: entrenamientoService.userName() } }}</h5>
     <div class="d-flex align-items-center mt-1">
       <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-1">
         <i class="bi bi-lightning-fill me-1"></i> {{ entrenamientoService.userLevel() }}
       </span>
       <small class="text-muted ms-3">
-        <i class="bi bi-calendar3 me-1"></i> {{ entrenamientoService.history().length }} sessions
+        <i class="bi bi-calendar3 me-1"></i> {{ entrenamientoService.history().length }} {{ 'DASHBOARD.SESSIONS' | translate }}
       </small>
     </div>
   </div>
 
 <app-calendar-heatmap class="dashboard-heatmap"></app-calendar-heatmap>
- 
 </div>
 
 <div class="row g-3 mb-5">
   <div class="col-6">
     <button (click)="startWithExercise()" class="quick-card quick-card-primary text-white border-0 w-100 shadow-sm rounded-4 py-3">
       <div class="quick-icon"><i class="bi bi-plus-lg"></i></div>
-      <span class="fw-bold">Start Workout</span>
+      <span class="fw-bold">{{ 'DASHBOARD.START_WORKOUT' | translate }}</span>
     </button>
   </div>
   <div class="col-6">
     <a routerLink="/historial" class="quick-card bg-white text-dark border-0 w-100 shadow-sm rounded-4 py-3 text-decoration-none d-block text-center">
       <div class="quick-icon quick-icon-teal"><i class="bi bi-bar-chart-fill"></i></div>
-      <span class="fw-bold">View History</span>
+      <span class="fw-bold">{{ 'DASHBOARD.VIEW_HISTORY' | translate }}</span>
     </a>
   </div>
 </div>
 
 <div class="container py-4">
-  <div class="mb-5 dashboard-intro">
-    <h2 class="fw-bold mb-1 ">Welcome back!</h2>
-    <p class="text-muted dashboard-intro-subtitle">Ready to crush your goals today?</p>
-  </div>
-
-  <div class="mb-5">
-    <h5 class="fw-bold mb-3">Quick Start</h5>
+<div class="mb-5">
+    <h5 class="fw-bold mb-3">{{ 'DASHBOARD.QUICK_START' | translate }}</h5>
     <div class="d-flex gap-3 overflow-auto pb-2 quick-start-row" style="scrollbar-width: none;">
       
       <button (click)="startWithExercise()" class="btn-exercise-quick active shadow-sm border-0">
         <div class="icon-circle mb-2"><i class="bi bi-plus-lg"></i></div>
-        <span>New Session</span>
+        <span>{{ 'DASHBOARD.NEW_SESSION' | translate }}</span>
       </button>
-
-      @for (item of ['Bench Press', 'Squat', 'Deadlift']; track item) {
-        <button (click)="startWithExercise(item)" class="btn-exercise-quick shadow-sm border-0 bg-white">
-          <div class="icon-circle-alt mb-2"><i class="bi bi-lightning-fill"></i></div>
-          <span>{{ item }}</span>
-        </button>
-      }
+      
     </div>
   </div>
 
   <div class="row g-4 mb-5">
     <div class="col-md-4">
       <div class="stat-card p-4 shadow-sm border-0 rounded-4 bg-white">
-        <h6 class="text-muted small text-uppercase fw-bold">This Week</h6>
+        <h6 class="text-muted small text-uppercase fw-bold">{{ 'DASHBOARD.THIS_WEEK' | translate }}</h6>
         <h3 class="fw-bold mb-0">{{ getWorkoutsThisWeek() }}</h3>
-        <p class="small text-success mb-0 mt-1">Sessions</p>
+        <p class="small text-success mb-0 mt-1">{{ 'DASHBOARD.SESSIONS' | translate }}</p>
       </div>
     </div>
     <div class="col-md-4">
       <div class="stat-card p-4 shadow-sm border-0 rounded-4 bg-white">
-        <h6 class="text-muted small text-uppercase fw-bold">Total Volume</h6>
+        <h6 class="text-muted small text-uppercase fw-bold">{{ 'DASHBOARD.TOTAL_VOLUME' | translate }}</h6>
         <h3 class="fw-bold mb-0">
           {{ entrenamientoService.totalVolume() | number }} <small class="fs-6">kg</small></h3>
-        <p class="small text-primary mb-0 mt-1">Lifetime</p>
+        <p class="small text-primary mb-0 mt-1">{{ 'DASHBOARD.LIFETIME' | translate }}</p>
       </div>
     </div>
     <div class="col-md-4">
       <div class="stat-card p-4 shadow-sm border-0 rounded-4 bg-white">
-        <h6 class="text-muted small text-uppercase fw-bold">Streak</h6>
-        <h3 class="fw-bold mb-0">3 <small class="fs-6">days</small></h3>
-        <p class="small text-warning mb-0 mt-1"><i class="bi bi-fire"></i> Keep it up!</p>
+        <h6 class="text-muted small text-uppercase fw-bold">{{ 'DASHBOARD.STREAK' | translate }}</h6>
+        <h3 class="fw-bold mb-0">3 <small class="fs-6">{{ 'DASHBOARD.DAYS' | translate }}</small></h3>
+        <p class="small text-warning mb-0 mt-1"><i class="bi bi-fire"></i> {{ 'DASHBOARD.KEEP_IT_UP' | translate }}</p>
       </div>
     </div>
   </div>
 
   <div class="d-flex justify-content-between align-items-center mb-3">
-    <h5 class="fw-bold mb-0">Last Exercise</h5>
-    <a routerLink="/historial" class="btn btn-link text-primary text-decoration-none small fw-bold">View History</a>
+    <h5 class="fw-bold mb-0">{{ 'DASHBOARD.LAST_EXERCISE' | translate }}</h5>
   </div>
 
   <div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
@@ -96,12 +84,12 @@
           <i class="bi bi-check-circle-fill text-success fs-3"></i>
         </div>
         <div>
-          <h6 class="fw-bold mb-0">{{ lastWorkout.title || 'Workout Session' }}</h6>
+          <h6 class="fw-bold mb-0">{{ (lastWorkout.title === "Today's Workout" ? (lastWorkout.exercises[0]?.name) : lastWorkout.title) || ('DASHBOARD.WORKOUT_SESSION' | translate) }}</h6>
           <p class="text-muted small mb-0">{{ lastWorkout.createdAt | date:'mediumDate' }}</p>
         </div>
       </div>
     } @else {
-      <p class="text-muted text-center mb-0">No activity yet. Let's train!</p>
+      <p class="text-muted text-center mb-0">{{ 'DASHBOARD.NO_ACTIVITY' | translate }}</p>
     }
   </div>
 
@@ -117,13 +105,13 @@
       </div>
 
       <div class="install-app-content">
-        <h5 class="fw-bold mb-2" style="color: #334155;">Install Kinetic App</h5>
-        <p class="text-muted small mb-4">Get a full-screen experience on your iPhone.</p>
+        <h5 class="fw-bold mb-2" style="color: #334155;">{{ 'INSTALL.TITLE' | translate }}</h5>
+        <p class="text-muted small mb-4">{{ 'INSTALL.DESCRIPTION' | translate }}</p>
         
         <div class="install-steps">
-          <div class="install-step"><span class="install-step-number">1</span> Scan QR</div>
-          <div class="install-step"><span class="install-step-number">2</span> Tap Share</div>
-          <div class="install-step"><span class="install-step-number">3</span> Add Home</div>
+          <div class="install-step"><span class="install-step-number">1</span> {{ 'INSTALL.SCAN' | translate }}</div>
+          <div class="install-step"><span class="install-step-number">2</span> {{ 'INSTALL.SHARE' | translate }}</div>
+          <div class="install-step"><span class="install-step-number">3</span> {{ 'INSTALL.ADD' | translate }}</div>
         </div>
       </div>
     </div>
@@ -131,7 +119,7 @@
 </div>
 
 <button class="btn btn-install-custom" (click)="showModal = true">
-  Install App on another device
+  {{ 'INSTALL.ANOTHER_DEVICE' | translate }}
 </button>
 
 </div>

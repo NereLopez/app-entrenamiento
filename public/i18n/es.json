@@ -1,14 +1,42 @@
 {
-	"APP": {
-		"CHOOSE_LANGUAGE": "Elegir idioma",
-		"LIGHT_MODE": "Modo claro",
-		"DARK_MODE": "Modo oscuro",
-		"NAV_HOME": "Inicio",
-		"NAV_WORKOUT": "Entreno",
-		"NAV_NUTRITION": "Nutricion",
-		"NAV_HISTORY": "Historial"
-	},
-	"FINISH_BTN": "Finalizar",
-	"ADD_LIBRARY": "Añadir ejercicio de la biblioteca",
-	"CHOOSE_EXE": "Elige un ejercicio"
+    "APP": {
+        "CHOOSE_LANGUAGE": "Elegir idioma",
+        "LIGHT_MODE": "Modo claro",
+        "DARK_MODE": "Modo oscuro",
+        "NAV_HOME": "Inicio",
+        "NAV_WORKOUT": "Entrenamiento",
+        "NAV_NUTRITION": "Nutrición",
+        "NAV_HISTORY": "Historial"
+    },
+    "DASHBOARD": {
+        "WELCOME_USER": "¡Bienvenido, {{name}}!",
+        "LEVEL": "Intermedio",
+        "WEEKLY_ACTIVITY": "ACTIVIDAD SEMANAL",
+        "MOTIVATION": "¡Gran comienzo... sigue así!",
+        "START_WORKOUT": "Comenzar Entrenamiento",
+        "WELCOME_BACK": "¡Bienvenido de nuevo!",
+        "SUBTITLE": "Vamos a alcanzar tus objetivos de fitness juntos.",
+        "QUICK_START": "Inicio rápido",
+        "NEW_SESSION": "Nueva sesión",
+        "VIEW_HISTORY": "Ver historial",
+        "THIS_WEEK": "ESTA SEMANA",
+        "SESSIONS": "Sesiones",
+        "TOTAL_VOLUME": "VOLUMEN TOTAL",
+        "LIFETIME": "Histórico",
+        "STREAK": "RACHA",
+        "DAYS": "días",
+        "KEEP_IT_UP": "¡Sigue así!",
+        "LAST_EXERCISE": "Último ejercicio",
+        "WORKOUT_SESSION": "Sesión de entrenamiento"
+    },
+    "INSTALL": {
+        "TITLE": "Instalar Kinetic App",
+        "SCAN": "Escanear QR",
+        "SHARE": "Tocar Compartir",
+        "ADD": "Agregar a Inicio",
+        "ANOTHER_DEVICE": "Instalar la app"
+    },
+    "FINISH_BTN": "Finalizar",
+    "ADD_LIBRARY": "Añadir ejercicio de la biblioteca",
+    "CHOOSE_EXE": "Elige un ejercicio"
 }
