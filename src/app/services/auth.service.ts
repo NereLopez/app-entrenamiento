@@ -1,4 +1,4 @@
-import { Injectable, signal, inject } from '@angular/core';
+import { Injectable, signal, inject, Injector, runInInjectionContext } from '@angular/core';
 import { Firestore, collection, addDoc, collectionData, query, orderBy, where } from '@angular/fire/firestore';
 import { Auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, user } from '@angular/fire/auth';
 
@@ -6,6 +6,7 @@ import { Auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signO
 export class AuthService {
   private firestore = inject(Firestore);
   private auth = inject(Auth);
+  private injector = inject(Injector);
 
   userSignal = signal<any>(null);
   history = signal<any[]>([]);
@@ -39,7 +40,8 @@ export class AuthService {
   private fetchHistory(userId: string) {
     const ref = collection(this.firestore, 'workouts');
     const q = query(ref, where('userId', '==', userId), orderBy('createdAt', 'desc'));
-    collectionData(q, { idField: 'id' }).subscribe(data => this.history.set(data));
+    runInInjectionContext(this.injector, () => collectionData(q, { idField: 'id' }))
+      .subscribe(data => this.history.set(data));
   }
 
   async saveFromForm(formData: any) {

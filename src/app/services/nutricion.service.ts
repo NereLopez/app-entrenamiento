@@ -1,5 +1,5 @@
-import { Injectable, signal, computed, inject, effect } from '@angular/core';
-import { Firestore, collection, addDoc, collectionData, query, where, doc, deleteDoc } from '@angular/fire/firestore';
+import { Injectable, signal, computed, inject, effect, Injector, runInInjectionContext } from '@angular/core';
+import { Firestore, collection, addDoc, collectionData, query, where, doc, deleteDoc, getDoc, setDoc } from '@angular/fire/firestore';
 import { FoodEntry } from '../models/nutricion.model';
 import { Auth, user } from '@angular/fire/auth';
 import { EntrenamientoService } from './entrenamiento.service';
@@ -12,6 +12,7 @@ import { Subscription } from 'rxjs';
 export class NutricionService {
   private firestore = inject(Firestore);
   private auth = inject(Auth);
+  private injector = inject(Injector);
   private entrenamientoService = inject(EntrenamientoService);
   private toastController = inject(ToastController);
    
@@ -29,6 +30,7 @@ export class NutricionService {
 
   public isLoading = signal<boolean>(false);
   private dailyMealsSubscription?: Subscription;
+  public forceEditMode = signal(false);
 
   private get userId(): string | undefined {
     return this.auth.currentUser?.uid;
@@ -90,12 +92,9 @@ export class NutricionService {
   });
 
   private async fetchUserProfile(userId: string) {  
-   // "Solo carga el código para leer documentos cuando realmente alguien vaya a consultar su perfil". 
-   // Esto hace que tu app arranque mucho más rápido en el móvil
-    const { doc, getDoc } = await import('@angular/fire/firestore');
   // Aquí lo ideal es que el documento tenga como ID el UID del usuario
   const docRef = doc(this.firestore, `user_nutrition/${userId}`);
-  const snap = await getDoc(docRef);
+  const snap = await runInInjectionContext(this.injector, () => getDoc(docRef));
 
   if (this.auth.currentUser?.uid !== userId) {
     return;
@@ -166,7 +165,10 @@ export class NutricionService {
 
  
   this.dailyMealsSubscription?.unsubscribe();
-  this.dailyMealsSubscription = collectionData(q, { idField: 'id' }).subscribe((data) => {
+  this.dailyMealsSubscription = runInInjectionContext(
+    this.injector,
+    () => collectionData(q, { idField: 'id' })
+  ).subscribe((data) => {
    
     this.dailyMeals.set(data as FoodEntry[]);
     console.log('Comidas del día cargadas:', data);
@@ -177,9 +179,8 @@ export class NutricionService {
   async saveToFirestore() {
     if (!this.userId) return;
 
-    const { doc, setDoc } = await import('@angular/fire/firestore');
     const docRef = doc(this.firestore, `user_nutrition/${this.userId}`);
-    await setDoc(docRef, {
+    await runInInjectionContext(this.injector, () => setDoc(docRef, {
       weight: this.weight(),
       height: this.height(),
       age: this.age(),
@@ -189,7 +190,7 @@ export class NutricionService {
       targetCalories: this.targetCalories(),
       macros: this.macros(),
       createdAt: new Date()
-    }, { merge: true });  
+    }, { merge: true }));  
   }   
   
   async addFoodEntry(name: string, calories: number, type: any, p:number = 0, c: number = 0, f: number = 0) {

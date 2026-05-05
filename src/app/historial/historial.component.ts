@@ -1,4 +1,4 @@
-import { Component, inject, effect, ElementRef, ViewChild } from '@angular/core';
+import { Component, inject, effect, ElementRef, ViewChild, Injector, runInInjectionContext } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EntrenamientoService } from '../services/entrenamiento.service'; 
 import { Chart, registerables } from 'chart.js';
@@ -18,6 +18,7 @@ export class HistorialComponent {
   public entrenamientoService = inject(EntrenamientoService);
   private firestore = inject(Firestore);
   private auth = inject(Auth);
+  private injector = inject(Injector);
   
   @ViewChild('statsChart') statsChart!: ElementRef;
   private chart: any;
@@ -40,7 +41,8 @@ export class HistorialComponent {
       const entriesRef = collection(this.firestore, 'food_entries');
       const entriesQuery = query(entriesRef, where('userId', '==', currentUser.uid));
 
-      collectionData(entriesQuery, { idField: 'id' }).subscribe(entries => {
+      runInInjectionContext(this.injector, () => collectionData(entriesQuery, { idField: 'id' }))
+        .subscribe(entries => {
         const groupedNutrition = new Map<string, { calories: number; complete: boolean }>();
         const calorieTarget = this.entrenamientoService.statsSignal().dailyCaloriesTarget || 2000;
 
@@ -52,8 +54,8 @@ export class HistorialComponent {
           groupedNutrition.set(dateKey, current);
         });
 
-        this.nutritionDayMap = groupedNutrition;
-      });
+          this.nutritionDayMap = groupedNutrition;
+        });
     });
 
     // Escucha cambios en el historial para redibujar gráficas automáticamente

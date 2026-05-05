@@ -16,7 +16,6 @@ export class DashboardService {
       label: 'DASHBOARD.NEW_SESSION',
       subLabel: 'DASHBOARD.GO_FOR_IT',
       icon: 'bi-play-fill',
-      cssClass: 'bg-primary-subtle text-primary',
       route: '/training'
     });
 
@@ -26,16 +25,14 @@ export class DashboardService {
         label: 'DASHBOARD.COMPLETE_PROFILE',
         subLabel: 'DASHBOARD.SET_GOALS',
         icon: 'bi-person-plus-fill',
-        cssClass: 'bg-warning-subtle text-warning',
-        route: '/nutrition'
+        route: '/nutricion'
       });
     } else {
       actions.push({
-        label: 'DASHBOARD.LOG_WEIGHT',
+        label: 'DASHBOARD.MY_DIET',
         subLabel: 'DASHBOARD.TRACK_PROGRESS',
-        icon: 'bi-speedometer2',
-        cssClass: 'bg-info-subtle text-info',
-        route: '/nutrition'
+        icon: 'bi-apple',
+        route: '/nutricion'
       });
     }
 

@@ -17,13 +17,25 @@ import { DashboardService } from '../services/dashboard.service';
   styleUrl: './dashboard.component.css'
 })
 export class DashboardComponent {
+  private router = inject(Router);
   public entrenamientoService = inject(EntrenamientoService);
   public nutricionService = inject(NutricionService);
-  private router = inject(Router);
   private dashboardService = inject(DashboardService);
-  
+
   public quickActions = this.dashboardService.quickActions;
-  
+
+  navegar(ruta: string) {
+    if (ruta === '/nutricion') {
+      const gender = this.nutricionService.gender();
+      if (!gender) {
+      this.nutricionService.forceEditMode.set(true);
+    } else {
+      this.nutricionService.forceEditMode.set(false);
+    }
+  }
+    this.router.navigate([ruta]);
+  }
+
   readonly welcomeKey = computed(() => {
     const gender = this.nutricionService.gender();
 
@@ -40,13 +52,13 @@ export class DashboardComponent {
     localStorage.setItem('installCardDismissed', 'true');
   }
   showInstall() {
-  localStorage.removeItem('installCardDismissed');
-  this.router.navigate(['/dashboard']).then(() => {
-    window.location.reload(); 
-  });
-}
+    localStorage.removeItem('installCardDismissed');
+    this.router.navigate(['/dashboard']).then(() => {
+      window.location.reload();
+    });
+  }
 
-  startWithExercise(exerciseName?: string){
+  startWithExercise(exerciseName?: string) {
     this.entrenamientoService.selectedExercise.set(exerciseName || null);
     this.router.navigate(['/training']);
   }
@@ -59,6 +71,6 @@ export class DashboardComponent {
     }).length;
   }
 
- }
+}
 
 

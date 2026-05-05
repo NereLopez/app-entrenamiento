@@ -1,4 +1,4 @@
-import { Injectable, signal, inject, computed } from '@angular/core';
+import { Injectable, signal, inject, computed, Injector, runInInjectionContext } from '@angular/core';
 import { 
   Firestore, collection, addDoc, query, where, orderBy, 
   collectionData, doc, getDoc, setDoc, updateDoc, deleteDoc 
@@ -20,6 +20,7 @@ export interface UserStats {
 export class EntrenamientoService {
   private firestore = inject(Firestore);
   private auth = inject(Auth);
+  private injector = inject(Injector);
 
   public selectedExercise = signal<string | null>(null);
   public currentTab = signal<string>('dashboard');
@@ -107,7 +108,7 @@ export class EntrenamientoService {
   
   private async fetchUserStats(userId: string) {
     const docRef = doc(this.firestore, `stats/${userId}`);
-    const snap = await getDoc(docRef);
+    const snap = await runInInjectionContext(this.injector, () => getDoc(docRef));
 
     if (this.auth.currentUser?.uid !== userId) {
       return;
@@ -131,7 +132,10 @@ export class EntrenamientoService {
     const ref = collection(this.firestore, 'workouts');
     const q = query(ref, where('userId', '==', userId), orderBy('createdAt', 'desc'));
     this.historySubscription?.unsubscribe();
-    this.historySubscription = collectionData(q, { idField: 'id' }).subscribe(data => {
+    this.historySubscription = runInInjectionContext(
+      this.injector,
+      () => collectionData(q, { idField: 'id' })
+    ).subscribe(data => {
       this.history.set(data);
     });
   }

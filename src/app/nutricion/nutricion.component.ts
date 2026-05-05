@@ -1,9 +1,11 @@
-import { Component, inject, OnInit, signal, effect } from '@angular/core';
+import { Component, inject, OnInit, signal, effect, Injector } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { NutricionService } from '../services/nutricion.service';
 import { FoodPreset } from '../models/nutricion.model';
 import { FOOD_PRESETS } from '../data/food-presets';
+import { Router } from '@angular/router';
+import { DashboardService } from '../services/dashboard.service';
 
 @Component({
   selector: 'app-nutricion',
@@ -14,10 +16,13 @@ import { FOOD_PRESETS } from '../data/food-presets';
 })
 export class NutricionComponent implements OnInit {
   private fb = inject(FormBuilder);
+  private injector = inject(Injector);
+  private router = inject(Router);
   public nutricionSvc = inject(NutricionService);
 
   public isEditing = false;
   public isSaving = signal(false);
+  public forceEditMode = signal(false); // Para forzar modo edición si no hay datos
 
   public isPresetMenuOpen = signal(false);
   public selectedPresetLabel = signal('Choose a meal...');
@@ -34,7 +39,23 @@ export class NutricionComponent implements OnInit {
     goal: ['maintain', Validators.required]
   });
 
+  navegar(ruta: string) {
+    if (ruta === '/nutricion') {
+      const gender = this.nutricionSvc.gender();
+      if (!gender) {
+        this.nutricionSvc.forceEditMode.set(true);
+      }
+    }
+    this.router.navigateByUrl(ruta);
+  }
+
   ngOnInit() {
+    if (this.nutricionSvc.forceEditMode()) {
+       this.isEditing = true;
+       this.nutricionSvc.forceEditMode.set(false);
+       console.log('Modo edicion activado por el dashboard y resteado');
+     }
+    
     this.syncFormWithService();
 
     effect(() => {
@@ -47,7 +68,7 @@ export class NutricionComponent implements OnInit {
       if (!this.isEditing) {
         this.syncFormWithService();
       }
-    });
+    }, { injector: this.injector });
   }
 
   togglePresetMenu() {
