@@ -1,21 +1,23 @@
 <div #shareArea id="share-area" class="calendar-card p-3 rounded-4 shadow-sm bg-white position-relative">
   
-  @if (isExporting()) {
+@if (isExporting()) {
     <div class="share-only-header mb-3 border-bottom pb-2">
       <div class="d-flex align-items-center gap-2">
-        <div class="user-avatar-mini bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 30px; height: 30px; font-size: 0.8rem;">AR</div>
-        <div>
-          <h5 class="m-0 fw-bold" style="color: #334155; font-size: 0.9rem;"> {{ userKey() }}'s Progress</h5>
-          <div class="user-avatar-mini bg-primary text-white rounded-circle d-flex align-items-center justify-content-center">
-           {{ userKey().substring(0, 2).toUpperCase() }}
+        <div class="user-avatar-mini bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 30px; height: 30px; font-size: 0.8rem;">
+          {{ userKey().substring(0, 2).toUpperCase() }}
         </div>
+        <div>
+          <h5 class="m-0 fw-bold" style="color: #334155; font-size: 0.9rem;"> 
+            {{ 'CALENDAR.PROGRESS_OF' | translate:{ name: userKey() } }}
+          </h5>
           <small class="text-muted" style="font-size: 0.7rem;">Kinetic Training</small>
         </div>
       </div>
     </div>
   }
 
-  <h6 class="fw-bold mb-3 text-secondary" style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;">Weekly Activity</h6>
+  <h6 class="fw-bold mb-3 text-secondary" style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;">
+    {{ 'CALENDAR.WEEKLY_ACTIVITY' | translate }}</h6>
   
    
   <div class="d-flex justify-content-between align-items-center gap-3 heatmap-main-row">
@@ -24,14 +26,14 @@
       <div class="d-flex flex-column align-items-center gap-2">
         <div class="day-cell-container">
           <div class="day-box workout-box" 
-              [title]="'Workout: ' + (day.workout.completed ? 'Completed' : ' Pending' )"
+              [title]="('CALENDAR.WORKOUT' | translate) + ': ' + (day.workout.completed ? ('CALENDAR.COMPLETED' | translate) : ('CALENDAR.PENDING' | translate))"
                [class]="'workout-intensity-' + day.workout.intensity"
                [class.completed]="day.workout.completed"
                (click)="toggleDayActivity($index, 'workout')"
                style="cursor: pointer;">
           </div>
           <div class="day-box nutrition-box" 
-          [title]="'Nutrition: ' + (day.nutrition.completed ? 'Goal Reached' : 'Pending')"
+          [title]="('CALENDAR.NUTRITION' | translate) + ': ' + (day.nutrition.completed ? ('CALENDAR.GOAL_REACHED' | translate) : ('CALENDAR.PENDING' | translate))"
                [class]="'nutrition-intensity-' + day.nutrition.intensity"
                [class.completed]="day.nutrition.completed"
                (click)="toggleDayActivity($index, 'nutrition')"

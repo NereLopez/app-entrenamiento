@@ -10,6 +10,9 @@
     },
     "DASHBOARD": {
         "WELCOME_USER": "Welcome, {{name}}!",
+        "WELCOME_MALE": "Welcome, {{name}}!",
+        "WELCOME_FEMALE": "Welcome, {{name}}!",
+        "WELCOME_NEUTRAL": "Welcome, {{name}}!",
         "LEVEL": "Intermediate",
         "WEEKLY_ACTIVITY": "WEEKLY ACTIVITY",
         "MOTIVATION": "Great start... keep it up!",
@@ -26,6 +29,7 @@
         "STREAK": "STREAK",
         "DAYS": "days",
         "KEEP_IT_UP": "Keep it up!",
+        "NO_ACTIVITY": "No activity yet",
         "LAST_EXERCISE": "Last Exercise",
         "WORKOUT_SESSION": "Workout Session"
 
@@ -39,5 +43,21 @@
     },
     "FINISH_BTN": "Finish",
     "ADD_LIBRARY": "Add Exercise from Library",
-    "CHOOSE_EXE": "Choose an exercise"
+    "CHOOSE_EXE": "Choose an exercise", 
+
+    "CALENDAR": {
+        "PROGRESS_OF": "{{name}}'s Progress",
+        "WEEKLY_ACTIVITY": "Weekly Activity",
+        "WORKOUT": "Workout",
+        "NUTRITION": "Nutrition",
+        "COMPLETED": "Completed",
+        "PENDING": "Pending",
+        "GOAL_REACHED": "Goal Reached",
+        "MOTIVATION": {
+            "LET_S_GET_STARTED 💪": "Let's get started! 💪",
+            "GREAT_START 🔥": "Great start... keep it up! 🔥",
+            "YOU_RE_ON_FIRE ⚡": "You're on fire! ⚡",
+            "UNSTOPPABLE 🏆": "Unstoppable! Weekly goal achieved 🏆"
+        }
+    }
 }

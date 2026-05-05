@@ -6,7 +6,7 @@
 
   <div class="flex-grow-1">
     <h5 class="fw-bold mb-0 text-dark">
-      {{ 'DASHBOARD.WELCOME_USER' | translate:{ name: entrenamientoService.userName() } }}</h5>
+      {{ welcomeKey() | translate:{ name: entrenamientoService.userName() } }}</h5>
     <div class="d-flex align-items-center mt-1">
       <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-1">
         <i class="bi bi-lightning-fill me-1"></i> {{ entrenamientoService.userLevel() }}
@@ -67,7 +67,7 @@
     <div class="col-md-4">
       <div class="stat-card p-4 shadow-sm border-0 rounded-4 bg-white">
         <h6 class="text-muted small text-uppercase fw-bold">{{ 'DASHBOARD.STREAK' | translate }}</h6>
-        <h3 class="fw-bold mb-0">3 <small class="fs-6">{{ 'DASHBOARD.DAYS' | translate }}</small></h3>
+        <h3 class="fw-bold mb-0">{{ entrenamientoService.statsSignal().currentStreak }} <small class="fs-6">{{ 'DASHBOARD.DAYS' | translate }}</small></h3>
         <p class="small text-warning mb-0 mt-1"><i class="bi bi-fire"></i> {{ 'DASHBOARD.KEEP_IT_UP' | translate }}</p>
       </div>
     </div>

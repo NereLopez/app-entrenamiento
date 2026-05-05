@@ -4,6 +4,7 @@ import {
   collectionData, doc, getDoc, setDoc, updateDoc, deleteDoc 
 } from '@angular/fire/firestore'; 
 import { Auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, user } from '@angular/fire/auth';
+import { Subscription } from 'rxjs';
 
 
 export interface UserStats {
@@ -27,6 +28,7 @@ export class EntrenamientoService {
   public userLevel = signal<string>('Intermediate');
   public isWorkoutCompletedToday = signal<boolean>(false);
   public isAuthReady = signal<boolean>(false);
+  private historySubscription?: Subscription;
   
   public statsSignal = signal<UserStats>({
     experiencePoints: 0,
@@ -46,14 +48,25 @@ export class EntrenamientoService {
       // 3. Si el usuario existe (u), le pedimos al servicio que vaya
       // a la base de datos a buscar su historial y sus estadísticas.
       this.isAuthReady.set(true);
+      this.resetUserState();
       if (u) {
         this.fetchHistory(u.uid);
         this.fetchUserStats(u.uid); 
-      } else {
-        // 4. Si el usuario sale (se desloguea), limpiamos el historial
-        // para que no se quede la info de la sesión anterior.
-        this.history.set([]);
       }
+    });
+  }
+
+  private resetUserState() {
+    this.historySubscription?.unsubscribe();
+    this.historySubscription = undefined;
+    this.history.set([]);
+    this.isWorkoutCompletedToday.set(false);
+    this.statsSignal.set({
+      experiencePoints: 0,
+      personalRecords: {},
+      currentStreak: 0,
+      lastSessionDate: 0,
+      dailyCaloriesTarget: 0
     });
   }
 
@@ -95,6 +108,11 @@ export class EntrenamientoService {
   private async fetchUserStats(userId: string) {
     const docRef = doc(this.firestore, `stats/${userId}`);
     const snap = await getDoc(docRef);
+
+    if (this.auth.currentUser?.uid !== userId) {
+      return;
+    }
+
     if (snap.exists()) {
       const stats = snap.data() as UserStats;
       this.statsSignal.set(stats);
@@ -104,13 +122,16 @@ export class EntrenamientoService {
 
       // Keep stored streak/history intact; only toggle whether today's workout is already done.
       this.isWorkoutCompletedToday.set(today === lastSession);
+    } else {
+      this.isWorkoutCompletedToday.set(false);
     }
   }
 
   private fetchHistory(userId: string) {
     const ref = collection(this.firestore, 'workouts');
     const q = query(ref, where('userId', '==', userId), orderBy('createdAt', 'desc'));
-    collectionData(q, { idField: 'id' }).subscribe(data => {
+    this.historySubscription?.unsubscribe();
+    this.historySubscription = collectionData(q, { idField: 'id' }).subscribe(data => {
       this.history.set(data);
     });
   }

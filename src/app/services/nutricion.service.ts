@@ -4,6 +4,7 @@ import { FoodEntry } from '../models/nutricion.model';
 import { Auth, user } from '@angular/fire/auth';
 import { EntrenamientoService } from './entrenamiento.service';
 import { ToastController } from '@ionic/angular/standalone';
+import { Subscription } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,7 @@ export class NutricionService {
   public weight = signal<number | null>(null);
   public height = signal<number | null>(null);
   public age = signal<number | null>(null);
-  public gender = signal<'male' | 'female'>('male');
+  public gender = signal<'male' | 'female' | null>(null);
   public activityLevel = signal<number>(1.55); 
   public goal = signal<'lose' | 'maintain' | 'gain'>('maintain');
   public isWorkoutDay = signal<boolean>(false);
@@ -27,6 +28,7 @@ export class NutricionService {
   public dailyMeals = signal<FoodEntry[]>([]);
 
   public isLoading = signal<boolean>(false);
+  private dailyMealsSubscription?: Subscription;
 
   private get userId(): string | undefined {
     return this.auth.currentUser?.uid;
@@ -36,11 +38,12 @@ export class NutricionService {
   constructor (){
     // Escuchamos cuando el usuario se loguea para cargar sus comidas
     user(this.auth).subscribe(u => {
-    if (u) {
-      this.fetchDailyMeals(); 
-      this.fetchUserProfile(u.uid);
-    }
-  });
+      this.resetUserState();
+      if (u) {
+        this.fetchDailyMeals(); 
+        this.fetchUserProfile(u.uid);
+      }
+    });
     effect(() => {
       const isWorkoutComplete = this.entrenamientoService.isWorkoutCompletedToday();
       console.log('NutricionService detectó cambio en entrenamiento:', isWorkoutComplete); 
@@ -63,6 +66,20 @@ export class NutricionService {
   });
   }
 
+  private resetUserState() {
+    this.dailyMealsSubscription?.unsubscribe();
+    this.dailyMealsSubscription = undefined;
+    this.weight.set(null);
+    this.height.set(null);
+    this.age.set(null);
+    this.gender.set(null);
+    this.activityLevel.set(1.55);
+    this.goal.set('maintain');
+    this.isWorkoutDay.set(false);
+    this.isNutritionCompleteToday.set(false);
+    this.dailyMeals.set([]);
+  }
+
   public consumedMacros = computed(() => {
     return this.dailyMeals().reduce((acc, meal) => {
       acc.protein += (Number(meal.protein) || 0);
@@ -76,10 +93,13 @@ export class NutricionService {
    // "Solo carga el código para leer documentos cuando realmente alguien vaya a consultar su perfil". 
    // Esto hace que tu app arranque mucho más rápido en el móvil
     const { doc, getDoc } = await import('@angular/fire/firestore');
-   const colRef = collection(this.firestore, 'user_nutrition');
   // Aquí lo ideal es que el documento tenga como ID el UID del usuario
   const docRef = doc(this.firestore, `user_nutrition/${userId}`);
   const snap = await getDoc(docRef);
+
+  if (this.auth.currentUser?.uid !== userId) {
+    return;
+  }
 
   if (snap.exists()) {
     const data = snap.data();
@@ -100,7 +120,7 @@ export class NutricionService {
 
     if (!w || !h || !a) return 0;
 
-    if (this.gender() === 'male') {
+    if (this.gender() !== 'female') {
       return (10 * w) + (6.25 * h) - (5 * a) + 5;
     } else {
       return (10 * w) + (6.25 * h) - (5 * a) - 161;
@@ -145,7 +165,8 @@ export class NutricionService {
   );
 
  
-  collectionData(q, { idField: 'id' }).subscribe((data) => {
+  this.dailyMealsSubscription?.unsubscribe();
+  this.dailyMealsSubscription = collectionData(q, { idField: 'id' }).subscribe((data) => {
    
     this.dailyMeals.set(data as FoodEntry[]);
     console.log('Comidas del día cargadas:', data);

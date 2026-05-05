@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { NutricionService } from '../services/nutricion.service';
@@ -36,6 +36,18 @@ export class NutricionComponent implements OnInit {
 
   ngOnInit() {
     this.syncFormWithService();
+
+    effect(() => {
+      this.nutricionSvc.age();
+      this.nutricionSvc.weight();
+      this.nutricionSvc.height();
+      this.nutricionSvc.gender();
+      this.nutricionSvc.goal();
+
+      if (!this.isEditing) {
+        this.syncFormWithService();
+      }
+    });
   }
 
   togglePresetMenu() {
