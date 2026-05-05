@@ -106,7 +106,6 @@
 
 .manual-group-selector {
   position: relative;
-  z-index: 20;
 }
 
 .form-select-like {
@@ -114,11 +113,24 @@
   background: #ffffff;
   color: #334155;
   min-height: 42px;
+  border: 1px solid #cbd5e1;
+  box-shadow: inset 0 -2px 0 rgba(148, 163, 184, 0.35);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 
 .manual-name-input {
   border-radius: 12px;
   border: 1px solid #e2e8f0;
+  background: #ffffff;
+  box-shadow: inset 0 -2px 0 rgba(148, 163, 184, 0.35);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.manual-name-input:focus,
+.form-select-like:focus,
+.exercise-list .form-control:focus {
+  border-color: #2dd4bf !important;
+  box-shadow: inset 0 -2px 0 rgba(45, 212, 191, 0.9), 0 0 0 0.2rem rgba(45, 212, 191, 0.14) !important;
 }
 
 .manual-group-menu {
@@ -202,6 +214,50 @@
   border: none;
 }
 
+.exercise-delete-btn {
+  color: #dc2626;
+  opacity: 0.8;
+}
+
+.exercise-delete-btn:hover {
+  opacity: 1;
+}
+
+.exercise-card-header {
+  background: #ffffff;
+}
+
+.exercise-card-body {
+  background: #ffffff;
+}
+
+.set-input-panel {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+}
+
+.set-history-item {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+.set-label {
+  color: #64748b;
+}
+
+.set-values {
+  color: #0f172a;
+}
+
+.set-history-remove {
+  color: #dc2626;
+  opacity: 0.85;
+}
+
+.set-history-remove:hover {
+  opacity: 1;
+}
+
 :host-context(.dark-mode) {
   --dm-bg-0: #0f172a;
   --dm-bg-1: #111827;
@@ -220,8 +276,7 @@
   box-shadow: 0 12px 26px rgba(0, 0, 0, 0.35);
 }
 
-:host-context(.dark-mode) .session-header-badge,
-:host-context(.dark-mode) .session-finish-action {
+:host-context(.dark-mode) .session-header-badge,.session-finish-action {
   background: var(--dm-bg-0);
   color: var(--dm-accent);
 }
@@ -233,94 +288,74 @@
   border: 1px solid var(--dm-border);
 }
 
-:host-context(.dark-mode) .library-toggle-btn.is-open,
-:host-context(.dark-mode) .library-dropdown,
-:host-context(.dark-mode) .library-dropdown-body,
-:host-context(.dark-mode) .manual-group-menu,
-:host-context(.dark-mode) .manual-group-option,
-:host-context(.dark-mode) .exercise-list .card,
-:host-context(.dark-mode) .exercise-list .card-body {
-  background: var(--dm-bg-0);
-}
+:host-context(.dark-mode) .library-toggle-btn.is-open,.library-dropdown,.library-dropdown-body,.manual-group-menu,.manual-group-option,.exercise-list .card
+ { background: var(--dm-bg-0);}
 
-:host-context(.dark-mode) .library-dropdown,
-:host-context(.dark-mode) .manual-group-menu,
-:host-context(.dark-mode) .exercise-list .card {
+:host-context(.dark-mode) .manual-group-menu,.exercise-list .card {
   border: 1px solid var(--dm-border);
 }
 
-:host-context(.dark-mode) .library-dropdown {
-  box-shadow: 0 18px 32px rgba(2, 8, 23, 0.45);
-}
+:host-context(.dark-mode) .library-dropdown {box-shadow: 0 18px 32px rgba(2, 8, 23, 0.45);}
 
 :host-context(.dark-mode) .manual-group-menu {
   box-shadow: 0 16px 30px rgba(15, 23, 42, 0.45);
 }
 
-:host-context(.dark-mode) .library-toggle-text,
-:host-context(.dark-mode) .manual-group-option {
-  color: #cbd5e1;
-}
+:host-context(.dark-mode) .library-toggle-text, .manual-group-option { color: #cbd5e1;}
 
-:host-context(.dark-mode) .library-toggle-btn.is-open .library-toggle-text,
-:host-context(.dark-mode) .manual-group-option:hover,
-:host-context(.dark-mode) .manual-group-option.is-selected {
-  color: #5eead4;
-}
+:host-context(.dark-mode) .library-toggle-btn.is-open .library-toggle-text, .manual-group-option:hover, .manual-group-option.is-selected {
+  color: #5eead4;}
 
-:host-context(.dark-mode) .muscle-group-label,
-:host-context(.dark-mode) .manual-name-input::placeholder,
-:host-context(.dark-mode) .exercise-list .form-control::placeholder,
-:host-context(.dark-mode) .exercise-list .small.text-muted {
-  color: var(--dm-muted) !important;
-}
+:host-context(.dark-mode) .muscle-group-label,.manual-name-input::placeholder, .exercise-list .form-control::placeholder,
+ .exercise-list .small.text-muted {color: var(--dm-muted) !important;}
 
-:host-context(.dark-mode) .manual-name-input,
-:host-context(.dark-mode) .form-select-like {
-  background: var(--dm-bg-2);
+:host-context(.dark-mode) .manual-name-input,.form-select-like {
+  background: #1f2d43;
   color: var(--dm-text);
-  border: 1px solid var(--dm-border) !important;
+  border: 1px solid #4b5e79 !important;
+  box-shadow: inset 0 -2px 0 rgba(100, 116, 139, 0.85);
 }
 
-:host-context(.dark-mode) .manual-group-option + .manual-group-option {
-  border-top-color: var(--dm-bg-2);
-}
+:host-context(.dark-mode) .manual-group-option + .manual-group-option {border-top-color: var(--dm-bg-2);}
 
-:host-context(.dark-mode) .manual-group-option:hover {
-  background: #132f2b;
-}
+:host-context(.dark-mode) .manual-group-option:hover {background: #132f2b;}
 
-:host-context(.dark-mode) .manual-group-option.is-selected {
-  background: rgba(45, 212, 191, 0.18);
-}
+:host-context(.dark-mode) .manual-group-option.is-selected {background: rgba(45, 212, 191, 0.18);}
 
-:host-context(.dark-mode) .manual-add-btn {
-  box-shadow: 0 10px 18px rgba(13, 148, 136, 0.22) !important;
-}
+:host-context(.dark-mode) .manual-add-btn { box-shadow: 0 10px 18px rgba(13, 148, 136, 0.22) !important;}
 
-:host-context(.dark-mode) .library-exercise-btn {
-  box-shadow: 0 8px 18px rgba(2, 8, 23, 0.28) !important;
-}
+:host-context(.dark-mode) .library-exercise-btn {box-shadow: 0 8px 18px rgba(2, 8, 23, 0.28) !important;}
 
-:host-context(.dark-mode) .library-exercise-btn:hover {
-  box-shadow: 0 12px 24px rgba(2, 8, 23, 0.38);
-}
+:host-context(.dark-mode) .library-exercise-btn:hover {box-shadow: 0 12px 24px rgba(2, 8, 23, 0.38);}
 
-:host-context(.dark-mode) .exercise-list .card-header {
-  background: var(--dm-bg-1) !important;
-  border-bottom: 1px solid var(--dm-border) !important;
-}
+:host-context(.dark-mode) .exercise-list .card-header {background: var(--dm-bg-1) !important;border-bottom: 1px solid var(--dm-border) !important;}
 
-:host-context(.dark-mode) .exercise-list .card-header .text-dark {
+:host-context(.dark-mode) .exercise-card-header,.exercise-card-body {background: var(--dm-bg-1) !important;}
+
+:host-context(.dark-mode) .set-input-panel {background: #1e293b;border: 1px solid #334155;}
+
+:host-context(.dark-mode) .set-history-item {background: #23324a; color: #f8fafc;}
+
+:host-context(.dark-mode) .set-label {color: #cbd5e1;}
+
+:host-context(.dark-mode) .set-values { color: #f8fafc;}
+
+:host-context(.dark-mode) .set-history-remove {color: #fb7185;}
+
+:host-context(.dark-mode) .exercise-list .card-header .text-dark {color: var(--dm-text) !important;}
+
+:host-context(.dark-mode) .exercise-delete-btn {color: #f87171;opacity: 0.95;}
+
+:host-context(.dark-mode) .exercise-delete-btn:hover {color: #ef4444;}
+
+:host-context(.dark-mode) .exercise-list .input-group-text,.exercise-list .form-control {
+  background: #0f1b30 !important;
   color: var(--dm-text) !important;
+  border-color: #334155 !important;
+  box-shadow: inset 0 -2px 0 rgba(71, 85, 105, 0.8);
 }
 
-:host-context(.dark-mode) .exercise-list .bg-light {
-  background: var(--dm-bg-2) !important;
-}
-
-:host-context(.dark-mode) .exercise-list .input-group-text,
-:host-context(.dark-mode) .exercise-list .form-control {
-  background: var(--dm-bg-1) !important;
-  color: var(--dm-text) !important;
+:host-context(.dark-mode) .manual-name-input:focus,.form-select-like:focus,.exercise-list .form-control:focus {
+  border-color: #2dd4bf !important;
+  box-shadow: inset 0 -2px 0 rgba(45, 212, 191, 1), 0 0 0 0.2rem rgba(45, 212, 191, 0.18) !important;
 }

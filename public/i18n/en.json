@@ -20,6 +20,8 @@
         "WELCOME_BACK": "Welcome back!",
         "SUBTITLE": "Let's crush your fitness goals together.",
         "QUICK_START": "Quick Start",
+        "COMPLETE_PROFILE": "Complete Profile",
+        "MY_DIET": "My Diet",
         "NEW_SESSION": "New Session",
         "VIEW_HISTORY": "View History",
         "THIS_WEEK": "THIS WEEK",
@@ -58,6 +60,67 @@
             "GREAT_START 🔥": "Great start... keep it up! 🔥",
             "YOU_RE_ON_FIRE ⚡": "You're on fire! ⚡",
             "UNSTOPPABLE 🏆": "Unstoppable! Weekly goal achieved 🏆"
+        }
+    },
+
+    "EXERCISES": {
+        "STATUS": {
+            "ACTIVE": "ACTIVE SESSION",
+            "COMPLETED": "COMPLETED SESSION"
+        },
+        "TITLE": "Exercise Library",
+        "TITLES": {
+            "TODAY": "Today's Workout"
+        },
+
+        "BUTTONS": {
+            "FINISH": "Finish",
+            "ADD_LIBRARY": "Add Exercise from Library",
+            "CHOOSE": "Choose an exercise",
+            "ADD": "Add",
+            "SET": "Set",
+            "DELETE": "Delete Exercise"
+        },
+        "PLACEHOLDERS": {
+            "MANUAL_NAME": "Enter exercise name..."
+        },
+        "NAMES": {
+            "BENCH_PRESS": "Bench Press",
+            "SQUAT": "Squat",
+            "DEADLIFT": "Deadlift",
+            "INCLINE_PRESS": "Incline  Press",
+            "CHEST_FLYS": "Chest Fly",
+            "ROWS": "Rows",
+            "LUNGE": "Lunge",
+            "LEG_PRESS": "Leg Press",
+            "PULL-UPS": "Pull-Ups",
+            "BICEP_CURL": "Biceps Curl",
+            "TRICEP_EXTENSION": "Triceps Extension",
+            "MILITARY_PRESS": "Military Press",
+            "LATERAL_RAISE": "Lateral Raise",
+            "PLANK": "Plank",
+            "CRUNCHES": "Crunches",
+            "LEG_RAISES": "Leg Raise",
+            "RUSSIAN_TWIST": "Russian Twist",
+            "OVERHEAD_PRESS": "Overhead Press",
+            "BARBELL_ROW": "Barbell Row"
+        },
+        "MUSCLE": {
+            "CHEST": "Chest",
+            "LEGS": "Legs",
+            "BACK": "Back",
+            "SHOULDERS": "Shoulders",
+            "ARMS": "Arms",
+            "CORE": "Core"
+        },
+        "LABELS": {
+            "KG": "Kg",
+            "REPS": "Reps",
+            "SET_LABEL": "Set"
+        },
+        "METRICS": {
+            "KG": "kg",
+            "REPS": "reps"
         }
     }
 }

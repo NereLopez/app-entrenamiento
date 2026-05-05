@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, FormArray, ReactiveFormsModule, Validators } fr
 import { CommonModule } from '@angular/common';
 import { EntrenamientoService } from '../services/entrenamiento.service';
 import { TranslateModule } from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-nueva-sesion',
@@ -13,6 +14,7 @@ import { TranslateModule } from '@ngx-translate/core';
 })
 export class NuevaSesionComponent implements OnInit, OnDestroy {
   private fb = inject(FormBuilder);
+  private translate = inject(TranslateService);
   public entrenamientoService = inject(EntrenamientoService); 
   
   public showLibrary = false;
@@ -38,8 +40,9 @@ export class NuevaSesionComponent implements OnInit, OnDestroy {
   ];
 
   constructor() {
+    const defaultTitle = this.translate.instant('EXERCISES.TITLES.TODAY');
     this.workoutForm = this.fb.group({
-      title: ["Today's Workout", Validators.required],
+      title: [defaultTitle, Validators.required],
       date: [new Date().toISOString().substring(0, 10), Validators.required],
       exercises: this.fb.array([]) 
     });
@@ -86,6 +89,20 @@ export class NuevaSesionComponent implements OnInit, OnDestroy {
     this.showManualGroupMenu = false;
   }
 
+  toggleLibrary() {
+    this.showLibrary = !this.showLibrary;
+    if (this.showLibrary) {
+      this.showManualGroupMenu = false;
+    }
+  }
+
+  toggleManualGroupMenu() {
+    this.showManualGroupMenu = !this.showManualGroupMenu;
+    if (this.showManualGroupMenu) {
+      this.showLibrary = false;
+    }
+  }
+
   addExercise(name: string, group: string = 'Default') {
     if (!name) return;
     /*let autoGroup = group;*/
@@ -117,6 +134,12 @@ export class NuevaSesionComponent implements OnInit, OnDestroy {
 
     this.exercises.push(exerciseGroup);
     this.showLibrary = false;
+  }
+
+  getExerciseDisplayName(name: string): string {
+    const key = 'EXERCISES.NAMES.' + name.replace(' ', '_').toUpperCase();
+    const translated = this.translate.instant(key);
+    return translated === key ? name : translated;
   }
 
   addSet(index: number, weight: any, reps: any) {

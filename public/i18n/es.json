@@ -20,6 +20,8 @@
         "WELCOME_BACK": "¡Bienvenido de nuevo!",
         "SUBTITLE": "Vamos a alcanzar tus objetivos de fitness juntos.",
         "QUICK_START": "Inicio rápido",
+        "COMPLETE_PROFILE": "Completar perfil",
+        "MY_DIET": "Mi dieta",
         "NEW_SESSION": "Nueva sesión",
         "VIEW_HISTORY": "Ver historial",
         "THIS_WEEK": "ESTA SEMANA",
@@ -57,5 +59,69 @@
             "YOU_RE_ON_FIRE ⚡": "¡Estás a tope! ⚡",
             "UNSTOPPABLE 🏆": "¡Imparable! Objetivo cumplido 🏆"
         }
+    },
+
+    "EXERCISES": {
+        "STATUS": {
+            "ACTIVE": "Sesión activa",
+            "COMPLETED": "Sesión completada"
+        },
+        "TITLE": "Biblioteca de ejercicios",
+        "TITLES": {
+                "TODAY": "Entrenamiento de hoy"  
+            },
+    
+        "BUTTONS": {
+            "FINISH": "Finalizar",
+            "ADD_LIBRARY": "Añadir ejercicio de la biblioteca",
+            "CHOOSE": "Elige un ejercicio",
+            "ADD": "Añadir",
+            "SET": "Set",
+            "DELETE": "Eliminar ejercicio"
+        },
+        "PLACEHOLDERS": {
+            "MANUAL_NAME": "Escribe el nombre del ejercicio..."
+        },
+        "NAMES": {
+            "BENCH_PRESS": "Press de banca",
+            "INCLINE_PRESS": "Press de banca inclinado",
+            "CHEST_FLYS": "Aperturas",
+            "SQUAT": "Sentadillas",
+            "ROWS": "Remo",
+            "DEADLIFT": "Peso muerto",
+            "LUNGE": "Zancada",
+            "LEG_PRESS": "Prensa de piernas",
+            "MILITARY_PRESS": "Press militar",
+            "LATERAL_RAISE": "Elevaciones laterales",
+            "PLANK": "Plancha",
+            "CRUNCHES": "Abdominales",
+            "LEG_RAISES": "Elevaciones de piernas",
+            "RUSSIAN_TWIST": "Giros rusos",
+            "OVERHEAD_PRESS": "Press militar",
+            "BARBELL_ROW": "Remo con barra",
+            "PULL-UPS": "Dominadas",
+            "DIPS": "Fondos",
+            "BICEP_CURL": "Curl de bíceps",
+            "TRICEP_EXTENSION": "Extensión de tríceps"
+        },
+        "MUSCLE": {
+            "CHEST": "Pecho",
+            "LEGS": "Piernas",
+            "BACK": "Espalda",
+            "SHOULDERS": "Hombros",
+            "ARMS": "Brazos",
+            "CORE": "Core"
+        },
+        "LABELS": {
+            "KG": "Kg",
+            "REPS": "Reps",
+            "SET_LABEL": "Set"
+        },
+        "METRICS": {
+            "KG": "Kg",
+            "REPS": "Reps"
+        }
+        
+        }
     }
-}
+    
