@@ -6,19 +6,19 @@
       <div class="dashboard-view animate__animated animate__fadeIn">
         <div class="nutrition-header-actions">
           <button type="button" class="btn-edit-float" (click)="toggleEdit()">
-            <i class="bi bi-pencil-square me-1"></i> Edit Profile
+            <i class="bi bi-pencil-square me-1"></i> {{ 'NUTRITION.EDIT_PROFILE' | translate }}
           </button>
         </div>
         
         <div class="energy-header">
-          <p class="label">DAILY ENERGY TARGET</p>
+          <p class="label"> {{ 'NUTRITION.ENERGY.DAILY_TARGET' | translate }}</p>
           <h1>{{ nutricionSvc.targetCalories() }} <span class="unit">kcal</span></h1>
-          <div class="goal-badge">Goal: {{ nutricionSvc.goal() | titlecase }}</div>
+          <div class="goal-badge"> {{ 'NUTRITION.ENERGY.GOAL_LABEL' | translate:{ goal: (nutricionSvc.goal() === 'lose' ? ('NUTRITION.BIOMETRICS.GOAL_LOSE' | translate) : nutricionSvc.goal() === 'gain' ? ('NUTRITION.BIOMETRICS.GOAL_GAIN' | translate) : ('NUTRITION.BIOMETRICS.GOAL_MAINTAIN' | translate)) } }}</div>
 
           <div class="main-progress-container mx-auto mt-4" style="max-width: 500px;">
     <div class="d-flex justify-content-between mb-1" style="font-size: 0.85rem; opacity: 0.9;">
-      <span>Consumed: <strong>{{ nutricionSvc.caloriesConsumed() }}</strong></span>
-      <span>Remaining: <strong>{{ nutricionSvc.targetCalories() - nutricionSvc.caloriesConsumed() }}</strong></span>
+      <span>{{ 'NUTRITION.ENERGY.CONSUMED' | translate }} <strong>{{ nutricionSvc.caloriesConsumed() }}</strong></span>
+      <span>{{ 'NUTRITION.ENERGY.REMAINING' | translate }} <strong>{{ nutricionSvc.targetCalories() - nutricionSvc.caloriesConsumed() }}</strong></span>
     </div>
           <div class="custom-progress-bg">
       <div class="custom-progress-fill" 
@@ -28,20 +28,20 @@
     </div>
 
     <small class="d-block mt-2 opacity-75">
-      {{ ((nutricionSvc.caloriesConsumed() / (nutricionSvc.targetCalories() || 1)) * 100).toFixed(0) }}% of daily target
+      {{ ((nutricionSvc.caloriesConsumed() / (nutricionSvc.targetCalories() || 1)) * 100).toFixed(0) }} {{ 'NUTRITION.ENERGY.PERCENTAGE' | translate }} 
     </small>
   </div>
         </div>
 
         <div class="card meal-logger-card mt-4">
-          <h3><i class="bi bi-plus-circle me-2"></i>Log Today's Meal</h3>
+          <h3><i class="bi bi-plus-circle me-2"></i> {{ 'NUTRITION.MEAL_LOGGER.TITLE' | translate }}</h3>
           
    <div class="row g-2 align-items-end">
   <div class="col-12">
     
 
 
-<label class="meal-label">Food Preset</label>
+<label class="meal-label">{{ 'NUTRITION.MEAL_LOGGER.FOOD_PRESET' | translate }}</label>
 
 <div class="preset-accordion-container mb-3">
   @for (cat of categories; track cat) {
@@ -54,8 +54,8 @@
             <i [ngClass]="categoryIconClass(cat)"></i>
           </span>
           <span class="preset-group-text">
-            <strong>{{ cat | titlecase }}</strong>
-            <small>Choose a preset meal</small>
+            <strong>{{ 'NUTRITION.MEAL_TYPES.' + cat.toUpperCase() | translate }}</strong>
+            <small>{{ 'NUTRITION.MEAL_LOGGER.CHOOSE_PRESET' | translate }}</small>
           </span>
         </span>
         <i class="bi preset-group-chevron" [class.bi-chevron-down]="activeCategory !== cat" [class.bi-chevron-up]="activeCategory === cat"></i>
@@ -68,7 +68,7 @@
                     class="preset-item {{food.type}}" 
                     (click)="selectPreset(food, foodName, foodCals, fP, fC, fF, foodType)">
               <i class="me-2" [ngClass]="mealIconClass(food.type)"></i>
-              {{ food.name }}
+              {{ food.name | translate }}
             </button>
           }
         </div>
@@ -80,19 +80,19 @@
   </div>
 
   <div class="col-md-5">
-    <input #foodName type="text" class="form-control meal-name-input" placeholder="What did you eat?">
+    <input #foodName type="text" class="form-control meal-name-input" [placeholder]=" 'NUTRITION.MEAL_LOGGER.PLACEHOLDER_NAME' | translate ">
   </div>
 
   <div class="col-md-3">
-    <input #foodCals type="number" class="form-control meal-name-input" placeholder="kcal">
+    <input #foodCals type="number" class="form-control meal-name-input" [placeholder]=" 'NUTRITION.MEAL_LOGGER.PLACEHOLDER_CALORIES' | translate ">
   </div>
 
   <div class="col-md-4">
     <select #foodType class="form-select meal-type-select" (change)="onMealTypeChange(foodType.value)">
-      <option value="breakfast">Breakfast</option>
-      <option value="lunch">Lunch</option>
-      <option value="dinner">Dinner</option>
-      <option value="snack">Snack</option>
+      <option value="breakfast">{{ 'NUTRITION.MEAL_TYPES.BREAKFAST' | translate }}</option>
+      <option value="lunch">{{ 'NUTRITION.MEAL_TYPES.LUNCH' | translate }}</option>
+      <option value="dinner">{{ 'NUTRITION.MEAL_TYPES.DINNER' | translate }}</option>
+      <option value="snack">{{ 'NUTRITION.MEAL_TYPES.SNACK' | translate }}</option>
     </select>
   </div>
 </div>
@@ -100,19 +100,19 @@
   <div class="col-4">
     <div class="input-group mb-0">
       <span class="input-group-text badge-protein">P</span>
-      <input #fP type="number" class="form-control" placeholder="protein">
+      <input #fP type="number" class="form-control" [placeholder]=" 'NUTRITION.MEAL_LOGGER.PLACEHOLDER_PROTEIN' | translate ">
     </div>
   </div>
   <div class="col-4">
     <div class="input-group mb-0">
       <span class="input-group-text badge-carbs">C</span>
-      <input #fC type="number" class="form-control" placeholder="carbs">
+      <input #fC type="number" class="form-control" [placeholder]=" 'NUTRITION.MEAL_LOGGER.PLACEHOLDER_CARBS' | translate ">
     </div>
   </div>
   <div class="col-4">
     <div class="input-group mb-0">
       <span class="input-group-text badge-fats">F</span>
-      <input #fF type="number" class="form-control" placeholder="fats">
+      <input #fF type="number" class="form-control" [placeholder]=" 'NUTRITION.MEAL_LOGGER.PLACEHOLDER_FATS' | translate ">
     </div>
   </div>
 </div>
@@ -120,7 +120,7 @@
           <button type="button" class="btn btn-success w-100 mt-3" 
             (click)="addMeal(foodName.value, +foodCals.value, foodType.value, +fP.value, +fC.value, +fF.value); 
                      foodName.value=''; foodCals.value=''; fP.value=''; fC.value=''; fF.value='';" [disabled]="nutricionSvc.isLoading()">
-                      Add Meal
+                      {{ 'NUTRITION.FORM.ADD_MEAL' | translate }}
           </button>
 
           <div class="meal-list mt-3">
@@ -134,8 +134,8 @@
                     'bi bi-cup-hot-fill text-secondary': meal.type === 'snack'
                   }"></i>
                   <div>
-                    <strong>{{ meal.name }}</strong>
-                    <small class="text-muted d-block" style="text-transform: capitalize">{{ meal.type }}</small>
+                    <strong>{{ meal.name | translate }}</strong>
+                    <small class="text-muted d-block" style="text-transform: capitalize">{{ 'NUTRITION.MEAL_TYPES.' + meal.type.toUpperCase() | translate }}</small>
                   </div>
                 </div>
                 <div class="d-flex align-items-center gap-3">
@@ -146,23 +146,23 @@
                 </div>
               </div>
             } @empty {
-              <p class="text-muted text-center mt-2">No meals logged yet today.</p>
+              <p class="text-muted text-center mt-2">{{ 'NUTRITION.MEAL_LOGGER.NO_MEALS' | translate }}</p>
             }
           </div>
         </div>
 
         <div class="dashboard-grid mt-4">
           <div class="card biometrics-card">
-            <h3>Biometrics & Goal</h3>
+            <h3>{{ 'NUTRITION.BIOMETRICS.TITLE' | translate }}</h3>
             <div class="metric-row">
-              <span>Weight</span>
+              <span>{{ 'NUTRITION.BIOMETRICS.WEIGHT' | translate }}</span>
               <span class="value-highlight">{{ nutricionSvc.weight() || '--' }} kg</span>
             </div>
             <input type="range" class="weight-slider" [value]="nutricionSvc.weight()" (input)="onWeightSliderChange($event)" min="30" max="250">
 
             <div class="metric-row interactive-controls mt-3">
               <div class="mini-control">
-                <span class="label-sm">Age</span>
+                <span class="label-sm">{{ 'NUTRITION.BIOMETRICS.AGE' | translate }}</span>
                 <div class="button-group">
                   <button type="button" (click)="adjust('age', -1)">-</button>
                   <strong>{{ nutricionSvc.age() || '--' }}</strong>
@@ -170,7 +170,7 @@
                 </div>
               </div>
               <div class="mini-control">
-                <span class="label-sm">Height</span>
+                <span class="label-sm">{{ 'NUTRITION.BIOMETRICS.HEIGHT' | translate }}</span>
                 <div class="button-group">
                   <button type="button" (click)="adjust('height', -1)">-</button>
                   <strong>{{ nutricionSvc.height() || '--' }}</strong>
@@ -180,22 +180,22 @@
             </div>
 
             <div class="goal-selector-mini mt-3">
-              <p>Current Strategy:</p>
+              <p>{{ 'NUTRITION.BIOMETRICS.CURRENT_STRATEGY' | translate }}</p>
               <div class="badge" [ngClass]="nutricionSvc.goal()">
-                {{ nutricionSvc.goal() === 'lose' ? 'Fat Loss' : 
-                   nutricionSvc.goal() === 'gain' ? 'Muscle Gain' : 'Maintenance' }}
+                {{ nutricionSvc.goal() === 'lose' ? ('NUTRITION.BIOMETRICS.GOAL_FAT_LOSS' | translate) : 
+                   nutricionSvc.goal() === 'gain' ? ('NUTRITION.BIOMETRICS.GOAL_MUSCLE_GAIN' | translate) : ('NUTRITION.BIOMETRICS.GOAL_MAINTENANCE' | translate) }}
               </div>
             </div>
           </div>
 
           <div class="card macros-card">
-            <h3>Macronutrient Split</h3>
+            <h3>{{ 'NUTRITION.MACROS.TITLE' | translate }}</h3>
 
             <div class="macro-item protein">
               <div class="macro-header-row">
                 <div class="macro-text">
                   <i class="bi bi-circle-fill me-2" style="color: #0d9488; font-size: 0.6rem;"></i>
-                  <strong>Protein</strong><small>Muscle repair</small></div>
+                  <strong>{{ 'NUTRITION.MACROS.PROTEIN' | translate }}</strong><small>{{ 'NUTRITION.MACROS.PROTEIN_DESC' | translate }}</small></div>
                 <span class="macro-gram">{{ nutricionSvc.consumedMacros().protein }}g / {{ nutricionSvc.macros().protein }}g</span>
               </div>
 
@@ -208,7 +208,7 @@
               <div class="macro-header-row">
                 <div class="macro-text">
                   <i class="bi bi-circle-fill me-2" style="color: #256ebc; font-size: 0.6rem;"></i>
-                  <strong>Carbs</strong><small>Energy source</small></div>
+                  <strong>{{ 'NUTRITION.MACROS.CARBS' | translate }}</strong><small>{{ 'NUTRITION.MACROS.CARBS_DESC' | translate }}</small></div>
                 <span class="macro-gram">{{ nutricionSvc.consumedMacros().carbs }}g / {{ nutricionSvc.macros().carbs }}g</span>
               </div>
               <div class="progress-container">
@@ -220,7 +220,7 @@
               <div class="macro-header-row">
                 <div class="macro-text">
                   <i class="bi bi-circle-fill me-2" style="color: #d97706; font-size: 0.6rem;"></i>
-                  <strong>Fats</strong><small>Hormonal health</small></div>
+                  <strong>{{ 'NUTRITION.MACROS.FATS' | translate }}</strong><small>{{ 'NUTRITION.MACROS.FATS_DESC' | translate }}</small></div>
                 <span class="macro-gram">{{ nutricionSvc.consumedMacros().fats }}g / {{ nutricionSvc.macros().fats }}g</span>
               </div>
               <div class="progress-container">
@@ -236,58 +236,58 @@
           <div class="icon-circle mb-3">
             <i class="bi bi-person-gear"></i>
           </div>
-          <h2>Profile Settings</h2>
-          <p class="text-muted">Update your biometrics to recalculate targets</p>
+          <h2>{{ 'NUTRITION.PROFILE.TITLE' | translate }}</h2>
+          <p class="text-muted">{{ 'NUTRITION.PROFILE.DESCRIPTION' | translate }}</p>
         </div>
 
         <div class="nutrition-form">
           <div class="row">
             <div class="col-md-6 mb-3">
               <div class="form-group custom-input">
-                <label>Age</label>
+                <label>{{ 'NUTRITION.BIOMETRICS.AGE' | translate }}</label>
                 <input type="number" class="form-control" formControlName="age">
               </div>
             </div>
             <div class="col-md-6 mb-3">
               <div class="form-group custom-input">
-                <label>Weight (kg)</label>
+                <label>{{ 'NUTRITION.BIOMETRICS.WEIGHT' | translate }}</label>
                 <input type="number" class="form-control" formControlName="weight">
               </div>
             </div>
           </div>
 
           <div class="form-group custom-input mb-3">
-            <label>Height (cm)</label>
+            <label>{{ 'NUTRITION.BIOMETRICS.HEIGHT' | translate }}</label>
             <input type="number" class="form-control" formControlName="height">
           </div>
 
           <div class="form-group custom-input mb-3">
-            <label>Gender</label>
+            <label>{{ 'NUTRITION.BIOMETRICS.GENDER' | translate }}</label>
             <select class="form-select" formControlName="gender">
-              <option value="male">Male</option>
-              <option value="female">Female</option>
+              <option value="male">{{ 'NUTRITION.BIOMETRICS.GENDER_MALE' | translate }}</option>
+              <option value="female">{{ 'NUTRITION.BIOMETRICS.GENDER_FEMALE' | translate }}</option>
             </select>
           </div>
 
           <div class="form-group custom-input mb-3">
-            <label>Fitness Goal</label>
+            <label>{{ 'NUTRITION.PROFILE.FITNESS_GOAL' | translate }}</label>
             <select class="form-select" formControlName="goal">
-              <option value="lose">Lose Weight</option>
-              <option value="maintain">Maintain Weight</option>
-              <option value="gain">Gain Muscle</option>
+              <option value="lose">{{ 'NUTRITION.BIOMETRICS.GOAL_LOSE' | translate }}</option>
+              <option value="maintain">{{ 'NUTRITION.BIOMETRICS.GOAL_MAINTAIN' | translate }}</option>
+              <option value="gain">{{ 'NUTRITION.BIOMETRICS.GOAL_GAIN' | translate }}</option>
             </select>
           </div>
 
           <div class="form-actions-stack mt-4">
             <button type="submit" [disabled]="form.invalid || isSaving()" class="btn-submit-main">
               @if (isSaving()) {
-                <span class="spinner-border spinner-border-sm me-2"></span> Saving...
+                <span class="spinner-border spinner-border-sm me-2"></span> {{ 'NUTRITION.PROFILE.SAVING' | translate }}
               } @else {
-                <i class="bi bi-check-circle me-2"></i> Update Profile
+                <i class="bi bi-check-circle me-2"></i> {{ 'NUTRITION.PROFILE.UPDATE' | translate }}
               }
             </button>
             <button type="button" (click)="toggleEdit()" class="btn-cancel-outline">
-              Discard Changes
+              {{ 'NUTRITION.PROFILE.DISCARD' | translate }}
             </button>
           </div>
         </div>

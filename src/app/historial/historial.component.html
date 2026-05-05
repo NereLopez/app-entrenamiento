@@ -5,14 +5,14 @@
         <div class="icon-box shadow-sm me-3 p-2 rounded-3" style="background-color: #0d9488;">
           <i class="bi bi-graph-up-arrow text-white fs-4"></i>
         </div>
-        <h2 class="fw-bold m-0 ">My Progress</h2>
+        <h2 class="fw-bold m-0 "> {{ 'HISTORY.MY_PROGRESS' | translate }}</h2>
         <div class="streak-pill ms-3">
           <i class="bi bi-fire"></i>
-          {{ currentStreak }} day streak
+          {{ currentStreak }} {{ 'HISTORY.DAY_STREAK' | translate }}
         </div>
       </div>
       <p class="text-muted small mb-0 mt-2 ms-5 history-subtitle">
-        You have completed <strong>{{ groupedWorkouts.length }}</strong> days of training.
+        {{ 'HISTORY.DAYS_TRAINING_MSG' | translate:{ count: groupedWorkouts.length } }}
       </p>
     </div>
     
@@ -23,7 +23,7 @@
           [class.text-white]="currentMetric === 'Volume'"
           [class.text-dark]="currentMetric !== 'Volume'"
           class="btn btn-sm rounded-pill px-3 border-0 transition-all fw-bold">
-        Volume
+        {{ 'HISTORY.METRICS.VOLUME' | translate }}
       </button>
 
       <button type="button"
@@ -32,7 +32,7 @@
           [class.text-white]="currentMetric === 'Frequency'"
           [class.text-dark]="currentMetric !== 'Frequency'"
           class="btn btn-sm rounded-pill px-3 border-0 transition-all fw-bold">
-        Frequency
+        {{ 'HISTORY.METRICS.FREQUENCY' | translate }}
       </button>
     </div>
   </div>
@@ -42,7 +42,7 @@
       <div class="card border-0 shadow-lg rounded-4 overflow-hidden bg-white h-100">
         <div class="card-header bg-white border-0 pt-4 px-4">
           <h6 class="text-uppercase text-muted fw-bold small ls-1"> 
-            {{ currentMetric === 'Volume' ? 'Volume Evolution (kg)' : 'Workout Frequency' }}
+            {{ currentMetric === 'Volume' ? ('HISTORY.METRICS.VOLUME_EVOLUTION' | translate) : ('HISTORY.METRICS.WORKOUT_FREQ' | translate) }}
           </h6>
         </div>
         <div class="card-body px-4 pb-4">
@@ -56,21 +56,21 @@
     <div class="col-lg-4 d-flex flex-column gap-4">
       <div class="card border-0 shadow-lg rounded-4 pr-card text-white p-4 text-center"
       style="background: linear-gradient(45deg, #0d9488, #115e59); position: relative; overflow: hidden;">
-        <h6 class="opacity-75 fw-bold text-uppercase small ls-1 mb-2">Personal Record</h6>
+        <h6 class="opacity-75 fw-bold text-uppercase small ls-1 mb-2">{{ 'HISTORY.CARDS.PERSONAL_RECORD' | translate }}</h6>
         <div class="d-flex align-items-center justify-content-center">
           <span class="display-4 fw-bold">{{ getDaysTrainedThisMonth() }}</span>
-          <span class="fs-4 ms-2">days</span>
+          <span class="fs-4 ms-2">{{ 'HISTORY.CARDS.DAYS' | translate }}</span>
         </div>
         <div class="mt-2">
           <span class="small bg-white bg-opacity-25 rounded-pill py-1 px-3 d-inline-block">
-            <i class="bi bi-trophy-fill me-1 text-warning"></i> Your best lift!
+            <i class="bi bi-trophy-fill me-1 text-warning"></i> {{ 'HISTORY.CARDS.BEST_LIFT' | translate }}
           </span>
         </div>
         <i class="bi bi-trophy-fill position-absolute end-0 bottom-0 m-3 opacity-25 fs-1"></i>
       </div>
 
       <div class="card border-0 shadow-lg rounded-4 p-4 bg-white flex-grow-1">
-        <h6 class="text-uppercase text-muted fw-bold small ls-1 mb-3">Muscle Split</h6>
+        <h6 class="text-uppercase text-muted fw-bold small ls-1 mb-3">{{ 'HISTORY.CARDS.MUSCLE_SPLIT' | translate }}</h6>
         <div style="height: 220px; position: relative;">
           <canvas #muscleChart></canvas>
         </div>
@@ -81,7 +81,7 @@
   <div class="mt-5">
     <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
       <h5 class="fw-bold mb-0 text-secondary d-flex align-items-center">
-        <i class="bi bi-calendar-check me-2" style="color: #0d9488;"></i> Workout Calendar
+        <i class="bi bi-calendar-check me-2" style="color: #0d9488;"></i> {{ 'HISTORY.CALENDAR.TITLE' | translate }}
       </h5>
 
       <div class="calendar-nav">
@@ -99,7 +99,7 @@
       <div class="card border-0 shadow-sm rounded-4 calendar-panel">
         <div class="calendar-weekdays">
           @for (weekday of ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']; track $index) {
-            <span>{{ weekday }}</span>
+            <span>{{ 'HISTORY.CALENDAR.WEEKDAYS.' + weekday | translate }}</span>
           }
         </div>
 
@@ -118,7 +118,7 @@
                 <span class="day-number">{{ day.dayNumber }}</span>
                 <div class="calendar-markers">
                   @if (day.nutrition?.complete) {
-                    <span class="nutrition-check" title="Nutrition target reached">
+                    <span class="nutrition-check" [title]=" 'HISTORY.CALENDAR.TOOLTIP_NUTRITION' | translate ">
                       <i class="bi bi-apple"></i>
                     </span>
                   }
@@ -144,15 +144,15 @@
         @if (selectedCalendarSession) {
           <div class="selected-day-header">
             <div>
-              <p class="selected-day-label">Selected day</p>
-              <h5 class="fw-bold mb-1">{{ selectedCalendarSession.displayDate | date:'EEEE, d MMMM' }}</h5>
-              <p class="text-muted mb-0">{{ selectedCalendarSession.allExercises.length }} exercises logged</p>
+              <p class="selected-day-label">{{ 'HISTORY.CALENDAR.SELECTED_DAY' | translate }}</p>
+              <h5 class="fw-bold mb-1">{{ selectedCalendarSession.displayDate | date:'EEEE, d MMMM' : '' : 'es' }}</h5>
+              <p class="text-muted mb-0">{{ selectedCalendarSession.allExercises.length }} {{ 'HISTORY.CALENDAR.EXERCISES_LOGGED' | translate }}</p>
             </div>
 
             <div class="selected-day-actions">
               @if (selectedCalendarNutrition?.complete) {
                 <div class="nutrition-badge">
-                  <i class="bi bi-apple me-1"></i> Nutrition done
+                  <i class="bi bi-apple me-1"></i> {{ 'HISTORY.NUTRITION_DONE' | translate }}
                 </div>
               }
               <div class="selected-day-volume">{{ calculateVolume(selectedCalendarSession) }} kg</div>
@@ -187,8 +187,8 @@
         } @else {
           <div class="empty-history-state">
             <i class="bi bi-calendar-x fs-1 mb-3"></i>
-            <h6 class="fw-bold mb-2">No training logged this month</h6>
-            <p class="text-muted mb-0">Pick another month or complete a workout to see it appear here.</p>
+            <h6 class="fw-bold mb-2">{{ 'HISTORY.CALENDAR.NO_TRAINING' | translate }}</h6>
+            <p class="text-muted mb-0">{{ 'HISTORY.CALENDAR.PICK_MONTH' | translate }}</p>
           </div>
         }
       </div>

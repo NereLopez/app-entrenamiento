@@ -34,7 +34,6 @@
         "NO_ACTIVITY": "No activity yet",
         "LAST_EXERCISE": "Last Exercise",
         "WORKOUT_SESSION": "Workout Session"
-
     },
     "INSTALL": {
         "TITLE": "Install Kinetic App",
@@ -45,8 +44,7 @@
     },
     "FINISH_BTN": "Finish",
     "ADD_LIBRARY": "Add Exercise from Library",
-    "CHOOSE_EXE": "Choose an exercise", 
-
+    "CHOOSE_EXE": "Choose an exercise",
     "CALENDAR": {
         "PROGRESS_OF": "{{name}}'s Progress",
         "WEEKLY_ACTIVITY": "Weekly Activity",
@@ -62,7 +60,100 @@
             "UNSTOPPABLE 🏆": "Unstoppable! Weekly goal achieved 🏆"
         }
     },
-
+    "NUTRITION": {
+        "EDIT_PROFILE": "Edit Profile",
+        "ENERGY": {
+            "DAILY_TARGET": "Daily energy target",
+            "GOAL_LABEL": "Goal: {{goal}}",
+            "CONSUMED": "Consumed:",
+            "REMAINING": "Remaining:",
+            "PERCENTAGE": "% of daily target"
+        },
+        "MEAL_LOGGER": {
+            "TITLE": "Log today's meal",
+            "FOOD_PRESET": "Food Preset",
+            "CHOOSE_PRESET": "Choose a preset meal",
+            "PLACEHOLDER_NAME": "What did you eat?",
+            "PLACEHOLDER_CALORIES": "kcal",
+            "PLACEHOLDER_PROTEIN": "protein",
+            "PLACEHOLDER_CARBS": "carbs",
+            "PLACEHOLDER_FATS": "fats",
+            "NO_MEALS": "No meals logged yet today."
+        },
+        "PRESET": {
+            "Oatmeal (1 serving)": "Oatmeal (1 serving)",
+            "Greek Yogurt + Berries": "Greek Yogurt + Berries",
+            "2 Eggs + Toast": "2 Eggs + Toast",
+            "Protein Pancakes": "Protein Pancakes",
+            "Avocado Toast": "Avocado Toast",
+            "Smoothie Bowl": "Smoothie Bowl",
+            "Coffee + Milk": "Coffee + Milk",
+            "Green Tea": "Green Tea",
+            "Grilled Chicken Salad": "Grilled Chicken Salad",
+            "Turkey Sandwich": "Turkey Sandwich",
+            "Rice + Chicken Bowl": "Rice + Chicken Bowl",
+            "Tuna Wrap": "Tuna Wrap",
+            "Pasta + Lean Beef": "Pasta + Lean Beef",
+            "Quinoa Salad with Chickpeas": "Quinoa Salad with Chickpeas",
+            "Veggie Burger + Sweet Potato Fries": "Veggie Burger + Sweet Potato Fries",
+            "Chicken Caesar Wrap": "Chicken Caesar Wrap",
+            "Salmon with Quinoa": "Salmon with Quinoa",
+            "Steak + Potatoes": "Steak + Potatoes",
+            "Chicken Stir Fry": "Chicken Stir Fry",
+            "Shrimp Rice Bowl": "Shrimp Rice Bowl",
+            "Veggie Omelette + Salad": "Veggie Omelette + Salad",
+            "Banana (1 medium)": "Banana (1 medium)",
+            "Apple (1 medium)": "Apple (1 medium)",
+            "Almonds (1 oz)": "Almonds (1 oz)",
+            "Greek Yogurt with Nuts": "Greek Yogurt with Nuts",
+            "Protein Shake": "Protein Shake",
+            "Cottage Cheese (150g)": "Cottage Cheese (150g)",
+            "Coffee + Protein Bar": "Coffee + Protein Bar",
+            "Hummus + Veggies": "Hummus + Veggies"
+        },
+        "FORM": {
+            "ADD_MEAL": "Add Meal"
+        },
+        "MEAL_TYPES": {
+            "BREAKFAST": "Breakfast",
+            "LUNCH": "Lunch",
+            "DINNER": "Dinner",
+            "SNACK": "Snack"
+        },
+        "BIOMETRICS": {
+            "TITLE": "Biometrics & Goal",
+            "WEIGHT": "Weight",
+            "AGE": "Age",
+            "HEIGHT": "Height",
+            "CURRENT_STRATEGY": "Current Strategy:",
+            "GOAL_FAT_LOSS": "Fat Loss",
+            "GOAL_MUSCLE_GAIN": "Muscle Gain",
+            "GOAL_MAINTENANCE": "Maintenance",
+            "GENDER": "Gender",
+            "GENDER_MALE": "Male",
+            "GENDER_FEMALE": "Female",
+            "GOAL_LOSE": "Lose Weight",
+            "GOAL_MAINTAIN": "Maintain Weight",
+            "GOAL_GAIN": "Gain Muscle"
+        },
+        "MACROS": {
+            "TITLE": "Macronutrient Split",
+            "PROTEIN": "Protein",
+            "PROTEIN_DESC": "Muscle repair",
+            "CARBS": "Carbs",
+            "CARBS_DESC": "Energy source",
+            "FATS": "Fats",
+            "FATS_DESC": "Hormonal health"
+        },
+        "PROFILE": {
+            "TITLE": "Profile Settings",
+            "DESCRIPTION": "Update your biometrics to recalculate targets",
+            "FITNESS_GOAL": "Fitness Goal",
+            "SAVING": "Saving...",
+            "UPDATE": "Update Profile",
+            "DISCARD": "Discard Changes"
+        }
+    },
     "EXERCISES": {
         "STATUS": {
             "ACTIVE": "ACTIVE SESSION",
@@ -72,7 +163,6 @@
         "TITLES": {
             "TODAY": "Today's Workout"
         },
-
         "BUTTONS": {
             "FINISH": "Finish",
             "ADD_LIBRARY": "Add Exercise from Library",
@@ -103,7 +193,6 @@
             "PLANK": "Plank",
             "CRUNCHES": "Crunches",
             "RUSSIAN_TWIST": "Russian Twist"
-           
         },
         "MUSCLE": {
             "CHEST": "Chest",
@@ -121,6 +210,45 @@
         "METRICS": {
             "KG": "kg",
             "REPS": "reps"
+        }
+    },
+    "HISTORY": {
+        "MY_PROGRESS": "My Progress",
+        "DAY_STREAK": "Day Streak",
+        "DAYS_TRAINING_MSG": "You have completed {{count}} days of training.",
+        "METRICS": {
+            "VOLUME": "Volume",
+            "FREQUENCY": "Frequency",
+            "VOLUME_EVOLUTION": "Volume Evolution (kg)",
+            "WORKOUT_FREQ": "Workout Frequency"
+        },
+        "CARDS": {
+            "PERSONAL_RECORD": "Personal Record",
+            "DAYS": "Days",
+            "BEST_LIFT": "Your Best Lift!",
+            "MUSCLE_SPLIT": "Muscle Distribution"
+        },
+        "CALENDAR": {
+            "TITLE": "Workout Calendar",
+            "SELECTED_DAY": "Selected Day",
+            "EXERCISES_LOGGED": "Exercises Logged",
+            "NUTRITION_DONE": "Nutrition Completed",
+            "NO_TRAINING": "No workouts logged this month",
+            "PICK_MONTH": "Pick another month or complete a workout to see it here.",
+            "TOOLTIP_NUTRITION": "Nutrition goal achieved",
+            "WEEKDAYS": {
+                "MON": "Mon",
+                "TUE": "Tue",
+                "WED": "Wed",
+                "THU": "Thu",
+                "FRI": "Fri",
+                "SAT": "Sat",
+                "SUN": "Sun"
+            }
+        },
+        "CONFIRMATIONS": {
+            "DELETE_SESSION": "Are you sure? This action cannot be undone.",
+            "DELETE_EXERCISE": "Delete {{exerciseName}}?"
         }
     }
 }

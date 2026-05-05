@@ -6,11 +6,12 @@ import { FoodPreset } from '../models/nutricion.model';
 import { FOOD_PRESETS } from '../data/food-presets';
 import { Router } from '@angular/router';
 import { DashboardService } from '../services/dashboard.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-nutricion',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, TranslateModule],
   templateUrl: './nutricion.component.html',
   styleUrl: './nutricion.component.css'
 })

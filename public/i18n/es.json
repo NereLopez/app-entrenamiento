@@ -60,7 +60,100 @@
             "UNSTOPPABLE 🏆": "¡Imparable! Objetivo cumplido 🏆"
         }
     },
-
+    "NUTRITION": {
+        "EDIT_PROFILE": "Editar perfil",
+        "ENERGY": {
+            "DAILY_TARGET": "Objetivo diario de energia",
+            "GOAL_LABEL": "Meta: {{goal}}",
+            "CONSUMED": "Consumido:",
+            "REMAINING": "Restante:",
+            "PERCENTAGE": "% del objetivo diario"
+        },
+        "MEAL_LOGGER": {
+            "TITLE": "Registrar comida de hoy",
+            "FOOD_PRESET": "Comidas predefinidas",
+            "CHOOSE_PRESET": "Elige una comida predefinida",
+            "PLACEHOLDER_NAME": "¿Qué comiste?",
+            "PLACEHOLDER_CALORIES": "kcal",
+            "PLACEHOLDER_PROTEIN": "proteína",
+            "PLACEHOLDER_CARBS": "carbohidratos",
+            "PLACEHOLDER_FATS": "grasas",
+            "NO_MEALS": "No hay comidas registradas hoy."
+        },
+        "PRESET": {
+            "Oatmeal (1 serving)": "Avena (1 porción)",
+            "Greek Yogurt + Berries": "Yogur griego + Bayas",
+            "2 Eggs + Toast": "Tostada + 2 Huevos ",
+            "Protein Pancakes": "Tortitas de proteína",
+            "Avocado Toast": "Tostada de aguacate",
+            "Smoothie Bowl": "Batido de frutas",
+            "Coffee + Milk": "Café + Leche",
+            "Green Tea": "Té verde",
+            "Grilled Chicken Salad": "Ensalada de pollo",
+            "Turkey Sandwich": "Sándwich de pavo",
+            "Rice + Chicken Bowl": "Arroz con pollo",
+            "Tuna Wrap": "Wrap de atún",
+            "Pasta + Lean Beef": "Pasta con carne magra",
+            "Quinoa Salad with Chickpeas": "Ensalada de quinoa con garbanzos",
+            "Veggie Burger + Sweet Potato Fries": "Hamburguesa vegetariana con boniato",
+            "Chicken Caesar Wrap": "Wrap de pollo",
+            "Salmon with Quinoa": "Salmón con quinoa",
+            "Steak + Potatoes": "Bistec con papas",
+            "Chicken Stir Fry": "Salteado de pollo",
+            "Shrimp Rice Bowl": "Arroz con camarones",
+            "Veggie Omelette + Salad": "Tortilla de verduras + Ensalada",
+            "Banana (1 medium)": "Banana (1 mediana)",
+            "Apple (1 medium)": "Manzana (1 mediana)",
+            "Almonds (1 oz)": "Almendras (1 oz)",
+            "Greek Yogurt with Nuts": "Yogur griego con nueces",
+            "Protein Shake": "Batido de proteína",
+            "Cottage Cheese (150g)": "Requesón (150g)",
+            "Coffee + Protein Bar": "Café + Barra de proteína",
+            "Hummus + Veggies": "Hummus + Verduras"
+        },
+        "FORM": {
+            "ADD_MEAL": "Añadir comida"
+        },
+        "MEAL_TYPES": {
+            "BREAKFAST": "Desayuno",
+            "LUNCH": "Almuerzo",
+            "DINNER": "Cena",
+            "SNACK": "Snack"
+        },
+        "BIOMETRICS": {
+            "TITLE": "Biometría y objetivo",
+            "WEIGHT": "Peso",
+            "AGE": "Edad",
+            "HEIGHT": "Altura",
+            "CURRENT_STRATEGY": "Estrategia actual:",
+            "GOAL_FAT_LOSS": "Pérdida de grasa",
+            "GOAL_MUSCLE_GAIN": "Ganancia muscular",
+            "GOAL_MAINTENANCE": "Mantenimiento",
+            "GENDER": "Género",
+            "GENDER_MALE": "Masculino",
+            "GENDER_FEMALE": "Femenino",
+            "GOAL_LOSE": "Perder peso",
+            "GOAL_MAINTAIN": "Mantener peso",
+            "GOAL_GAIN": "Ganar músculo"
+        },
+        "MACROS": {
+            "TITLE": "Distribución de macronutrientes",
+            "PROTEIN": "Proteína",
+            "PROTEIN_DESC": "Reparación muscular",
+            "CARBS": "Carbohidratos",
+            "CARBS_DESC": "Fuente de energía",
+            "FATS": "Grasas",
+            "FATS_DESC": "Salud hormonal"
+        },
+        "PROFILE": {
+            "TITLE": "Ajustes del perfil",
+            "DESCRIPTION": "Actualiza tu biometría para recalcular objetivos",
+            "FITNESS_GOAL": "Objetivo fitness",
+            "SAVING": "Guardando...",
+            "UPDATE": "Actualizar perfil",
+            "DISCARD": "Descartar cambios"
+        }
+    },
     "EXERCISES": {
         "STATUS": {
             "ACTIVE": "Sesión activa",
@@ -68,9 +161,8 @@
         },
         "TITLE": "Biblioteca de ejercicios",
         "TITLES": {
-                "TODAY": "Entrenamiento de hoy"  
-            },
-    
+            "TODAY": "Entrenamiento de hoy"
+        },
         "BUTTONS": {
             "FINISH": "Finalizar",
             "ADD_LIBRARY": "Añadir ejercicio de la biblioteca",
@@ -101,7 +193,6 @@
             "PLANK": "Plancha",
             "CRUNCHES": "Abdominales",
             "RUSSIAN_TWIST": "Giros rusos"
-            
         },
         "MUSCLE": {
             "CHEST": "Pecho",
@@ -120,7 +211,45 @@
             "KG": "Kg",
             "REPS": "Reps"
         }
-        
+    },
+
+         "HISTORY": {
+        "MY_PROGRESS": "Mi Progreso",
+        "DAY_STREAK": "días de racha",
+        "DAYS_TRAINING_MSG": "Has completado {{count}} días de entrenamiento.",
+        "METRICS": {
+            "VOLUME": "Volumen",
+            "FREQUENCY": "Frecuencia",
+            "VOLUME_EVOLUTION": "Evolución de Volumen (kg)",
+            "WORKOUT_FREQ": "Frecuencia de Entrenamiento"
+        },
+        "CARDS": {
+            "PERSONAL_RECORD": "Récord Personal",
+            "DAYS": "días",
+            "BEST_LIFT": "¡Tu mejor levantamiento!",
+            "MUSCLE_SPLIT": "Distribución Muscular"
+        },
+        "CALENDAR": {
+            "TITLE": "Calendario de Entrenamientos",
+            "SELECTED_DAY": "Día seleccionado",
+            "EXERCISES_LOGGED": "ejercicios registrados",
+            "NUTRITION_DONE": "Nutrición completada",
+            "NO_TRAINING": "No hay entrenamientos registrados este mes",
+            "PICK_MONTH": "Elige otro mes o completa un entreno para verlo aquí.",
+            "TOOLTIP_NUTRITION": "Objetivo de nutrición alcanzado",
+            "WEEKDAYS": {
+                "MON": "Lun",
+                "TUE": "Mar",
+                "WED": "Mié",
+                "THU": "Jue",
+                "FRI": "Vie",
+                "SAT": "Sáb",
+                "SUN": "Dom"
+            }
+        },
+        "CONFIRMATIONS": {
+            "DELETE_SESSION": "¿Estás seguro? Esta acción no se puede deshacer.",
+            "DELETE_EXERCISE": "¿Eliminar {{exerciseName}}?"
         }
     }
-    
+}

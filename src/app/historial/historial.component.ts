@@ -4,13 +4,14 @@ import { EntrenamientoService } from '../services/entrenamiento.service';
 import { Chart, registerables } from 'chart.js';
 import { Firestore, collection, collectionData, query, where } from '@angular/fire/firestore';
 import { Auth, user } from '@angular/fire/auth';
+import { TranslateModule } from '@ngx-translate/core';
 
 Chart.register(...registerables);
 
 @Component({
   selector: 'app-historial',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TranslateModule],
   templateUrl: './historial.component.html',
   styleUrls: ['./historial.component.css']
 })
