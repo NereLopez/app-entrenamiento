@@ -34,9 +34,9 @@ export class NuevaSesionComponent implements OnInit, OnDestroy {
     { muscle: 'Chest', exercises: ['Bench Press', 'Incline Press', 'Chest Flys'] },
     { muscle: 'Back', exercises: ['Deadlift', 'Pull-ups', 'Rows'] },
     { muscle: 'Legs', exercises: ['Squat', 'Lunge', 'Leg Press'] },
-    { muscle: 'Shoulders', exercises: ['Military Press', 'Lateral Raise'] },
-    { muscle: 'Arms', exercises: ['Bicep Curl', 'Tricep Extension'] },
-    { muscle: 'Core', exercises: ['Plank', 'Crunches', 'Leg Raises', 'Russian Twist'] }
+    { muscle: 'Shoulders', exercises: ['Military Press', 'Lateral Raise', 'Front Raise'] },
+    { muscle: 'Arms', exercises: ['Bicep Curl', 'Tricep Extension', 'Hammer Curl'] },
+    { muscle: 'Core', exercises: ['Plank', 'Crunches', 'Russian Twist'] }
   ];
 
   constructor() {

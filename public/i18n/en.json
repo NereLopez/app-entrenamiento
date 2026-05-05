@@ -86,24 +86,24 @@
         },
         "NAMES": {
             "BENCH_PRESS": "Bench Press",
-            "SQUAT": "Squat",
-            "DEADLIFT": "Deadlift",
             "INCLINE_PRESS": "Incline  Press",
             "CHEST_FLYS": "Chest Fly",
+            "DEADLIFT": "Deadlift",
+            "PULL-UPS": "Pull-Ups",
             "ROWS": "Rows",
+            "SQUAT": "Squat",
             "LUNGE": "Lunge",
             "LEG_PRESS": "Leg Press",
-            "PULL-UPS": "Pull-Ups",
-            "BICEP_CURL": "Biceps Curl",
-            "TRICEP_EXTENSION": "Triceps Extension",
             "MILITARY_PRESS": "Military Press",
             "LATERAL_RAISE": "Lateral Raise",
+            "FRONT_RAISE": "Front Raise",
+            "BICEP_CURL": "Biceps Curl",
+            "TRICEP_EXTENSION": "Triceps Extension",
+            "HAMMER_CURL": "Hammer Curl",
             "PLANK": "Plank",
             "CRUNCHES": "Crunches",
-            "LEG_RAISES": "Leg Raise",
-            "RUSSIAN_TWIST": "Russian Twist",
-            "OVERHEAD_PRESS": "Overhead Press",
-            "BARBELL_ROW": "Barbell Row"
+            "RUSSIAN_TWIST": "Russian Twist"
+           
         },
         "MUSCLE": {
             "CHEST": "Chest",
