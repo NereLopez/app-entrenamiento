@@ -13,6 +13,7 @@
 
 .energy-calories-col{
   display:block;
+  padding-right: 130px;
 }
 
 .main-progress-container{
@@ -457,6 +458,16 @@ select.ng-invalid.ng-touched{
 @media (max-width:576px){
   .energy-header{padding:1.4rem 1rem 1.2rem;border-radius:18px}
   .energy-header h1{font-size:2.6rem}
+  .energy-calories-col{padding-right:0}
+  .energy-water-col{
+    position:static;
+    margin:10px auto 0;
+    min-width:94px;
+    padding:8px 12px;
+  }
+  .water-ml-display{font-size:1.2rem}
+  .bottle-svg{width:38px;height:72px}
+  .bottle-label{font-size:.62rem}
   .btn-edit-float{padding:6px 12px;font-size:.92rem;max-width:100%}
 }
 
