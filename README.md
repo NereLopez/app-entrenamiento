@@ -4,17 +4,26 @@
 
 **Kinetic** es una Aplicación Web Progresiva (PWA) diseñada para deportistas que buscan un seguimiento visual, rápido y profesional de sus entrenamientos. Desarrollada con **Angular 19**, integra análisis de datos en tiempo real y una experiencia de usuario optimizada para dispositivos móviles.
 
-![Kinetic App](public/icons/kinetic.jpg)
+### 🌓 Interfaz y Experiencia de Usuario
+
+| Dashboard (Modo Oscuro) | Nutrición (Modo Claro) | Progreso y Análisis |
+| :---: | :---: | :---: |
+| ![Dashboard](public/icons/dashboard.png) | ![Nutrición](public/icons/nutricion.png) | ![Progreso](public/icons/graficos.png) |
+| *Acciones rápidas e idiomas*             | *Hidratación interactiva*               | *Análisis de datos* |
 ---
 
 ## 🚀 Características Principales
 
-* **Dashboard Dinámico:** Visualización de métricas clave (Volumen y Frecuencia) mediante gráficas interactivas con `Chart.js`.
-* **Heatmap de Actividad:** Seguimiento visual del progreso semanal inspirado en los anillos de actividad de Apple Health.
-* **Experiencia PWA:** Instalable en iOS y Android. Funciona a pantalla completa, eliminando la interfaz del navegador para una experiencia 100% nativa.
+* **Dashboard Dinámico:** Visualización de métricas clave, historial dinámico y acceso rápido a herramientas esenciales.
+* **Herramientas de Entrenamiento:** Temporizador de descanso integrado con avisos acústicos (Web Audio API) y sistema de registro rápido.
+* **Gestión de Hidratación Interactiva:** Widget personalizado con visualización de "botella dinámica" que se llena en tiempo real y persiste datos mediante servicios reactivos.
+* **Heatmap de Actividad:** Seguimiento visual del progreso semanal inspirado en los anillos de actividad.
+* **Experiencia PWA Nativa:** Instalable, con soporte offline y optimizada para eliminar la interfaz del navegador en iOS/Android.
+* **Direct QR Sync:** Sistema de enlace directo para transición fluida entre desktop y dispositivos móviles.
+* **Traducción Inteligente:** Arquitectura multi-idioma (Angular Translate) que permite la convivencia de claves de sistema y registros manuales de usuario sin errores de interfaz.
 * **Gestión de Entrenamientos:** Sistema de carga de ejercicios y rutinas conectado a servicios reactivos.
 * **Modo Oscuro:** Interfaz adaptativa diseñada para entrenamientos en cualquier condición de luz.
-* **Acceso mediante QR:** Sistema de invitación para instalación rápida en dispositivos móviles.
+
 
 ---
 
