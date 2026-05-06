@@ -45,6 +45,23 @@
   color: white !important;
   border: none !important;
   box-shadow: var(--card-shadow) !important;
+  position: relative;
+}
+
+.water-flash-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #7dd3fc;
+  opacity: 0;
+  transform: translateY(2px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  pointer-events: none;
+  margin-top: 2px;
+}
+
+.water-flash-label.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .text-primary, .fa-bolt, .bi-lightning-fill { color: var(--primary-teal) !important; }

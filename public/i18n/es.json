@@ -22,6 +22,8 @@
         "QUICK_START": "Inicio rápido",
         "COMPLETE_PROFILE": "Completar perfil",
         "MY_DIET": "Mi dieta",
+        "REGISTER_WATER": "Registrar un vaso de agua",
+        "WATCHLOCKER": "Cronómetro",
         "NEW_SESSION": "Nueva sesión",
         "VIEW_HISTORY": "Ver historial",
         "THIS_WEEK": "ESTA SEMANA",
@@ -113,6 +115,9 @@
         },
         "FORM": {
             "ADD_MEAL": "Añadir comida"
+        },
+        "WATER": {
+            "TITLE": "Agua diaria"
         },
         "MEAL_TYPES": {
             "BREAKFAST": "Desayuno",

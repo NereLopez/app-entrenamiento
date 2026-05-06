@@ -98,7 +98,7 @@
     <div class="compact-history-grid">
       <div class="card border-0 shadow-sm rounded-4 calendar-panel">
         <div class="calendar-weekdays">
-          @for (weekday of ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']; track $index) {
+          @for (weekday of calendarWeekdays; track weekday) {
             <span>{{ 'HISTORY.CALENDAR.WEEKDAYS.' + weekday | translate }}</span>
           }
         </div>
@@ -126,7 +126,7 @@
                   @if (day.muscleGroups.length) {
                     <div class="muscle-dots">
                       @for (group of day.muscleGroups; track $index) {
-                        <span class="muscle-dot" [style.background-color]="getGroupColor(group)" [title]="group"></span>
+                        <span class="muscle-dot" [style.background-color]="getGroupColor(group)" [title]=" 'EXERCISES.MUSCLE_GROUPS.' + group.toUpperCase() | translate "></span>
                       }
                     </div>
                   }
@@ -145,14 +145,14 @@
           <div class="selected-day-header">
             <div>
               <p class="selected-day-label">{{ 'HISTORY.CALENDAR.SELECTED_DAY' | translate }}</p>
-              <h5 class="fw-bold mb-1">{{ selectedCalendarSession.displayDate | date:'EEEE, d MMMM' : '' : 'es' }}</h5>
+              <h5 class="fw-bold mb-1">{{ selectedCalendarSession.displayDate | date:'EEEE, d MMMM' : '' : currentDateLocale }}</h5>
               <p class="text-muted mb-0">{{ selectedCalendarSession.allExercises.length }} {{ 'HISTORY.CALENDAR.EXERCISES_LOGGED' | translate }}</p>
             </div>
 
             <div class="selected-day-actions">
               @if (selectedCalendarNutrition?.complete) {
                 <div class="nutrition-badge">
-                  <i class="bi bi-apple me-1"></i> {{ 'HISTORY.NUTRITION_DONE' | translate }}
+                  <i class="bi bi-apple me-1"></i> {{ 'HISTORY.CALENDAR.NUTRITION_DONE' | translate }}
                 </div>
               }
               <div class="selected-day-volume">{{ calculateVolume(selectedCalendarSession) }} kg</div>
@@ -166,7 +166,7 @@
             @for (ex of selectedCalendarSession.allExercises; track $index) {
               <div class="selected-exercise-card">
                 <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
-                  <div class="fw-bold text-dark small">{{ ex.name }}</div>
+                  <div class="fw-bold text-dark small">{{ getExerciseDisplayName(ex.name) }}</div>
                   <button
                     type="button"
                     class="btn btn-sm text-danger border-0 p-0"

@@ -5,7 +5,7 @@
         <span class="badge bg-white mb-2 shadow-sm session-header-badge">🚀 {{ 'EXERCISES.STATUS.ACTIVE' | translate }}</span>
         <h2 class="display-6 fw-bold mb-0 session-header-title">{{ 'EXERCISES.TITLES.TODAY' | translate }}</h2>
         <p class="text-white-50 small mt-1 mb-0">
-          {{ workoutForm.get('date')?.value | date:'EEEE, MMM d, yyyy' }}
+          {{ workoutForm.get('date')?.value | date:'EEEE, MMM d, yyyy' : '' : currentDateLocale }}
         </p>
       </div>
             <button type="button" (click)="finishWorkout()"

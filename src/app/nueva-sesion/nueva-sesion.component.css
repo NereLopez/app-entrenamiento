@@ -276,7 +276,8 @@
   box-shadow: 0 12px 26px rgba(0, 0, 0, 0.35);
 }
 
-:host-context(.dark-mode) .session-header-badge,.session-finish-action {
+:host-context(.dark-mode) .session-header-badge,
+:host-context(.dark-mode) .session-finish-action {
   background: var(--dm-bg-0);
   color: var(--dm-accent);
 }
@@ -288,7 +289,12 @@
   border: 1px solid var(--dm-border);
 }
 
-:host-context(.dark-mode) .library-toggle-btn.is-open,.library-dropdown,.library-dropdown-body,.manual-group-menu,.manual-group-option,.exercise-list .card
+:host-context(.dark-mode) .library-toggle-btn.is-open,
+:host-context(.dark-mode) .library-dropdown,
+:host-context(.dark-mode) .library-dropdown-body,
+:host-context(.dark-mode) .manual-group-menu,
+:host-context(.dark-mode) .manual-group-option,
+:host-context(.dark-mode) .exercise-list .card
  { background: var(--dm-bg-0);}
 
 :host-context(.dark-mode) .manual-group-menu,.exercise-list .card {
@@ -301,15 +307,21 @@
   box-shadow: 0 16px 30px rgba(15, 23, 42, 0.45);
 }
 
-:host-context(.dark-mode) .library-toggle-text, .manual-group-option { color: #cbd5e1;}
+:host-context(.dark-mode) .library-toggle-text,
+:host-context(.dark-mode) .manual-group-option { color: #cbd5e1;}
 
-:host-context(.dark-mode) .library-toggle-btn.is-open .library-toggle-text, .manual-group-option:hover, .manual-group-option.is-selected {
+:host-context(.dark-mode) .library-toggle-btn.is-open .library-toggle-text,
+:host-context(.dark-mode) .manual-group-option:hover,
+:host-context(.dark-mode) .manual-group-option.is-selected {
   color: #5eead4;}
 
-:host-context(.dark-mode) .muscle-group-label,.manual-name-input::placeholder, .exercise-list .form-control::placeholder,
- .exercise-list .small.text-muted {color: var(--dm-muted) !important;}
+:host-context(.dark-mode) .muscle-group-label,
+:host-context(.dark-mode) .manual-name-input::placeholder,
+:host-context(.dark-mode) .exercise-list .form-control::placeholder,
+:host-context(.dark-mode) .exercise-list .small.text-muted {color: var(--dm-muted) !important;}
 
-:host-context(.dark-mode) .manual-name-input,.form-select-like {
+:host-context(.dark-mode) .manual-name-input,
+:host-context(.dark-mode) .form-select-like {
   background: #1f2d43;
   color: var(--dm-text);
   border: 1px solid #4b5e79 !important;
@@ -330,7 +342,8 @@
 
 :host-context(.dark-mode) .exercise-list .card-header {background: var(--dm-bg-1) !important;border-bottom: 1px solid var(--dm-border) !important;}
 
-:host-context(.dark-mode) .exercise-card-header,.exercise-card-body {background: var(--dm-bg-1) !important;}
+:host-context(.dark-mode) .exercise-card-header,
+:host-context(.dark-mode) .exercise-card-body {background: var(--dm-bg-1) !important;}
 
 :host-context(.dark-mode) .set-input-panel {background: #1e293b;border: 1px solid #334155;}
 
@@ -348,14 +361,17 @@
 
 :host-context(.dark-mode) .exercise-delete-btn:hover {color: #ef4444;}
 
-:host-context(.dark-mode) .exercise-list .input-group-text,.exercise-list .form-control {
+:host-context(.dark-mode) .exercise-list .input-group-text,
+:host-context(.dark-mode) .exercise-list .form-control {
   background: #0f1b30 !important;
   color: var(--dm-text) !important;
   border-color: #334155 !important;
   box-shadow: inset 0 -2px 0 rgba(71, 85, 105, 0.8);
 }
 
-:host-context(.dark-mode) .manual-name-input:focus,.form-select-like:focus,.exercise-list .form-control:focus {
+:host-context(.dark-mode) .manual-name-input:focus,
+:host-context(.dark-mode) .form-select-like:focus,
+:host-context(.dark-mode) .exercise-list .form-control:focus {
   border-color: #2dd4bf !important;
   box-shadow: inset 0 -2px 0 rgba(45, 212, 191, 1), 0 0 0 0.2rem rgba(45, 212, 191, 0.18) !important;
 }

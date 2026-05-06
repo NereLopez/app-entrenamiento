@@ -22,6 +22,8 @@
         "QUICK_START": "Quick Start",
         "COMPLETE_PROFILE": "Complete Profile",
         "MY_DIET": "My Diet",
+        "REGISTER_WATER": "Register a glass of water",
+        "WATCHLOCKER": "Watchlocker",
         "NEW_SESSION": "New Session",
         "VIEW_HISTORY": "View History",
         "THIS_WEEK": "THIS WEEK",
@@ -113,6 +115,9 @@
         },
         "FORM": {
             "ADD_MEAL": "Add Meal"
+        },
+        "WATER": {
+            "TITLE": "Daily Water Intake"
         },
         "MEAL_TYPES": {
             "BREAKFAST": "Breakfast",

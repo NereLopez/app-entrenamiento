@@ -11,26 +11,66 @@
         </div>
         
         <div class="energy-header">
-          <p class="label"> {{ 'NUTRITION.ENERGY.DAILY_TARGET' | translate }}</p>
-          <h1>{{ nutricionSvc.targetCalories() }} <span class="unit">kcal</span></h1>
-          <div class="goal-badge"> {{ 'NUTRITION.ENERGY.GOAL_LABEL' | translate:{ goal: (nutricionSvc.goal() === 'lose' ? ('NUTRITION.BIOMETRICS.GOAL_LOSE' | translate) : nutricionSvc.goal() === 'gain' ? ('NUTRITION.BIOMETRICS.GOAL_GAIN' | translate) : ('NUTRITION.BIOMETRICS.GOAL_MAINTAIN' | translate)) } }}</div>
+          <div class="energy-calories-col">
+            <p class="label"> {{ 'NUTRITION.ENERGY.DAILY_TARGET' | translate }}</p>
+            <h1>{{ nutricionSvc.targetCalories() }} <span class="unit">kcal</span></h1>
+            <div class="goal-badge"> {{ 'NUTRITION.ENERGY.GOAL_LABEL' | translate:{ goal: (nutricionSvc.goal() === 'lose' ? ('NUTRITION.BIOMETRICS.GOAL_LOSE' | translate) : nutricionSvc.goal() === 'gain' ? ('NUTRITION.BIOMETRICS.GOAL_GAIN' | translate) : ('NUTRITION.BIOMETRICS.GOAL_MAINTAIN' | translate)) } }}</div>
 
-          <div class="main-progress-container mx-auto mt-4" style="max-width: 500px;">
-    <div class="d-flex justify-content-between mb-1" style="font-size: 0.85rem; opacity: 0.9;">
-      <span>{{ 'NUTRITION.ENERGY.CONSUMED' | translate }} <strong>{{ nutricionSvc.caloriesConsumed() }}</strong></span>
-      <span>{{ 'NUTRITION.ENERGY.REMAINING' | translate }} <strong>{{ nutricionSvc.targetCalories() - nutricionSvc.caloriesConsumed() }}</strong></span>
-    </div>
-          <div class="custom-progress-bg">
-      <div class="custom-progress-fill" 
-           [style.width.%]="(nutricionSvc.caloriesConsumed() / (nutricionSvc.targetCalories() || 1)) * 100"
-           [class.over-limit]="nutricionSvc.caloriesConsumed() > nutricionSvc.targetCalories()">
-      </div>
-    </div>
+            <div class="main-progress-container mt-4">
+              <div class="d-flex justify-content-between mb-1" style="font-size: 0.85rem; opacity: 0.9;">
+                <span>{{ 'NUTRITION.ENERGY.CONSUMED' | translate }} <strong>{{ nutricionSvc.caloriesConsumed() }}</strong></span>
+                <span>{{ 'NUTRITION.ENERGY.REMAINING' | translate }} <strong>{{ nutricionSvc.targetCalories() - nutricionSvc.caloriesConsumed() }}</strong></span>
+              </div>
+              <div class="custom-progress-bg">
+                <div class="custom-progress-fill"
+                     [style.width.%]="(nutricionSvc.caloriesConsumed() / (nutricionSvc.targetCalories() || 1)) * 100"
+                     [class.over-limit]="nutricionSvc.caloriesConsumed() > nutricionSvc.targetCalories()">
+                </div>
+              </div>
+              <small class="d-block mt-2 opacity-75">
+                {{ ((nutricionSvc.caloriesConsumed() / (nutricionSvc.targetCalories() || 1)) * 100).toFixed(0) }} {{ 'NUTRITION.ENERGY.PERCENTAGE' | translate }}
+              </small>
+            </div>
+          </div>
 
-    <small class="d-block mt-2 opacity-75">
-      {{ ((nutricionSvc.caloriesConsumed() / (nutricionSvc.targetCalories() || 1)) * 100).toFixed(0) }} {{ 'NUTRITION.ENERGY.PERCENTAGE' | translate }} 
-    </small>
-  </div>
+          <div class="energy-water-col">
+            <div class="water-label"><i class="bi bi-droplet-fill me-1"></i>{{ 'NUTRITION.WATER.TITLE' | translate }}</div>
+            <div class="water-ml-display">{{ nutricionSvc.waterMl() }}<span class="water-unit">ml</span></div>
+            <div class="water-goal">/ 2000 ml</div>
+            <button
+              type="button"
+              class="bottle-btn"
+              (click)="nutricionSvc.addWater()"
+              [disabled]="nutricionSvc.waterMl() >= 2000"
+              aria-label="+250ml"
+            >
+              <svg viewBox="0 0 52 96" xmlns="http://www.w3.org/2000/svg" class="bottle-svg">
+                <defs>
+                  <clipPath id="bodyClip">
+                    <rect x="6" y="16" width="40" height="74" rx="11"/>
+                  </clipPath>
+                </defs>
+                <!-- Cap -->
+                <rect x="17" y="0" width="18" height="6" rx="3" class="bottle-cap"/>
+                <!-- Neck -->
+                <rect x="19" y="5" width="14" height="11" rx="3" class="bottle-glass"/>
+                <!-- Body background -->
+                <rect x="6" y="16" width="40" height="74" rx="11" class="bottle-glass"/>
+                <!-- Water fill -->
+                <rect
+                  x="6"
+                  [attr.y]="16 + 74 * (1 - nutricionSvc.waterMl() / 2000)"
+                  width="40"
+                  [attr.height]="74 * (nutricionSvc.waterMl() / 2000)"
+                  class="bottle-water"
+                  clip-path="url(#bodyClip)"
+                />
+                <!-- Shine -->
+                <rect x="12" y="22" width="4" height="26" rx="2" class="bottle-shine"/>
+              </svg>
+              <span class="bottle-label">+250ml</span>
+            </button>
+          </div>
         </div>
 
         <div class="card meal-logger-card mt-4">
@@ -68,7 +108,7 @@
                     class="preset-item {{food.type}}" 
                     (click)="selectPreset(food, foodName, foodCals, fP, fC, fF, foodType)">
               <i class="me-2" [ngClass]="mealIconClass(food.type)"></i>
-              {{ food.name | translate }}
+              {{ getFoodDisplayName(food.name) }}
             </button>
           }
         </div>
@@ -134,7 +174,7 @@
                     'bi bi-cup-hot-fill text-secondary': meal.type === 'snack'
                   }"></i>
                   <div>
-                    <strong>{{ meal.name | translate }}</strong>
+                    <strong>{{ getFoodDisplayName(meal.name) }}</strong>
                     <small class="text-muted d-block" style="text-transform: capitalize">{{ 'NUTRITION.MEAL_TYPES.' + meal.type.toUpperCase() | translate }}</small>
                   </div>
                 </div>

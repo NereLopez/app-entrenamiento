@@ -68,6 +68,10 @@ export class NuevaSesionComponent implements OnInit, OnDestroy {
     return this.exercises.at(index).get('sets') as FormArray;
   }
 
+  get currentDateLocale(): string {
+    return this.translate.currentLang || this.translate.getDefaultLang() || 'en';
+  }
+
   getGroupColor(group: string): string {
     const colors: { [key: string]: string } = {
       'Chest': '#fb7185', 'Back': '#38bdf8', 'Legs': '#fbbf24',

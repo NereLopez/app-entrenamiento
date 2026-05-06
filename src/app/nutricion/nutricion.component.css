@@ -3,12 +3,21 @@
 .energy-header{
   background:linear-gradient(135deg,#0d9488 0%,#115e59 100%)!important;
   color:#fff;
-  padding:3rem;
+  padding:2.5rem 3rem;
   border-radius:24px;
-  text-align:center;
   position:relative;
   margin-bottom:2rem;
   box-shadow:0 15px 35px rgba(13,148,136,.25)!important;
+  text-align:center;
+}
+
+.energy-calories-col{
+  display:block;
+}
+
+.main-progress-container{
+  max-width:500px;
+  margin:0 auto;
 }
 
 .energy-header h1{font-size:3.5rem;font-weight:900;margin:0}
@@ -78,6 +87,101 @@
 
 .progress-container{height:8px;background:rgba(0,0,0,.05);border-radius:10px;overflow:hidden}
 .progress-bar{max-width:100%;height:100%;border-radius:10px;transition:width .8s cubic-bezier(.4,0,.2,1)}
+
+/* Water column in energy header */
+.energy-water-col {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 10px 14px;
+  background: rgba(255,255,255,0.10);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 18px;
+  backdrop-filter: blur(6px);
+  min-width: 84px;
+}
+
+.water-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: rgba(255,255,255,0.75);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-align: center;
+}
+
+.water-ml-display {
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: #fff;
+  line-height: 1;
+}
+
+.water-unit {
+  font-size: 0.75rem;
+  font-weight: 400;
+  opacity: 0.7;
+  margin-left: 2px;
+}
+
+.water-goal {
+  font-size: 0.68rem;
+  color: rgba(255,255,255,0.50);
+  margin-bottom: 4px;
+}
+
+/* Bottle button */
+.bottle-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.bottle-btn:hover:not(:disabled) { transform: scale(1.08); }
+.bottle-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+.bottle-svg {
+  width: 44px;
+  height: 82px;
+  overflow: visible;
+  filter: drop-shadow(0 3px 8px rgba(56,189,248,0.4));
+}
+
+.bottle-cap {
+  fill: rgba(255,255,255,0.6);
+}
+
+.bottle-glass {
+  fill: rgba(255,255,255,0.15);
+  stroke: rgba(255,255,255,0.35);
+  stroke-width: 1.5;
+}
+
+.bottle-water {
+  fill: rgba(56,189,248,0.65);
+  transition: y 0.4s ease, height 0.4s ease;
+}
+
+.bottle-shine {
+  fill: rgba(255,255,255,0.18);
+}
+
+.bottle-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: rgba(255,255,255,0.7);
+  letter-spacing: 0.04em;
+}
 
 .protein .progress-bar{background:linear-gradient(90deg,#2dd4bf,#0d9488)!important;box-shadow:0 0 12px rgba(45,212,191,.4)}
 .carbs .progress-bar{background:linear-gradient(90deg,#3b82f6,#256ebc)!important;box-shadow:0 0 12px rgba(59,130,246,.3)}

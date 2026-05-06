@@ -6,7 +6,7 @@ import { FoodPreset } from '../models/nutricion.model';
 import { FOOD_PRESETS } from '../data/food-presets';
 import { Router } from '@angular/router';
 import { DashboardService } from '../services/dashboard.service';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-nutricion',
@@ -19,6 +19,7 @@ export class NutricionComponent implements OnInit {
   private fb = inject(FormBuilder);
   private injector = inject(Injector);
   private router = inject(Router);
+  private translate = inject(TranslateService);
   public nutricionSvc = inject(NutricionService);
 
   public isEditing = false;
@@ -167,6 +168,12 @@ export class NutricionComponent implements OnInit {
 
   private normalizeFoodName(name: string): string {
     return name.trim().toLowerCase();
+  }
+
+  getFoodDisplayName(name: string): string {
+    const key = name.startsWith('NUTRITION.PRESET.') ? name : `NUTRITION.PRESET.${name}`;
+    const translated = this.translate.instant(key);
+    return translated === key ? name : translated;
   }
 
   applyPreset(

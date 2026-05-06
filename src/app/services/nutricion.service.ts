@@ -32,6 +32,16 @@ export class NutricionService {
   private dailyMealsSubscription?: Subscription;
   public forceEditMode = signal(false);
 
+  public waterMl = signal<number>(0);
+  public waterGlasses = computed(() => Math.min(Math.floor(this.waterMl() / 250), 8));
+  public waterArray = computed(() => Array.from({ length: 8 }, (_, i) => i < this.waterGlasses()));
+
+  addWater() {
+    if (this.waterMl() < 2000) {
+      this.waterMl.update(v => Math.min(v + 250, 2000));
+    }
+  }
+
   private get userId(): string | undefined {
     return this.auth.currentUser?.uid;
   }
@@ -80,6 +90,7 @@ export class NutricionService {
     this.isWorkoutDay.set(false);
     this.isNutritionCompleteToday.set(false);
     this.dailyMeals.set([]);
+    this.waterMl.set(0);
   }
 
   public consumedMacros = computed(() => {

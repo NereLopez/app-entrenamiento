@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnDestroy, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, Router, RouterModule } from '@angular/router';
 import { EntrenamientoService } from '../services/entrenamiento.service';
@@ -16,13 +16,15 @@ import { DashboardService } from '../services/dashboard.service';
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnDestroy {
   private router = inject(Router);
   public entrenamientoService = inject(EntrenamientoService);
   public nutricionService = inject(NutricionService);
-  private dashboardService = inject(DashboardService);
+  public dashboardService = inject(DashboardService);
 
   public quickActions = this.dashboardService.quickActions;
+  public waterJustAdded = signal(false);
+  private waterFlashTimer: ReturnType<typeof setTimeout> | null = null;
 
   navegar(ruta: string) {
     if (ruta === '/nutricion') {
@@ -34,6 +36,33 @@ export class DashboardComponent {
     }
   }
     this.router.navigate([ruta]);
+  }
+
+  ngOnDestroy() {
+    this.dashboardService.stopWatchlockerCountdown();
+    if (this.waterFlashTimer) clearTimeout(this.waterFlashTimer);
+  }
+
+  onQuickActionClick(item: { label: string; route: string }) {
+    if (item.label === 'DASHBOARD.WATCHLOCKER') {
+      this.dashboardService.startWatchlockerCountdown();
+      return;
+    }
+    if (item.label === 'DASHBOARD.REGISTER_WATER') {
+      this.nutricionService.addWater();
+      this.waterJustAdded.set(true);
+      if (this.waterFlashTimer) clearTimeout(this.waterFlashTimer);
+      this.waterFlashTimer = setTimeout(() => this.waterJustAdded.set(false), 1800);
+      return;
+    }
+    this.navegar(item.route);
+  }
+
+  getQuickActionLabel(item: { label: string }): string {
+    if (item.label === 'DASHBOARD.WATCHLOCKER' && this.dashboardService.isWatchlockerRunning()) {
+      return `${this.dashboardService.watchlockerRemaining()}s`;
+    }
+    return item.label;
   }
 
   readonly welcomeKey = computed(() => {

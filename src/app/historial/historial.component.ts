@@ -4,7 +4,7 @@ import { EntrenamientoService } from '../services/entrenamiento.service';
 import { Chart, registerables } from 'chart.js';
 import { Firestore, collection, collectionData, query, where } from '@angular/fire/firestore';
 import { Auth, user } from '@angular/fire/auth';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 Chart.register(...registerables);
 
@@ -20,6 +20,7 @@ export class HistorialComponent {
   private firestore = inject(Firestore);
   private auth = inject(Auth);
   private injector = inject(Injector);
+  private translate = inject(TranslateService);
   
   @ViewChild('statsChart') statsChart!: ElementRef;
   private chart: any;
@@ -31,6 +32,7 @@ export class HistorialComponent {
   public displayedMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
   public selectedDateKey: string | null = null;
   public nutritionDayMap = new Map<string, { calories: number; complete: boolean }>();
+  public readonly calendarWeekdays = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
 
   constructor() {
     user(this.auth).subscribe(currentUser => {
@@ -77,13 +79,13 @@ export class HistorialComponent {
   }
 
      async deleteSession(workoutId: string) {
-      if (!confirm('¿Are you sure? This action cannot be undone.')) return;
+      if (!confirm(this.translate.instant('HISTORY.CONFIRMATIONS.DELETE_SESSION'))) return;
       await this.entrenamientoService.deleteWorkout(workoutId);
       // Después de eliminar, el efecto que escucha el historial se encargará de redibujar las gráficas automáticamente.
     }
 
     async deleteExercise(workoutId: string, exerciseIndex: number, exerciseName: string) {
-      if (!confirm(`Delete ${exerciseName}?`)) return;
+      if (!confirm(this.translate.instant('HISTORY.CONFIRMATIONS.DELETE_EXERCISE', { exerciseName }))) return;
       await this.entrenamientoService.deleteExerciseFromWorkout(workoutId, exerciseIndex);
     }
   
@@ -124,7 +126,7 @@ export class HistorialComponent {
   }
 
   get calendarTitle(): string {
-    return this.displayedMonth.toLocaleDateString(undefined, {
+    return this.displayedMonth.toLocaleDateString(this.currentDateLocale, {
       month: 'long',
       year: 'numeric'
     });
@@ -220,7 +222,32 @@ export class HistorialComponent {
     return selectedKey ? this.nutritionDayMap.get(selectedKey) ?? null : null;
   }
 
+  get currentDateLocale(): string {
+    return this.translate.currentLang || this.translate.getDefaultLang() || 'en';
+  }
+
   // --- MÉTODOS DE CÁLCULO ---
+
+  private translateMuscleGroup(group: string): string {
+    const key = `EXERCISES.MUSCLE.${group.toUpperCase()}`;
+    return this.translate.instant(key);
+  }
+
+  private formatDateForChart(dateKey: string): string {
+    const [year, month, day] = dateKey.split('-').map(Number);
+    const date = new Date(year, month - 1, day);
+    const currentLang = this.translate.currentLang || this.translate.getDefaultLang() || 'en';
+    return date.toLocaleDateString(currentLang, {
+      day: '2-digit',
+      month: 'short'
+    });
+  }
+
+  getExerciseDisplayName(name: string): string {
+    const key = 'EXERCISES.NAMES.' + name.split(' ').join('_').toUpperCase();
+    const translated = this.translate.instant(key);
+    return translated === key ? name : translated;
+  }
 
   toggleSession(sessionId: string) {
     this.expandedSessionId = this.expandedSessionId === sessionId ? null : sessionId;
@@ -286,10 +313,11 @@ export class HistorialComponent {
     });
 
     const labels = Object.keys(counts);
+    const translatedLabels = labels.map(group => this.translateMuscleGroup(group));
     const dynamycColors = labels.map(group => this.getGroupColor(group));
 
     return {
-      labels: Object.keys(counts),
+      labels: translatedLabels,
       datasets: [{
         data: Object.values(counts),
         // Colores vibrantes y diferenciados (Sincronizados con Nueva Sesión)
@@ -325,22 +353,20 @@ renderChart(data: any[]) {
 
   // 2. Convertimos el Map a arrays ordenados por fecha ascendente
   const sortedEntries = Array.from(groupedData.entries()).sort(([dateA], [dateB]) => dateA.localeCompare(dateB));
-  const labels = sortedEntries.map(([dateKey]) => {
-    const [year, month, day] = dateKey.split('-').map(Number);
-    return new Date(year, month - 1, day).toLocaleDateString(undefined, {
-      day: '2-digit',
-      month: 'short'
-    });
-  });
+  const labels = sortedEntries.map(([dateKey]) => this.formatDateForChart(dateKey));
   const chartData = sortedEntries.map(([, value]) => value);
 
   // 3. Renderizamos
+  const chartLabel = isVolume 
+    ? this.translate.instant('HISTORY.METRICS.VOLUME') + ' (kg)'
+    : this.translate.instant('HISTORY.METRICS.FREQUENCY');
+  
   this.chart = new Chart(ctx, {
     type: isVolume ? 'line' : 'bar',
     data: {
       labels: labels,
       datasets: [{
-        label: isVolume ? 'Volumen (kg)' : 'Ejercicios',
+        label: chartLabel,
         data: chartData,
         backgroundColor: isVolume
           ? (context: any) => {
