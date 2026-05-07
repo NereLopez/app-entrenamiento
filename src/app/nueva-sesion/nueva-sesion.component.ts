@@ -72,6 +72,10 @@ export class NuevaSesionComponent implements OnInit, OnDestroy {
     return this.translate.currentLang || this.translate.getDefaultLang() || 'en';
   }
 
+  get dateFormat(): string {
+    return this.currentDateLocale === 'es' ? 'EEEE, d MMMM yyyy' : 'EEEE, MMM d, yyyy';
+  }
+
   getGroupColor(group: string): string {
     const colors: { [key: string]: string } = {
       'Chest': '#fb7185', 'Back': '#38bdf8', 'Legs': '#fbbf24',

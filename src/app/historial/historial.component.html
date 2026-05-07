@@ -145,7 +145,7 @@
           <div class="selected-day-header">
             <div>
               <p class="selected-day-label">{{ 'HISTORY.CALENDAR.SELECTED_DAY' | translate }}</p>
-              <h5 class="fw-bold mb-1">{{ selectedCalendarSession.displayDate | date:'EEEE, d MMMM' : '' : currentDateLocale }}</h5>
+              <h5 class="fw-bold mb-1 date-capitalize">{{ selectedCalendarSession.displayDate | date:dateFormat : '' : currentDateLocale }}</h5>
               <p class="text-muted mb-0">{{ selectedCalendarSession.allExercises.length }} {{ 'HISTORY.CALENDAR.EXERCISES_LOGGED' | translate }}</p>
             </div>
 

@@ -76,6 +76,13 @@ export class HistorialComponent {
         }, 150);
       }
     });
+    this.translate.onLangChange.subscribe(() => {
+      const historyData = this.entrenamientoService.history();
+      setTimeout(() => {
+        if (this.statsChart && historyData.length > 0) this.renderChart(historyData);
+        if (this.muscleChart ) this.renderMuscleChart();
+      }, 50);
+    });
   }
 
      async deleteSession(workoutId: string) {
@@ -226,6 +233,10 @@ export class HistorialComponent {
     return this.translate.currentLang || this.translate.getDefaultLang() || 'en';
   }
 
+  get dateFormat(): string {
+    return this.currentDateLocale === 'es' ? 'EEEE, d MMMM' : 'EEEE, MMM d';
+  }
+
   // --- MÉTODOS DE CÁLCULO ---
 
   private translateMuscleGroup(group: string): string {
@@ -237,10 +248,11 @@ export class HistorialComponent {
     const [year, month, day] = dateKey.split('-').map(Number);
     const date = new Date(year, month - 1, day);
     const currentLang = this.translate.currentLang || this.translate.getDefaultLang() || 'en';
-    return date.toLocaleDateString(currentLang, {
+    const formatted = date.toLocaleDateString(currentLang, {
       day: '2-digit',
       month: 'short'
     });
+    return formatted.replace(/[a-záéíóúüñ]+/gi, word => word.charAt(0).toUpperCase() + word.slice(1));
   }
 
   getExerciseDisplayName(name: string): string {

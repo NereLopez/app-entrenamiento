@@ -4,8 +4,8 @@
       <div>
         <span class="badge bg-white mb-2 shadow-sm session-header-badge">🚀 {{ 'EXERCISES.STATUS.ACTIVE' | translate }}</span>
         <h2 class="display-6 fw-bold mb-0 session-header-title">{{ 'EXERCISES.TITLES.TODAY' | translate }}</h2>
-        <p class="text-white-50 small mt-1 mb-0">
-          {{ workoutForm.get('date')?.value | date:'EEEE, MMM d, yyyy' : '' : currentDateLocale }}
+        <p class="text-white-50 small mt-1 mb-0 date-capitalize">
+          {{ workoutForm.get('date')?.value | date:dateFormat : '' : currentDateLocale }}
         </p>
       </div>
             <button type="button" (click)="finishWorkout()"
@@ -99,7 +99,7 @@
     </div>
     <div class="col-md-2">
             <button type="button" 
-              (click)="addExercise(nameInput.value, selectedManualGroup); nameInput.value=''" 
+              (click)="addExercise(nameInput.value.charAt(0).toUpperCase() + nameInput.value.slice(1)); nameInput.value=''" 
               class="btn fw-bold w-100 shadow-sm py-2 manual-add-btn">
         {{ 'EXERCISES.BUTTONS.ADD' | translate }}
       </button>
