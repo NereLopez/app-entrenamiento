@@ -4,12 +4,10 @@
       <div>
         <span class="badge bg-white mb-2 shadow-sm session-header-badge">🚀 {{ 'EXERCISES.STATUS.ACTIVE' | translate }}</span>
         <h2 class="display-6 fw-bold mb-0 session-header-title">{{ 'EXERCISES.TITLES.TODAY' | translate }}</h2>
-        <p class="text-white-50 small mt-1 mb-0 date-capitalize">
+        <p class="text-white-50 small mt-1 mb-3 date-capitalize">
           {{ workoutForm.get('date')?.value | date:dateFormat : '' : currentDateLocale }}
         </p>
-        <div class="session-intensity mt-3">
-          <small class="text-white-50 fw-semibold">{{ 'EXERCISES.INTENSITY.LABEL' | translate }}</small>
-          <div class="d-flex gap-2 mt-2 flex-wrap">
+        <div class="session-intensity mt-3 d-flex gap-2 flex-wrap">
             @for (option of intensityOptions; track option.value) {
               <button
                 type="button"
@@ -19,7 +17,6 @@
                 {{ option.label | translate }}
               </button>
             }
-          </div>
         </div>
       </div>
             <button type="button" (click)="finishWorkout()"

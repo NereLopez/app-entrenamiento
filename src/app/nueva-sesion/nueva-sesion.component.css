@@ -89,6 +89,11 @@
 
 .session-intensity {
   max-width: 360px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-top: 0 !important;
 }
 
 .intensity-chip {
@@ -100,12 +105,30 @@
   font-size: 0.75rem;
   font-weight: 700;
   transition: all 0.2s ease;
+  white-space: nowrap;
 }
 
 .intensity-chip.is-active {
   background: #ffffff;
   color: #0f766e;
   border-color: #ffffff;
+}
+
+@media (max-width: 576px) {
+  .session-intensity {
+    width: 100%;
+    gap: 0.25rem;
+  }
+  
+  .intensity-chip {
+    padding: 2px 6px;
+    font-size: 0.6rem;
+    border-radius: 999px;
+  }
+  
+  .session-intensity > small {
+    font-size: 0.6rem;
+  }
 }
 
 .library-toggle-btn {

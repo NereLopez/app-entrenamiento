@@ -107,9 +107,7 @@
   box-shadow: 0 4px 10px rgba(13, 148, 136, 0.2);
 }
 
-.chart-line {
-  color: var(--primary-teal);
-}
+.chart-line {color: var(--primary-teal);}
 
 .compact-history-grid {
   display: grid;
@@ -117,10 +115,7 @@
   gap: 24px;
 }
 
-.calendar-panel, .selected-day-panel {
-  padding: 24px;
-  background: white;
-}
+.calendar-panel, .selected-day-panel {padding: 24px; background: white;}
 
 .calendar-nav {
   display: inline-flex;
@@ -165,9 +160,7 @@
   letter-spacing: 0.04em;
 }
 
-.calendar-weekdays span {
-  text-align: center;
-}
+.calendar-weekdays span {text-align: center;}
 
 .calendar-grid {
   display: grid;
@@ -195,9 +188,7 @@
 }
 
 .calendar-day.outside-month {
-  opacity: 0;
-  pointer-events: none;
-}
+ opacity: 0;pointer-events: none;}
 
 .calendar-day.has-session {
   background: linear-gradient(180deg, #f0fdfa 0%, #ecfeff 100%);
@@ -210,23 +201,13 @@
   color: white;
 }
 
-.calendar-day.is-selected .day-volume,
-.calendar-day.is-selected .day-number {
-  color: white;
-}
+.calendar-day.is-selected .day-volume,.calendar-day.is-selected .day-number {color: white;}
 
-.calendar-day.is-selected .day-dot {
-  background: white;
-}
+.calendar-day.is-selected .day-dot {background: white;}
 
-.calendar-day.is-today {
-  box-shadow: inset 0 0 0 2px rgba(13, 148, 136, 0.25);
-}
+.calendar-day.is-today { box-shadow: inset 0 0 0 2px rgba(13, 148, 136, 0.25);}
 
-.day-number {
-  font-weight: 800;
-  color: #1e293b;
-}
+.day-number {font-weight: 800;color: #1e293b;}
 
 .calendar-markers {
   min-height: 22px;
@@ -316,10 +297,7 @@
   white-space: nowrap;
 }
 
-.selected-exercise-list {
-  display: grid;
-  gap: 12px;
-}
+.selected-exercise-list {display: grid; gap: 12px;}
 
 .selected-exercise-card {
   padding: 14px;
@@ -334,9 +312,7 @@
   font-size: 0.75rem;
 }
 
-.set-pill {
-  font-size: 0.75rem;
-}
+.set-pill {font-size: 0.75rem;}
 
 .empty-history-state {
   min-height: 320px;
@@ -383,38 +359,19 @@
     font-size: 0.85rem;
   }
 
-  .streak-pill {
-    margin-top: 10px;
-    margin-left: 0 !important;
-  }
+  .streak-pill { margin-top: 10px; margin-left: 0 !important;}
 
-  .calendar-grid,
-  .calendar-weekdays {
-    gap: 6px;
-  }
+  .calendar-grid,.calendar-weekdays { gap: 6px;}
 
-  .calendar-day {
-    min-height: 64px;
-    padding: 8px 4px;
-    border-radius: 14px;
-  }
+  .calendar-day {min-height: 64px;padding: 8px 4px; border-radius: 14px;}
 
-  .day-volume {
-    font-size: 0.6rem;
-  }
+  .day-volume {font-size: 0.6rem;}
 
-  .calendar-title {
-    min-width: 110px;
-    font-size: 0.9rem;
-  }
+  .calendar-title {min-width: 110px;font-size: 0.9rem;}
 
-  .selected-day-header {
-    flex-direction: column;
-  }
+  .selected-day-header { flex-direction: column;}
 
-  .selected-day-actions {
-    flex-wrap: wrap;
-  }
+  .selected-day-actions {flex-wrap: wrap;}
 }
 
 :host-context(.dark-mode) .card,
