@@ -26,7 +26,26 @@ export class EntrenamientoService {
   public currentTab = signal<string>('dashboard');
   public userSignal = signal<any>(null);
   public history = signal<any[]>([]);
-  public userLevel = signal<string>('Intermediate');
+
+  public userLevel = computed(() => {
+    const xp = this.statsSignal().experiencePoints;
+    if (xp >= 2000) {
+      return 'LEVELS.ADVANCED';
+    } else if (xp >= 500) {
+      return 'LEVELS.INTERMEDIATE';
+    } else {
+      return 'LEVELS.BEGINNER';
+    }
+    });
+    
+    public xpProgress = computed(() => {
+      const xp = this.statsSignal().experiencePoints;
+      if (xp >= 2000) return 100;
+      if (xp >= 500) return ((xp - 500) / 1500) * 100;
+      return (xp / 500) * 100; 
+      });
+  
+
   public isWorkoutCompletedToday = signal<boolean>(false);
   public isAuthReady = signal<boolean>(false);
   private historySubscription?: Subscription;

@@ -7,12 +7,13 @@
   <div class="flex-grow-1">
     <h5 class="fw-bold mb-0 text-dark">
       {{ welcomeKey() | translate:{ name: entrenamientoService.userName() } }}</h5>
-    <div class="d-flex align-items-center mt-1">
-      <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-1">
-        <i class="bi bi-lightning-fill me-1"></i> {{ entrenamientoService.userLevel() }}
+    <div class="d-flex align-items-center gap-2 mt-1">
+      <span class="badge level-badge" [style.--xp-fill]="entrenamientoService.xpProgress() + '%'">
+        <i class="bi bi-lightning-fill me-1"></i> {{ entrenamientoService.userLevel() | translate }}
       </span>
-      <small class="text-muted ms-3">
-        <i class="bi bi-calendar3 me-1"></i> {{ entrenamientoService.history().length }} {{ 'DASHBOARD.SESSIONS' | translate }}
+      <small class="xp-badge fw-medium d-flex align-items-center">
+        <i class="bi bi-star-fill me-1 text-warning"></i> 
+        {{ entrenamientoService.statsSignal().experiencePoints }} XP
       </small>
     </div>
   </div>

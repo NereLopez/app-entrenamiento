@@ -37,6 +37,11 @@
         "LAST_EXERCISE": "Último ejercicio",
         "WORKOUT_SESSION": "Sesión de entrenamiento"
     },
+    "LEVELS": {
+        "BEGINNER": "Principiante",
+        "INTERMEDIATE": "Intermedio",
+        "ADVANCED": "Avanzado"
+    },
     "INSTALL": {
         "TITLE": "Instalar Kinetic App",
         "SCAN": "Escanear QR",

@@ -166,6 +166,32 @@
   cursor: pointer;
 }
 
+.level-badge {
+  position: relative;
+  background: linear-gradient(to right, rgba(13, 148, 136, 0.3) 0%, rgba(13, 148, 136, 0.3) var(--xp-fill), rgba(13, 148, 136, 0.08) var(--xp-fill), rgba(13, 148, 136, 0.08) 100%) !important;
+  color: var(--primary-teal) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 999px !important;
+  padding: 4px 12px !important;
+  font-weight: 600 !important;
+  transition: background 0.3s ease;
+}
+
+:host-context(.dark-mode) .level-badge {
+  background: linear-gradient(to right, rgba(45, 212, 191, 0.2) 0%, rgba(45, 212, 191, 0.2) var(--xp-fill), rgba(45, 212, 191, 0.08) var(--xp-fill), rgba(45, 212, 191, 0.08) 100%) !important;
+  color: #2dd4bf !important;
+  border-color: #334155 !important;
+}
+
+.xp-badge {
+  color: #64748b;
+  white-space: nowrap;
+}
+
+:host-context(.dark-mode) .xp-badge {
+  color: #cbd5e1 !important;
+}
+
 @media (max-width: 768px) {
   .dashboard-user-card { flex-direction: column; }
   
@@ -180,6 +206,7 @@
 .dark-mode .text-muted, .dark-mode .text-secondary {
   color: #94a3b8 !important;
 }
+
 
 :host-context(.dark-mode) .dashboard-user-card,
 :host-context(.dark-mode) .stat-card,

@@ -37,6 +37,11 @@
         "LAST_EXERCISE": "Last Exercise",
         "WORKOUT_SESSION": "Workout Session"
     },
+    "LEVELS": {
+        "BEGINNER": "Beginner",
+        "INTERMEDIATE": "Intermediate",
+        "ADVANCED": "Advanced"
+    },
     "INSTALL": {
         "TITLE": "Install Kinetic App",
         "SCAN": "Scan QR",
@@ -117,7 +122,7 @@
             "ADD_MEAL": "Add Meal"
         },
         "WATER": {
-            "TITLE": "Daily Water Intake"
+            "TITLE": "Daily Water"
         },
         "MEAL_TYPES": {
             "BREAKFAST": "Breakfast",
