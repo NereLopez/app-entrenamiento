@@ -36,10 +36,10 @@ export class NuevaSesionComponent implements OnInit, OnDestroy {
   
 
   public exerciseLibrary = [
-    { muscle: 'Chest', exercises: ['Bench Press', 'Incline Press', 'Chest Flys'] },
+    { muscle: 'Chest', exercises: ['Bench Press', 'Push-ups', 'Chest Flys'] },
     { muscle: 'Back', exercises: ['Deadlift', 'Pull-ups', 'Rows'] },
-    { muscle: 'Legs', exercises: ['Squat', 'Lunge', 'Leg Press'] },
-    { muscle: 'Shoulders', exercises: ['Military Press', 'Lateral Raise', 'Front Raise'] },
+    { muscle: 'Legs', exercises: ['Squat', 'Lunge', 'Step-ups'] },
+    { muscle: 'Shoulders', exercises: ['Military Press', 'Lateral Raise', 'Upright Row'] },
     { muscle: 'Arms', exercises: ['Bicep Curl', 'Tricep Extension', 'Hammer Curl'] },
     { muscle: 'Core', exercises: ['Plank', 'Crunches', 'Russian Twist'] }
   ];
