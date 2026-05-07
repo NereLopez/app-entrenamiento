@@ -75,7 +75,8 @@
             "CONSUMED": "Consumido:",
             "REMAINING": "Restante:",
             "PERCENTAGE": "% del objetivo diario",
-            "BURNED": "Calorías quemadas:"
+            "BURNED": "Calorías quemadas:",
+            "NET": "Calorías netas:"
         },
         "MEAL_LOGGER": {
             "TITLE": "Registrar comida de hoy",

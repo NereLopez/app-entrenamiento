@@ -75,7 +75,8 @@
             "CONSUMED": "Consumed:",
             "REMAINING": "Remaining:",
             "PERCENTAGE": "% of daily target",
-            "BURNED": "Calories Burned:"
+            "BURNED": "Calories Burned:",
+            "NET": "Net Calories:"
         },
         "MEAL_LOGGER": {
             "TITLE": "Log today's meal",
