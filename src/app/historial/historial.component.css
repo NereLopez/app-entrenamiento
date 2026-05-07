@@ -328,6 +328,12 @@
   border: 1px solid #edf2f7;
 }
 
+.exercise-kcal {
+  color: #0f766e;
+  font-weight: 700;
+  font-size: 0.75rem;
+}
+
 .set-pill {
   font-size: 0.75rem;
 }
@@ -472,4 +478,8 @@
   background: #0f172a !important;
   color: #cbd5e1 !important;
   border-color: #334155 !important;
+}
+
+:host-context(.dark-mode) .exercise-kcal {
+  color: #2dd4bf;
 }

@@ -39,8 +39,23 @@ export class NutricionService {
   addWater() {
     if (this.waterMl() < 2000) {
       this.waterMl.update(v => Math.min(v + 250, 2000));
+      this.saveWaterToLocalStorage();
     }
   }
+  private saveWaterToLocalStorage() {
+  const today = new Date().toISOString().split('T')[0];
+  localStorage.setItem(`waterMl_${today}`, this.waterMl().toString());
+}
+
+private loadWaterFromLocalStorage() {
+  const today = new Date().toISOString().split('T')[0];
+  const saved = localStorage.getItem(`waterMl_${today}`);
+  if (saved) {
+    this.waterMl.set(Number(saved));
+  } else {
+    this.waterMl.set(0);
+  }
+}
 
   private get userId(): string | undefined {
     return this.auth.currentUser?.uid;
@@ -53,6 +68,7 @@ export class NutricionService {
       this.resetUserState();
       if (u) {
         this.fetchDailyMeals(); 
+        this.loadWaterFromLocalStorage();
         this.fetchUserProfile(u.uid);
       }
     });
@@ -162,6 +178,15 @@ export class NutricionService {
   public caloriesConsumed = computed(() => {
   return this.dailyMeals().reduce((total, meal) => total + meal.calories, 0);
   });
+
+  public caloriesBurnedToday = computed(() => {
+    const stats = this.entrenamientoService.statsSignal();
+    return stats.caloriesBurnedToday || 0;
+  });
+  public netCalories = computed(() => {
+    return this.caloriesConsumed() - this.caloriesBurnedToday();
+  });
+
 
   public fetchDailyMeals() {
   if (!this.userId) return;

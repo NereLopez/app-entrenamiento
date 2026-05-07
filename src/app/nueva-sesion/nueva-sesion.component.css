@@ -87,6 +87,27 @@
   color: #0d9488;
 }
 
+.session-intensity {
+  max-width: 360px;
+}
+
+.intensity-chip {
+  border-radius: 999px;
+  padding: 4px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.12);
+  font-size: 0.75rem;
+  font-weight: 700;
+  transition: all 0.2s ease;
+}
+
+.intensity-chip.is-active {
+  background: #ffffff;
+  color: #0f766e;
+  border-color: #ffffff;
+}
+
 .library-toggle-btn {
   background: #ffffff;
   transition: background 0.2s ease, border-color 0.2s ease;

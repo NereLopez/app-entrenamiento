@@ -19,6 +19,8 @@ export interface SesionEntrenamiento {
     fecha: number;    
     titulo: string;
     ejercicios: Ejercicio[];
+    duracionMinutos?: number;
+    caloriasQuemadas?: number;
 }
 
 export interface UserStats {

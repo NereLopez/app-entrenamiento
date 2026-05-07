@@ -21,6 +21,11 @@ export class NuevaSesionComponent implements OnInit, OnDestroy {
   public showManualGroupMenu = false;
   public selectedManualGroup = 'Chest';
   public manualGroupOptions = ['Chest', 'Back', 'Legs', 'Shoulders', 'Arms', 'Core'];
+  public intensityOptions: Array<{ value: 'light' | 'moderate' | 'intense'; label: string }> = [
+    { value: 'light', label: 'EXERCISES.INTENSITY.LIGHT' },
+    { value: 'moderate', label: 'EXERCISES.INTENSITY.MODERATE' },
+    { value: 'intense', label: 'EXERCISES.INTENSITY.INTENSE' }
+  ];
   public workoutForm: FormGroup; 
   
   // Lógica del Cronómetro
@@ -44,6 +49,7 @@ export class NuevaSesionComponent implements OnInit, OnDestroy {
     this.workoutForm = this.fb.group({
       title: [defaultTitle, Validators.required],
       date: [new Date().toISOString().substring(0, 10), Validators.required],
+      intensity: ['moderate', Validators.required],
       exercises: this.fb.array([]) 
     });
   }
@@ -109,6 +115,14 @@ export class NuevaSesionComponent implements OnInit, OnDestroy {
     if (this.showManualGroupMenu) {
       this.showLibrary = false;
     }
+  }
+
+  get currentIntensity(): 'light' | 'moderate' | 'intense' {
+    return this.workoutForm.get('intensity')?.value || 'moderate';
+  }
+
+  setIntensity(level: 'light' | 'moderate' | 'intense') {
+    this.workoutForm.patchValue({ intensity: level });
   }
 
   addExercise(name: string, group: string = 'Default') {
@@ -222,6 +236,7 @@ export class NuevaSesionComponent implements OnInit, OnDestroy {
     const sessionData = {
       title: this.workoutForm.value.title,
       date: this.workoutForm.value.date,
+      intensity: this.workoutForm.value.intensity || 'moderate',
       exercises: this.workoutForm.value.exercises,
       createdAt: Date.now()
     };

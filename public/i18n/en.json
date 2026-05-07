@@ -74,7 +74,8 @@
             "GOAL_LABEL": "Goal: {{goal}}",
             "CONSUMED": "Consumed:",
             "REMAINING": "Remaining:",
-            "PERCENTAGE": "% of daily target"
+            "PERCENTAGE": "% of daily target",
+            "BURNED": "Calories Burned:"
         },
         "MEAL_LOGGER": {
             "TITLE": "Log today's meal",
@@ -181,6 +182,12 @@
             "SET": "Set",
             "DELETE": "Delete Exercise"
         },
+        "INTENSITY": {
+            "LABEL": "Intensity",
+            "LIGHT": "Light",
+            "MODERATE": "Moderate",
+            "INTENSE": "Intense"
+        },
         "PLACEHOLDERS": {
             "MANUAL_NAME": "Enter exercise name..."
         },
@@ -210,7 +217,8 @@
             "BACK": "Back",
             "SHOULDERS": "Shoulders",
             "ARMS": "Arms",
-            "CORE": "Core"
+            "CORE": "Core",
+            "DEFAULT": "Other"
         },
         "LABELS": {
             "KG": "Kg",

@@ -166,7 +166,10 @@
             @for (ex of selectedCalendarSession.allExercises; track $index) {
               <div class="selected-exercise-card">
                 <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
-                  <div class="fw-bold text-dark small">{{ getExerciseDisplayName(ex.name) }}</div>
+                  <div>
+                    <div class="fw-bold text-dark small">{{ getExerciseDisplayName(ex.name) }}</div>
+                    <small class="exercise-kcal">🔥 {{ getExerciseCalories(ex) }} kcal</small>
+                  </div>
                   <button
                     type="button"
                     class="btn btn-sm text-danger border-0 p-0"

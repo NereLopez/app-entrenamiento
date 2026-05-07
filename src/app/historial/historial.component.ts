@@ -2,7 +2,7 @@ import { Component, inject, effect, ElementRef, ViewChild, Injector, runInInject
 import { CommonModule } from '@angular/common';
 import { EntrenamientoService } from '../services/entrenamiento.service'; 
 import { Chart, registerables } from 'chart.js';
-import { Firestore, collection, collectionData, query, where } from '@angular/fire/firestore';
+import { Firestore, collection, collectionData, query, where, doc, getDoc } from '@angular/fire/firestore';
 import { Auth, user } from '@angular/fire/auth';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
@@ -33,13 +33,17 @@ export class HistorialComponent {
   public selectedDateKey: string | null = null;
   public nutritionDayMap = new Map<string, { calories: number; complete: boolean }>();
   public readonly calendarWeekdays = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
+  private userWeightKg = 70;
 
   constructor() {
     user(this.auth).subscribe(currentUser => {
       if (!currentUser) {
         this.nutritionDayMap = new Map();
+        this.userWeightKg = 70;
         return;
       }
+
+      void this.fetchUserWeightKg(currentUser.uid);
 
       const entriesRef = collection(this.firestore, 'food_entries');
       const entriesQuery = query(entriesRef, where('userId', '==', currentUser.uid));
@@ -294,6 +298,51 @@ export class HistorialComponent {
     });
     return total;
   }
+
+  private getMetByIntensity(intensity: 'light' | 'moderate' | 'intense' = 'moderate'): number {
+    const map: Record<'light' | 'moderate' | 'intense', number> = {
+      light: 4.5,
+      moderate: 6.0,
+      intense: 8.0
+    };
+    return map[intensity] ?? 6.0;
+  }
+
+  private getTotalSets(exercises: any[]): number {
+    return (exercises || []).reduce((sum, ex) => sum + (ex.sets?.length || 0), 0);
+  }
+
+  private getWorkoutCaloriesEstimate(workout: any): number {
+    const totalSets = this.getTotalSets(workout?.exercises || []);
+    if (totalSets === 0) return 0;
+
+    const estimatedMinutes = Math.max(15, Math.round(totalSets * 2.2));
+    const intensity = (workout?.intensity || 'moderate') as 'light' | 'moderate' | 'intense';
+    const met = this.getMetByIntensity(intensity);
+    const referenceWeightKg = this.userWeightKg;
+
+    return Math.round(((met * 3.5 * referenceWeightKg) / 200) * estimatedMinutes);
+  }
+
+  getExerciseCalories(exercise: any): number {
+    const workout = this.entrenamientoService.history().find(w => w.id === exercise.workoutId);
+    if (!workout) return 0;
+
+    const workoutCalories = this.getWorkoutCaloriesEstimate(workout);
+    const workoutTotalSets = this.getTotalSets(workout.exercises || []);
+    const exerciseSets = exercise?.sets?.length || 0;
+
+    if (workoutCalories <= 0 || workoutTotalSets <= 0 || exerciseSets <= 0) return 0;
+    return Math.round((workoutCalories * exerciseSets) / workoutTotalSets);
+  }
+
+  private async fetchUserWeightKg(userId: string) {
+    const profileRef = doc(this.firestore, `user_nutrition/${userId}`);
+    const profileSnap = await runInInjectionContext(this.injector, () => getDoc(profileRef));
+    const weight = Number(profileSnap.data()?.['weight']);
+    this.userWeightKg = Number.isFinite(weight) && weight > 0 ? weight : 70;
+  }
+
   getDaysTrainedThisMonth(): number {
     const mesActual = this.displayedMonth.getMonth();
     const anioActual = this.displayedMonth.getFullYear();

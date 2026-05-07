@@ -30,6 +30,17 @@
               <small class="d-block mt-2 opacity-75">
                 {{ ((nutricionSvc.caloriesConsumed() / (nutricionSvc.targetCalories() || 1)) * 100).toFixed(0) }} {{ 'NUTRITION.ENERGY.PERCENTAGE' | translate }}
               </small>
+                            <div class="mt-3 pt-3" style="border-top: 1px solid rgba(0,0,0,0.1);">
+                <div class="d-flex justify-content-between mb-1" style="font-size: 0.85rem; opacity: 0.9;">
+                  <span style="color: #2dd4bf;">
+                    🔥 {{ 'NUTRITION.ENERGY.BURNED' | translate }} 
+                    <strong>{{ nutricionSvc.caloriesBurnedToday() }}</strong>
+                  </span>
+                  <span style="color: #0d9488;">
+                    ⚖️ Net: <strong>{{ nutricionSvc.netCalories() }}</strong>
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
 

@@ -13,6 +13,7 @@ export interface UserStats {
   currentStreak: number;
   lastSessionDate: number;
   dailyCaloriesTarget: number;
+  caloriesBurnedToday?: number;
   weeklyActivity?: { [weekId: string]: any[] };
 }
 
@@ -55,7 +56,8 @@ export class EntrenamientoService {
     personalRecords: {},
     currentStreak: 0,
     lastSessionDate: 0,
-    dailyCaloriesTarget: 0
+    dailyCaloriesTarget: 0,
+    caloriesBurnedToday: 0
   });
 
   constructor() {
@@ -86,8 +88,21 @@ export class EntrenamientoService {
       personalRecords: {},
       currentStreak: 0,
       lastSessionDate: 0,
-      dailyCaloriesTarget: 0
+      dailyCaloriesTarget: 0,
+      caloriesBurnedToday: 0
     });
+  }
+
+  private async getUserWeightKg(userId: string): Promise<number | null> {
+    const profileRef = doc(this.firestore, `user_nutrition/${userId}`);
+    const profileSnap = await runInInjectionContext(this.injector, () => getDoc(profileRef));
+
+    if (!profileSnap.exists()) {
+      return null;
+    }
+
+    const weight = Number(profileSnap.data()?.['weight']);
+    return Number.isFinite(weight) && weight > 0 ? weight : null;
   }
 
   public userName = computed(() => {
@@ -154,13 +169,73 @@ export class EntrenamientoService {
     this.historySubscription = runInInjectionContext(
       this.injector,
       () => collectionData(q, { idField: 'id' })
-    ).subscribe(data => {
+    ).subscribe(async data => {
       this.history.set(data);
+      await this.syncCaloriesBurnedToday(userId, data as any[]);
     });
   }
 
+  private getMetByIntensity(intensity: 'light' | 'moderate' | 'intense' = 'moderate'): number {
+    const metByIntensity: Record<'light' | 'moderate' | 'intense', number> = {
+      light: 4.5,
+      moderate: 6.0,
+      intense: 8.0
+    };
+    return metByIntensity[intensity] ?? 6.0;
+  }
+
+  private getWorkoutCalories(workoutExercises: any[], intensity: 'light' | 'moderate' | 'intense', weightKg: number): number {
+    let totalSets = 0;
+    workoutExercises.forEach(exercise => {
+      exercise.sets?.forEach(() => {
+        totalSets += 1;
+      });
+    });
+
+    if (totalSets === 0) {
+      return 0;
+    }
+
+    const estimatedMinutes = Math.max(15, Math.round(totalSets * 2.2));
+    const met = this.getMetByIntensity(intensity);
+    return Math.round(((met * 3.5 * weightKg) / 200) * estimatedMinutes);
+  }
+
+  private async syncCaloriesBurnedToday(userId: string, workoutsData?: any[]) {
+    if (this.auth.currentUser?.uid !== userId) {
+      return;
+    }
+
+    const workouts = workoutsData ?? this.history();
+    const todayStart = new Date().setHours(0, 0, 0, 0);
+    const tomorrowStart = todayStart + 86400000;
+    const referenceWeightKg = (await this.getUserWeightKg(userId)) ?? 70;
+
+    const caloriesToday = workouts
+      .filter(workout => {
+        const createdAt = workout.createdAt instanceof Date
+          ? workout.createdAt.getTime()
+          : Number(workout.createdAt);
+        return Number.isFinite(createdAt) && createdAt >= todayStart && createdAt < tomorrowStart;
+      })
+      .reduce((total, workout) => {
+        const intensity = (workout.intensity || 'moderate') as 'light' | 'moderate' | 'intense';
+        return total + this.getWorkoutCalories(workout.exercises || [], intensity, referenceWeightKg);
+      }, 0);
+
+    const current = this.statsSignal();
+    if ((current.caloriesBurnedToday || 0) === caloriesToday) {
+      return;
+    }
+
+    const nextStats = { ...current, caloriesBurnedToday: caloriesToday };
+    this.statsSignal.set(nextStats);
+    const statsRef = doc(this.firestore, `stats/${userId}`);
+    await setDoc(statsRef, { caloriesBurnedToday: caloriesToday }, { merge: true });
+  }
+
   
-  async finalizeSession(workoutExercises: any[]) {
+  async finalizeSession(workoutExercises: any[], intensity: 'light' | 'moderate' | 'intense' = 'moderate') {
     const currentUser = this.userSignal();
     if (!currentUser) return;
 
@@ -207,13 +282,22 @@ export class EntrenamientoService {
       currentStats.lastSessionDate = today;
     }
 
+    const referenceWeightKg = (await this.getUserWeightKg(userId)) ?? 70;
+    const caloriesBurned = this.getWorkoutCalories(workoutExercises, intensity, referenceWeightKg);
+
     currentStats.experiencePoints += newXP;
 
-    await setDoc(statsRef, currentStats, { merge: true });
+    // Avoid writing stale per-day burn here; it is recomputed from today's full history.
+    const { caloriesBurnedToday, ...statsWithoutDailyBurn } = currentStats;
+    void caloriesBurnedToday;
+    await setDoc(statsRef, statsWithoutDailyBurn, { merge: true });
     this.statsSignal.set(currentStats);
 
+    // Force recompute after session save to avoid race conditions with live history updates.
+    await this.syncCaloriesBurnedToday(userId);
+
     this.isWorkoutCompletedToday.set(true);
-    return { brokeRecord, earnedXP: newXP };
+    return { brokeRecord, earnedXP: newXP, caloriesBurned };
   }
 
   async syncWeeklyActivity(weekId: string, activity: any[]) {
@@ -266,7 +350,7 @@ export class EntrenamientoService {
       
       await addDoc(workoutsRef, newWorkout);
       
-      await this.finalizeSession(formData.exercises || []);
+      await this.finalizeSession(formData.exercises || [], formData.intensity || 'moderate');
       
       return true;
     } catch (error) {
