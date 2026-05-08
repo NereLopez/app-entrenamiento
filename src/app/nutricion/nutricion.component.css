@@ -226,12 +226,6 @@
 
 .btn-submit:disabled{opacity:.7;cursor:not-allowed;filter:grayscale(.5)}
 
-.animate__fadeIn{animation:fadeIn .4s ease-in}
-@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-
-.spinner-border{display:inline-block;width:1rem;height:1rem;vertical-align:text-bottom;border:.2em solid currentColor;border-right-color:transparent;border-radius:50%;animation:spinner-border .75s linear infinite}
-@keyframes spinner-border{to{transform:rotate(360deg)}}
-
 input.ng-invalid.ng-touched,
 select.ng-invalid.ng-touched{
   border-color:#ef4444!important;
@@ -240,19 +234,6 @@ select.ng-invalid.ng-touched{
 }
 
 .error-text{color:#ef4444;font-size:.7rem;margin-top:-15px;margin-bottom:15px;display:block;font-weight:600}
-
-.icon-circle{
-  width:60px;
-  height:60px;
-  border-radius:50%;
-  background:#f0fdfa;
-  color:#0d9488;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  margin:0 auto;
-  font-size:1.5rem;
-}
 
 .custom-input label{font-size:.85rem;color:#64748b;margin-bottom:6px;font-weight:600}
 
