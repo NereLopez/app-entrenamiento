@@ -1,5 +1,5 @@
 import { Injectable, signal, computed, inject, effect, Injector, runInInjectionContext } from '@angular/core';
-import { Firestore, collection, addDoc, collectionData, query, where, doc, deleteDoc, getDoc, setDoc } from '@angular/fire/firestore';
+import { Firestore, collection, addDoc, collectionData, query, where, increment, doc, deleteDoc, getDoc, setDoc } from '@angular/fire/firestore';
 import { FoodEntry } from '../models/nutricion.model';
 import { Auth, user } from '@angular/fire/auth';
 import { EntrenamientoService } from './entrenamiento.service';
@@ -36,39 +36,53 @@ export class NutricionService {
   public waterGlasses = computed(() => Math.min(Math.floor(this.waterMl() / 250), 8));
   public waterArray = computed(() => Array.from({ length: 8 }, (_, i) => i < this.waterGlasses()));
 
-  addWater() {
+ async addWater() {
+  const user = this.auth.currentUser; // Usamos tu variable 'auth'
+  if (!user) return;
+
+  const today = new Date().toISOString().split('T')[0];
+  // Apuntamos a la misma ruta que el Dashboard para que se vean igual
+  const docRef = doc(this.firestore, `users/${user.uid}/daily_activity/${today}`);
+
+  try {
     if (this.waterMl() < 2000) {
+      await setDoc(docRef, {
+        water_ml: increment(250),
+        last_updated: Date.now()
+      }, { merge: true });
+
+      // Actualizamos localmente para que la gota cambie al instante
       this.waterMl.update(v => Math.min(v + 250, 2000));
-      this.saveWaterToLocalStorage();
     }
-  }
-  private saveWaterToLocalStorage() {
-  const today = new Date().toISOString().split('T')[0];
-  localStorage.setItem(`waterMl_${today}`, this.waterMl().toString());
-}
-
-private loadWaterFromLocalStorage() {
-  const today = new Date().toISOString().split('T')[0];
-  const saved = localStorage.getItem(`waterMl_${today}`);
-  if (saved) {
-    this.waterMl.set(Number(saved));
-  } else {
-    this.waterMl.set(0);
+  } catch (e) {
+    console.error("Error al guardar agua en Firebase", e);
   }
 }
 
-  private get userId(): string | undefined {
-    return this.auth.currentUser?.uid;
+// Función para cargar los datos de la nube al iniciar
+private async loadWaterFromFirebase(uid: string) {
+  const today = new Date().toISOString().split('T')[0];
+  const docRef = doc(this.firestore, `users/${uid}/daily_activity/${today}`);
+  
+  try {
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      this.waterMl.set(data['water_ml'] || 0);
+    } else {
+      this.waterMl.set(0);
+    }
+  } catch (e) { 
+    console.error("Error cargando agua de Firebase", e); 
   }
-
-
+}
   constructor (){
     // Escuchamos cuando el usuario se loguea para cargar sus comidas
     user(this.auth).subscribe(u => {
       this.resetUserState();
       if (u) {
         this.fetchDailyMeals(); 
-        this.loadWaterFromLocalStorage();
+        this.loadWaterFromFirebase(u.uid);
         this.fetchUserProfile(u.uid);
       }
     });
@@ -189,13 +203,14 @@ private loadWaterFromLocalStorage() {
 
 
   public fetchDailyMeals() {
-  if (!this.userId) return;
+  const uid = this.auth.currentUser?.uid;
+  if (!uid) return;
 
   const today = new Date().setHours(0, 0, 0, 0);
   const colRef = collection(this.firestore, 'food_entries');
   const q = query(
     colRef, 
-    where('userId', '==', this.userId), 
+    where('userId', '==', uid), 
     where('date', '==', today)
   );
 
@@ -213,9 +228,10 @@ private loadWaterFromLocalStorage() {
 
   
   async saveToFirestore() {
-    if (!this.userId) return;
+    const uid = this.auth.currentUser?.uid;
+    if (!uid) return;
 
-    const docRef = doc(this.firestore, `user_nutrition/${this.userId}`);
+    const docRef = doc(this.firestore, `user_nutrition/${uid}`);
     await runInInjectionContext(this.injector, () => setDoc(docRef, {
       weight: this.weight(),
       height: this.height(),
@@ -230,7 +246,8 @@ private loadWaterFromLocalStorage() {
   }   
   
   async addFoodEntry(name: string, calories: number, type: any, p:number = 0, c: number = 0, f: number = 0) {
-    if (!this.userId) return;
+    const uid = this.auth.currentUser?.uid;
+    if (!uid) return;
     this.isLoading.set(true);
 
     try {
@@ -245,7 +262,7 @@ private loadWaterFromLocalStorage() {
         fats: f,
         date: new Date().setHours(0, 0, 0, 0)
       };
-      await addDoc(colRef, {...newEntry, userId: this.userId});
+      await addDoc(colRef, {...newEntry, userId: uid});
       this.showToast('Meal guardada');
     } catch (error) {
       this.showToast('No se pudo guardar la comida', 'danger');
