@@ -17,6 +17,7 @@
         "WEEKLY_ACTIVITY": "ACTIVIDAD SEMANAL",
         "MOTIVATION": "¡Gran comienzo... sigue así!",
         "START_WORKOUT": "Comenzar entrenamiento",
+        "TODAY_SESSION": "Tiempo de hoy",
         "WELCOME_BACK": "¡Bienvenido de nuevo!",
         "SUBTITLE": "Vamos a alcanzar tus objetivos de fitness juntos.",
         "QUICK_START": "Inicio rápido",
@@ -35,7 +36,9 @@
         "KEEP_IT_UP": "¡Sigue así!",
         "NO_ACTIVITY": "Todavía no hay actividad",
         "LAST_EXERCISE": "Último ejercicio",
-        "WORKOUT_SESSION": "Sesión de entrenamiento"
+        "WORKOUT_SESSION": "Sesión de entrenamiento",
+        "START": "¡Comenzar!",
+        "STOP": "¡Detener!"
     },
     "LEVELS": {
         "BEGINNER": "Principiante",
@@ -121,7 +124,8 @@
             "Hummus + Veggies": "Hummus + Verduras"
         },
         "FORM": {
-            "ADD_MEAL": "Añadir comida"
+            "ADD_MEAL": "Añadir comida",
+            "DELETE_CONFIRM": "¿Estás seguro de que quieres eliminar esta entrada?"
         },
         "WATER": {
             "TITLE": "Agua diaria"

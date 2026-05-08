@@ -17,6 +17,7 @@
         "WEEKLY_ACTIVITY": "WEEKLY ACTIVITY",
         "MOTIVATION": "Great start... keep it up!",
         "START_WORKOUT": "Start Workout",
+        "TODAY_SESSION": "Today's time",
         "WELCOME_BACK": "Welcome back!",
         "SUBTITLE": "Let's crush your fitness goals together.",
         "QUICK_START": "Quick Start",
@@ -35,7 +36,9 @@
         "KEEP_IT_UP": "Keep it up!",
         "NO_ACTIVITY": "No activity yet",
         "LAST_EXERCISE": "Last Exercise",
-        "WORKOUT_SESSION": "Workout Session"
+        "WORKOUT_SESSION": "Workout Session",
+        "START": "Start !",
+        "STOP": "Stop !"
     },
     "LEVELS": {
         "BEGINNER": "Beginner",
@@ -121,7 +124,8 @@
             "Hummus + Veggies": "Hummus + Veggies"
         },
         "FORM": {
-            "ADD_MEAL": "Add Meal"
+            "ADD_MEAL": "Add Meal",
+            "DELETE_CONFIRM": "Are you sure you want to delete this entry?"
         },
         "WATER": {
             "TITLE": "Daily Water"
