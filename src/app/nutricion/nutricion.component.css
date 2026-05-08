@@ -382,6 +382,24 @@ select.ng-invalid.ng-touched{
   box-shadow:0 4px 12px rgba(0,0,0,.05);
 }
 
+.meal-type-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  z-index: 100;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--card-bg, #fff);
+  box-shadow: 0 8px 24px rgba(0,0,0,.12);
+}
+
+.meal-type-dropdown .preset-group-toggle.breakfast { border-bottom: 3px solid #fbbf24; }
+.meal-type-dropdown .preset-group-toggle.lunch    { border-bottom: 3px solid #fb7185; }
+.meal-type-dropdown .preset-group-toggle.dinner   { border-bottom: 3px solid #60a5fa; }
+.meal-type-dropdown .preset-group-toggle.snack    { border-bottom: 3px solid #2dd4bf; }
+
 .preset-group-toggle{
   width:100%;
   min-height:46px;
@@ -437,10 +455,10 @@ select.ng-invalid.ng-touched{
   transition:all .2s ease;
 }
 
-.preset-item.breakfast{border-left-color:#f59e0b}
-.preset-item.lunch{border-left-color:#ef4444}
-.preset-item.dinner{border-left-color:#3b82f6}
-.preset-item.snack{border-left-color:#64748b}
+.preset-item.breakfast{border-left-color:#fbbf24}
+.preset-item.lunch{border-left-color:#fb7185}
+.preset-item.dinner{border-left-color:#60a5fa}
+.preset-item.snack{border-left-color:#2dd4bf}
 
 .preset-item::after{
   content:"";

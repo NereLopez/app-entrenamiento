@@ -138,15 +138,50 @@
     <input #foodCals type="number" class="form-control meal-name-input" [placeholder]=" 'NUTRITION.MEAL_LOGGER.PLACEHOLDER_CALORIES' | translate ">
   </div>
 
-  <div class="col-md-4">
-    <select #foodType class="form-select meal-type-select" (change)="onMealTypeChange(foodType.value)">
-      <option value="breakfast">{{ 'NUTRITION.MEAL_TYPES.BREAKFAST' | translate }}</option>
-      <option value="lunch">{{ 'NUTRITION.MEAL_TYPES.LUNCH' | translate }}</option>
-      <option value="dinner">{{ 'NUTRITION.MEAL_TYPES.DINNER' | translate }}</option>
-      <option value="snack">{{ 'NUTRITION.MEAL_TYPES.SNACK' | translate }}</option>
-    </select>
+  <div class="col-md-4" style="position: relative;">
+    <input #foodType type="hidden" value="breakfast">
+    <!-- Trigger button -->
+    <button type="button"
+            class="preset-group-toggle w-100"
+            style="border: 1px solid #e2e8f0; border-radius: 10px; min-height: 38px; padding: 5px 10px;"
+            (click)="isMealTypeDropdownOpen.set(!isMealTypeDropdownOpen())">
+      <span class="preset-group-label">
+        <span class="preset-group-icon" style="width:24px; height:24px; font-size:0.75rem;">
+          <i [ngClass]="categoryIconClass(selectedPresetType() ?? 'breakfast')"></i>
+        </span>
+        <span class="preset-group-text">
+          <strong style="font-size:0.82rem;">{{ 'NUTRITION.MEAL_TYPES.' + (selectedPresetType() ?? 'breakfast').toUpperCase() | translate }}</strong>
+        </span>
+      </span>
+      <i class="bi" style="font-size:0.75rem;" [class.bi-chevron-down]="!isMealTypeDropdownOpen()" [class.bi-chevron-up]="isMealTypeDropdownOpen()"></i>
+    </button>
+    <!-- Dropdown list -->
+    @if (isMealTypeDropdownOpen()) {
+      <div class="meal-type-dropdown" (mouseleave)="isMealTypeDropdownOpen.set(false)">
+        @for (cat of categories; track cat) {
+          <button type="button"
+                  class="preset-group-toggle"
+                  [class]="'preset-group-toggle ' + cat"
+                  [class.active]="selectedPresetType() === cat"
+                  (click)="onMealTypeChange(cat); foodType.value = cat; isMealTypeDropdownOpen.set(false)">
+            <span class="preset-group-label">
+              <span class="preset-group-icon">
+                <i [ngClass]="categoryIconClass(cat)"></i>
+              </span>
+              <span class="preset-group-text">
+                <strong>{{ 'NUTRITION.MEAL_TYPES.' + cat.toUpperCase() | translate }}</strong>
+              </span>
+            </span>
+            @if (selectedPresetType() === cat) {
+              <i class="bi bi-check-lg text-success"></i>
+            }
+          </button>
+        }
+      </div>
+    }
   </div>
 </div>
+
           <div class="row g-2 mt-2">
   <div class="col-4">
     <div class="input-group mb-0">
