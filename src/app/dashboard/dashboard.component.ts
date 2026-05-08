@@ -24,7 +24,13 @@ export class DashboardComponent implements OnDestroy {
 
   public quickActions = this.dashboardService.quickActions;
   public waterJustAdded = signal(false);
+  public periodMode = signal<'week' | 'month'>('week');
   private waterFlashTimer: ReturnType<typeof setTimeout> | null = null;
+
+  constructor() {
+    this.dashboardService.loadWeeklyStats();
+    this.dashboardService.loadMonthlyStats();
+  }
 
   navegar(ruta: string) {
     if (ruta === '/nutricion') {
@@ -98,6 +104,10 @@ export class DashboardComponent implements OnDestroy {
       const fecha = w.createdAt instanceof Date ? w.createdAt.getTime() : new Date(w.createdAt).getTime();
       return fecha >= oneWeekAgo;
     }).length;
+  }
+
+  getTrainingTime(): number {
+    return this.periodMode() === 'week' ? this.dashboardService.weeklyTrainingSeconds() : this.dashboardService.monthlyTrainingSeconds();
   }
 
 }

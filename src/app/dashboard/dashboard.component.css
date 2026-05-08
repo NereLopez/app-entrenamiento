@@ -192,6 +192,67 @@
   color: #cbd5e1 !important;
 }
 
+.stat-card-compact {
+  padding: 12px 16px !important;
+}
+
+.stat-card-label {
+  font-size: 0.7rem !important;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.35rem !important;
+}
+
+.stat-card-value {
+  font-size: 1.5rem !important;
+  line-height: 1.2;
+  margin-bottom: 0.35rem !important;
+}
+
+.stat-card-subtitle {
+  font-size: 0.75rem !important;
+  margin-top: 0.5rem !important;
+  opacity: 0.85;
+}
+
+.quick-card-compact {
+  min-height: 92px;
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+}
+
+.quick-card-compact .quick-icon {
+  font-size: 1rem;
+  margin-bottom: 0.2rem;
+}
+
+.quick-card-compact .fw-bold {
+  font-size: 0.9rem;
+}
+
+.quick-start-row.compact-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.quick-action-compact {
+  min-width: 0;
+  min-height: 88px;
+  padding: 10px 8px;
+}
+
+.quick-action-compact .icon-circle {
+  margin-bottom: 0.35rem !important;
+}
+
+.quick-action-compact .icon-circle i {
+  font-size: 1rem;
+}
+
+.quick-action-compact .small {
+  font-size: 0.78rem !important;
+}
+
 @media (max-width: 768px) {
   .dashboard-user-card { flex-direction: column; }
   
@@ -252,4 +313,46 @@
   color: #e2e8f0;
 }
 
+.btn-outline-primary.active {
+  background-color: #0d9488;
+  color: white;
+  border-color: #0d9488;
+}
 
+.btn-outline-primary {
+  background-color: #ffffff;
+  color: #0f172a;
+  border-color: #0d9488;
+}
+
+.btn-outline-primary:hover,
+.btn-outline-primary:focus {
+  background-color: #f0fdfa;
+  color: #0f172a;
+  border-color: #0d9488;
+}
+
+.btn-xs {
+  padding: 0.35rem 0.5rem;
+  font-size: 0.7rem;
+  min-width: auto;
+}
+
+:host-context(.dark-mode) .btn-outline-primary.active {
+  background-color: #14b8a6;
+  border-color: #14b8a6;
+  color: #ffffff;
+}
+
+:host-context(.dark-mode) .btn-outline-primary {
+  background-color: transparent;
+  color: #ffffff;
+  border-color: #14b8a6;
+}
+
+:host-context(.dark-mode) .btn-outline-primary:hover,
+:host-context(.dark-mode) .btn-outline-primary:focus {
+  background-color: rgba(20, 184, 166, 0.18);
+  color: #ffffff;
+  border-color: #14b8a6;
+}

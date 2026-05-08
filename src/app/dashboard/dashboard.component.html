@@ -2,15 +2,15 @@
   
   <div class="me-3 d-flex flex-column align-items-center justify-content-center flex-shrink-0 position-relative" 
        style="gap: 0.5rem;">
-    <div (click)="dashboardService.currentSessionSeconds() ? dashboardService.stopSession() : dashboardService.startSession()"
+      <div (click)="dashboardService.isSessionRunning() ? dashboardService.stopSession() : dashboardService.startSession()"
          style="width: 80px; height: 80px; border-radius: 50%; border: 3px solid #0d9488; cursor: pointer; transition: all 0.3s ease; background: rgba(13, 148, 136, 0.05); display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative;">
       
       <span class="fw-bold" style="font-size: 0.9rem; line-height: 1; margin-top: -4px;">
-        {{ dashboardService.formattedTime().substring(3) }}
+        {{ dashboardService.displayTime() }}
       </span>
 
       <i class="bi" 
-         [ngClass]="dashboardService.currentSessionSeconds() ? 'bi-stop-fill text-danger' : 'bi-play-fill text-success'"
+        [ngClass]="dashboardService.isSessionRunning() ? 'bi-stop-fill text-danger' : 'bi-play-fill text-success'"
          style="font-size: 1.2rem; position: absolute; bottom: 2px;"></i>
     </div>
     
@@ -36,32 +36,14 @@
   <app-calendar-heatmap class="dashboard-heatmap d-none d-md-block"></app-calendar-heatmap>
 </div>
 
-<div class="row g-3 mb-5">
-  <div class="col-6">
-    <button (click)="startWithExercise()"
-      class="quick-card quick-card-primary text-white border-0 w-100 shadow-sm rounded-4 py-3">
-      <div class="quick-icon"><i class="bi bi-plus-lg"></i></div>
-      <span class="fw-bold">{{ 'DASHBOARD.START_WORKOUT' | translate }}</span>
-    </button>
-  </div>
-  <div class="col-6">
-    <a routerLink="/historial"
-      class="quick-card bg-white text-dark border-0 w-100 shadow-sm rounded-4 py-3 text-decoration-none d-block text-center">
-      <div class="quick-icon quick-icon-teal"><i class="bi bi-bar-chart-fill"></i></div>
-      <span class="fw-bold">{{ 'DASHBOARD.VIEW_HISTORY' | translate }}</span>
-    </a>
-  </div>
-</div>
-
 <div class="mb-5">
   <h5 class="fw-bold mb-3">{{ 'DASHBOARD.QUICK_START' | translate }}</h5>
 
-  <div class="d-flex gap-3 overflow-auto pb-2 quick-start-row" style="scrollbar-width: none;">
+  <div class="quick-start-row compact-grid">
 
     @for (item of quickActions(); track item.label) {
     <button (click)="onQuickActionClick(item)"
-      class="btn-exercise-quick active shadow-sm border-0 d-flex flex-column align-items-center justify-content-center"
-      style="min-width: 120px;">
+      class="btn-exercise-quick active quick-action-compact shadow-sm border-0 d-flex flex-column align-items-center justify-content-center">
       <div class="icon-circle mb-2">
         <i class="bi" [ngClass]="item.icon"></i>
       </div>
@@ -83,30 +65,65 @@
 </div>
 
 
-<div class="row g-4 mb-5">
-  <div class="col-md-4">
-    <div class="stat-card p-4 shadow-sm border-0 rounded-4 bg-white">
-      <h6 class="text-muted small text-uppercase fw-bold">{{ 'DASHBOARD.THIS_WEEK' | translate }}</h6>
-      <h3 class="fw-bold mb-0">{{ getWorkoutsThisWeek() }}</h3>
-      <p class="small text-success mb-0 mt-1">{{ 'DASHBOARD.SESSIONS' | translate }}</p>
+<div class="row g-3 mb-5">
+  <div class="col-md-6">
+    <div class="stat-card stat-card-compact p-3 shadow-sm border-0 rounded-4 bg-white">
+      <h6 class="text-muted text-uppercase fw-bold stat-card-label">{{ 'DASHBOARD.THIS_WEEK' | translate }}</h6>
+      <h3 class="fw-bold mb-0 stat-card-value">{{ getWorkoutsThisWeek() }}</h3>
+      <p class="stat-card-subtitle text-success mb-0">{{ 'DASHBOARD.SESSIONS' | translate }}</p>
     </div>
   </div>
-  <div class="col-md-4">
-    <div class="stat-card p-4 shadow-sm border-0 rounded-4 bg-white">
-      <h6 class="text-muted small text-uppercase fw-bold">{{ 'DASHBOARD.TOTAL_VOLUME' | translate }}</h6>
-      <h3 class="fw-bold mb-0">
+  <div class="col-md-6">
+    <div class="stat-card stat-card-compact p-3 shadow-sm border-0 rounded-4 bg-white">
+      <h6 class="text-muted text-uppercase fw-bold stat-card-label">{{ 'DASHBOARD.TOTAL_VOLUME' | translate }}</h6>
+      <h3 class="fw-bold mb-0 stat-card-value">
         {{ entrenamientoService.totalVolume() | number }} <small class="fs-6">kg</small></h3>
-      <p class="small text-primary mb-0 mt-1">{{ 'DASHBOARD.LIFETIME' | translate }}</p>
+      <p class="stat-card-subtitle text-primary mb-0">{{ 'DASHBOARD.LIFETIME' | translate }}</p>
     </div>
   </div>
-  <div class="col-md-4">
-    <div class="stat-card p-4 shadow-sm border-0 rounded-4 bg-white">
-      <h6 class="text-muted small text-uppercase fw-bold">{{ 'DASHBOARD.STREAK' | translate }}</h6>
-      <h3 class="fw-bold mb-0">{{ entrenamientoService.statsSignal().currentStreak }} <small class="fs-6">{{
+</div>
+
+<div class="row g-3 mb-5">
+  <div class="col-md-6">
+    <div class="stat-card stat-card-compact p-3 shadow-sm border-0 rounded-4 bg-white">
+      <h6 class="text-muted text-uppercase fw-bold stat-card-label">{{ 'DASHBOARD.STREAK' | translate }}</h6>
+      <h3 class="fw-bold mb-0 stat-card-value">{{ entrenamientoService.statsSignal().currentStreak }} <small class="fs-6">{{
           'DASHBOARD.DAYS' | translate }}</small></h3>
-      <p class="small text-warning mb-0 mt-1"><i class="bi bi-fire"></i> {{ 'DASHBOARD.KEEP_IT_UP' | translate }}</p>
+      <p class="stat-card-subtitle text-warning mb-0"><i class="bi bi-fire"></i> {{ 'DASHBOARD.KEEP_IT_UP' | translate }}</p>
     </div>
   </div>
+<div class="col-md-6">
+  <div class="stat-card stat-card-compact p-3 shadow-sm border-0 rounded-4 bg-white h-100">
+    <div class="d-flex justify-content-between align-items-start mb-2">
+      <h6 class="text-muted text-uppercase fw-bold stat-card-label mb-0" style="font-size: 0.7rem;">
+        {{ 'DASHBOARD.TRAINING_TIME' | translate }}
+      </h6>
+      
+      <div class="d-flex gap-1">
+        <button (click)="periodMode.set('week')" 
+          [class.active]="periodMode() === 'week'"
+          class="btn btn-outline-primary py-0 px-2" 
+          style="border-radius: 4px; font-size: 0.65rem; height: 18px; line-height: 1;">
+         {{ 'DASHBOARD.THIS_WEEK_W' | translate }}
+        </button>
+        <button (click)="periodMode.set('month')" 
+          [class.active]="periodMode() === 'month'"
+          class="btn btn-outline-primary py-0 px-2" 
+          style="border-radius: 4px; font-size: 0.65rem; height: 18px; line-height: 1;">
+          {{ 'DASHBOARD.THIS_MONTH_M' | translate }}
+        </button>
+      </div>
+    </div>
+
+    <h3 class="fw-bold mb-0 stat-card-value">
+      {{ dashboardService.formatTrainingTime(getTrainingTime()) }}
+    </h3>
+    
+    <p class="text-success small mb-0 mt-1" style="font-size: 0.75rem;">
+      {{ (periodMode() === 'week' ? 'DASHBOARD.THIS_WEEK_LABEL' : 'DASHBOARD.THIS_MONTH_LABEL') | translate }}
+    </p>
+  </div>
+</div>
 </div>
 
 <div class="modal-overlay" *ngIf="showModal" (click)="showModal = false">
