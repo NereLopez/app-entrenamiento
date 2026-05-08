@@ -258,8 +258,7 @@ select.ng-invalid.ng-touched{
 
 .custom-input input,
 .custom-input select,
-.meal-name-input,
-.meal-type-select{
+.meal-name-input{
   border:1.5px solid #e2e8f0!important;
   border-radius:12px!important;
   background:#fff!important;
@@ -268,8 +267,7 @@ select.ng-invalid.ng-touched{
 
 .custom-input input:focus,
 .custom-input select:focus,
-.meal-name-input:focus,
-.meal-type-select:focus{
+.meal-name-input:focus{
   border-color:#0d9488!important;
   box-shadow:0 0 0 4px rgba(13,148,136,.12)!important;
   outline:none;
@@ -384,7 +382,7 @@ select.ng-invalid.ng-touched{
 
 .meal-type-dropdown {
   position: absolute;
-  top: calc(100% + 4px);
+  top: 100%;
   left: 0;
   right: 0;
   z-index: 100;
@@ -393,6 +391,26 @@ select.ng-invalid.ng-touched{
   overflow: hidden;
   background: var(--card-bg, #fff);
   box-shadow: 0 8px 24px rgba(0,0,0,.12);
+}
+
+/* Smaller preset-group-toggle for meal-type dropdown trigger */
+.col-md-4 .preset-group .preset-group-toggle {
+  min-height: 38px;
+  padding: 6px 10px;
+}
+
+.col-md-4 .preset-group .preset-group-icon {
+  width: 24px;
+  height: 24px;
+  font-size: 0.75rem;
+}
+
+.col-md-4 .preset-group .preset-group-text strong {
+  font-size: 0.85rem;
+}
+
+.col-md-4 .preset-group .bi {
+  font-size: 0.75rem;
 }
 
 .meal-type-dropdown .preset-group-toggle.breakfast { border-bottom: 3px solid #fbbf24; }
@@ -512,7 +530,6 @@ select.ng-invalid.ng-touched{
 :host-context(.dark-mode) .custom-input input,
 :host-context(.dark-mode) .custom-input select,
 :host-context(.dark-mode) .meal-name-input,
-:host-context(.dark-mode) .meal-type-select,
 :host-context(.dark-mode) .input-group .form-control,
 :host-context(.dark-mode) .input-group-text,
 :host-context(.dark-mode) .preset-item,

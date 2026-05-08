@@ -140,22 +140,23 @@
 
   <div class="col-md-4" style="position: relative;">
     <input #foodType type="hidden" value="breakfast">
-    <!-- Trigger button -->
-    <button type="button"
-            class="preset-group-toggle w-100"
-            style="border: 1px solid #e2e8f0; border-radius: 10px; min-height: 38px; padding: 5px 10px;"
-            (click)="isMealTypeDropdownOpen.set(!isMealTypeDropdownOpen())">
-      <span class="preset-group-label">
-        <span class="preset-group-icon" style="width:24px; height:24px; font-size:0.75rem;">
-          <i [ngClass]="categoryIconClass(selectedPresetType() ?? 'breakfast')"></i>
+    <!-- Trigger button wrapped in preset-group -->
+    <div class="preset-group">
+      <button type="button"
+              class="preset-group-toggle w-100"
+              (click)="isMealTypeDropdownOpen.set(!isMealTypeDropdownOpen())">
+        <span class="preset-group-label">
+          <span class="preset-group-icon">
+            <i [ngClass]="categoryIconClass(selectedPresetType() ?? 'breakfast')"></i>
+          </span>
+          <span class="preset-group-text">
+            <strong>{{ 'NUTRITION.MEAL_TYPES.' + (selectedPresetType() ?? 'breakfast').toUpperCase() | translate }}</strong>
+          </span>
         </span>
-        <span class="preset-group-text">
-          <strong style="font-size:0.82rem;">{{ 'NUTRITION.MEAL_TYPES.' + (selectedPresetType() ?? 'breakfast').toUpperCase() | translate }}</strong>
-        </span>
-      </span>
-      <i class="bi" style="font-size:0.75rem;" [class.bi-chevron-down]="!isMealTypeDropdownOpen()" [class.bi-chevron-up]="isMealTypeDropdownOpen()"></i>
-    </button>
-    <!-- Dropdown list -->
+        <i class="bi" [class.bi-chevron-down]="!isMealTypeDropdownOpen()" [class.bi-chevron-up]="isMealTypeDropdownOpen()"></i>
+      </button>
+    </div>
+    <!-- Dropdown list outside preset-group to prevent clipping -->
     @if (isMealTypeDropdownOpen()) {
       <div class="meal-type-dropdown" (mouseleave)="isMealTypeDropdownOpen.set(false)">
         @for (cat of categories; track cat) {
