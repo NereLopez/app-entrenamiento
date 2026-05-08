@@ -85,11 +85,12 @@ readonly completedGoals = computed(() => {
 });
 
 readonly motivationMessage = computed(() => {
+  this.languageVersion();
   const goals = this.completedGoals();
   let key = '';
   if (goals === 0) key = 'LET_S_GET_STARTED 💪';
-  else if (goals >= 1 && goals <= 3) key = 'GREAT_START 🔥';
-  else if (goals >= 4 && goals <= 6) key = 'YOU_RE_ON_FIRE ⚡';
+  else if (goals >= 1 && goals <= 2) key = 'GREAT_START 🔥';
+  else if (goals >= 3 && goals <= 5) key = 'YOU_RE_ON_FIRE ⚡';
   else key = 'UNSTOPPABLE 🏆';
   return this.translate.instant('CALENDAR.MOTIVATION.' + key);
 });

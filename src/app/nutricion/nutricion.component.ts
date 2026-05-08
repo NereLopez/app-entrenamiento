@@ -5,7 +5,6 @@ import { NutricionService } from '../services/nutricion.service';
 import { FoodPreset } from '../models/nutricion.model';
 import { FOOD_PRESETS } from '../data/food-presets';
 import { Router } from '@angular/router';
-import { DashboardService } from '../services/dashboard.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
