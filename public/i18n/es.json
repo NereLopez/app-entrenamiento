@@ -28,17 +28,25 @@
         "NEW_SESSION": "Nueva sesión",
         "VIEW_HISTORY": "Ver historial",
         "THIS_WEEK": "ESTA SEMANA",
+        "THIS_WEEK_W": "S",
+        "THIS_MONTH_M": "M",
         "SESSIONS": "Sesiones",
         "TOTAL_VOLUME": "VOLUMEN TOTAL",
         "LIFETIME": "Histórico",
         "STREAK": "RACHA",
         "DAYS": "días",
         "KEEP_IT_UP": "¡Sigue así!",
+        "TRAINING_TIME": "TIEMPO DE ENTRENAMIENTO",
+        "THIS_WEEK_LABEL": "Esta semana",
+        "THIS_MONTH_LABEL": "Este mes",
         "NO_ACTIVITY": "Todavía no hay actividad",
         "LAST_EXERCISE": "Último ejercicio",
         "WORKOUT_SESSION": "Sesión de entrenamiento",
         "START": "¡Comenzar!",
-        "STOP": "¡Detener!"
+        "STOP": "¡Detener!",
+        "TRAINING_TIME_LABEL": "Tiempo de entreno"
+       
+
     },
     "LEVELS": {
         "BEGINNER": "Principiante",
