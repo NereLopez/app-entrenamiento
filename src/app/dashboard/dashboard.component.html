@@ -1,35 +1,52 @@
-<div class="user-card d-flex align-items-center p-3 mb-4 bg-white shadow-sm rounded-4 dashboard-user-card">
-  <div class="me-3">
-    <img [src]="'https://ui-avatars.com/api/?name=' + entrenamientoService.userName() + '&background=0d9488&color=fff'" 
-         class="rounded-circle shadow-sm" width="55" alt="Avatar">
+<div class="user-card d-flex align-items-center p-3 mb-4 shadow-sm rounded-4 dashboard-user-card border bg-white text-dark">
+  
+  <div class="me-3 d-flex flex-column align-items-center justify-content-center flex-shrink-0 position-relative" 
+       style="gap: 0.5rem;">
+    <div (click)="dashboardService.currentSessionSeconds() ? dashboardService.stopSession() : dashboardService.startSession()"
+         style="width: 80px; height: 80px; border-radius: 50%; border: 3px solid #0d9488; cursor: pointer; transition: all 0.3s ease; background: rgba(13, 148, 136, 0.05); display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative;">
+      
+      <span class="fw-bold" style="font-size: 0.9rem; line-height: 1; margin-top: -4px;">
+        {{ dashboardService.formattedTime().substring(3) }}
+      </span>
+
+      <i class="bi" 
+         [ngClass]="dashboardService.currentSessionSeconds() ? 'bi-stop-fill text-danger' : 'bi-play-fill text-success'"
+         style="font-size: 1.2rem; position: absolute; bottom: 2px;"></i>
+    </div>
+    
+    <small class="fw-medium" style="font-size: 0.75rem; text-align: center; line-height: 1.3; white-space: normal; margin-top: 0.25rem; color: currentColor; opacity: 0.85;">{{ 'DASHBOARD.TODAY_SESSION' | translate }}</small>
   </div>
 
   <div class="flex-grow-1">
-    <h5 class="fw-bold mb-0 text-dark">
-      {{ welcomeKey() | translate:{ name: entrenamientoService.userName() } }}</h5>
-    <div class="d-flex align-items-center gap-2 mt-1">
+    <h5 class="fw-bold mb-1">
+      {{ welcomeKey() | translate:{ name: entrenamientoService.userName() } }}
+    </h5>
+
+    <div class="d-flex align-items-center gap-2 flex-wrap">
       <span class="badge level-badge" [style.--xp-fill]="entrenamientoService.xpProgress() + '%'">
         <i class="bi bi-lightning-fill me-1"></i> {{ entrenamientoService.userLevel() | translate }}
       </span>
       <small class="xp-badge fw-medium d-flex align-items-center">
-        <i class="bi bi-star-fill me-1 text-warning"></i> 
+        <i class="bi bi-star-fill me-1 text-warning"></i>
         {{ entrenamientoService.statsSignal().experiencePoints }} XP
       </small>
     </div>
   </div>
 
-<app-calendar-heatmap class="dashboard-heatmap"></app-calendar-heatmap>
+  <app-calendar-heatmap class="dashboard-heatmap d-none d-md-block"></app-calendar-heatmap>
 </div>
 
 <div class="row g-3 mb-5">
   <div class="col-6">
-    <button (click)="startWithExercise()" class="quick-card quick-card-primary text-white border-0 w-100 shadow-sm rounded-4 py-3">
+    <button (click)="startWithExercise()"
+      class="quick-card quick-card-primary text-white border-0 w-100 shadow-sm rounded-4 py-3">
       <div class="quick-icon"><i class="bi bi-plus-lg"></i></div>
       <span class="fw-bold">{{ 'DASHBOARD.START_WORKOUT' | translate }}</span>
     </button>
   </div>
   <div class="col-6">
-    <a routerLink="/historial" class="quick-card bg-white text-dark border-0 w-100 shadow-sm rounded-4 py-3 text-decoration-none d-block text-center">
+    <a routerLink="/historial"
+      class="quick-card bg-white text-dark border-0 w-100 shadow-sm rounded-4 py-3 text-decoration-none d-block text-center">
       <div class="quick-icon quick-icon-teal"><i class="bi bi-bar-chart-fill"></i></div>
       <span class="fw-bold">{{ 'DASHBOARD.VIEW_HISTORY' | translate }}</span>
     </a>
@@ -37,61 +54,67 @@
 </div>
 
 <div class="mb-5">
-    <h5 class="fw-bold mb-3">{{ 'DASHBOARD.QUICK_START' | translate }}</h5>
-    
-    <div class="d-flex gap-3 overflow-auto pb-2 quick-start-row" style="scrollbar-width: none;">
-      
-      @for (item of quickActions(); track item.label) {
-        <button (click)="onQuickActionClick(item)" 
-          class="btn-exercise-quick active shadow-sm border-0 d-flex flex-column align-items-center justify-content-center"
-          style="min-width: 120px;"> <div class="icon-circle mb-2" >
-            <i class="bi" [ngClass]="item.icon"></i>
-          </div>
-          
-          <span class="small fw-bold text-center" style="line-height: 1.1;">
-            {{ item.label === 'DASHBOARD.WATCHLOCKER' && dashboardService.isWatchlockerRunning() ? getQuickActionLabel(item) : (item.label | translate) }}
-          </span>
-          @if (item.label === 'DASHBOARD.REGISTER_WATER') {
-            <span class="water-flash-label" [class.visible]="waterJustAdded()">+250ml ✓</span>
-          }
-        </button>
+  <h5 class="fw-bold mb-3">{{ 'DASHBOARD.QUICK_START' | translate }}</h5>
+
+  <div class="d-flex gap-3 overflow-auto pb-2 quick-start-row" style="scrollbar-width: none;">
+
+    @for (item of quickActions(); track item.label) {
+    <button (click)="onQuickActionClick(item)"
+      class="btn-exercise-quick active shadow-sm border-0 d-flex flex-column align-items-center justify-content-center"
+      style="min-width: 120px;">
+      <div class="icon-circle mb-2">
+        <i class="bi" [ngClass]="item.icon"></i>
+      </div>
+
+      <span class="small fw-bold text-center" style="line-height: 1.1;">
+       @if (item.label === 'DASHBOARD.WATCHLOCKER' && dashboardService.isWatchlockerRunning()) {
+    {{ dashboardService.watchlockerRemaining() }}s
+  } @else {
+    {{ item.label | translate }}
+  }
+      </span>
+      @if (item.label === 'DASHBOARD.REGISTER_WATER') {
+      <span class="water-flash-label" [class.visible]="waterJustAdded()">+250ml ✓</span>
       }
+    </button>
+    }
 
-    </div>
+  </div>
 </div>
-      
 
-  <div class="row g-4 mb-5">
-    <div class="col-md-4">
-      <div class="stat-card p-4 shadow-sm border-0 rounded-4 bg-white">
-        <h6 class="text-muted small text-uppercase fw-bold">{{ 'DASHBOARD.THIS_WEEK' | translate }}</h6>
-        <h3 class="fw-bold mb-0">{{ getWorkoutsThisWeek() }}</h3>
-        <p class="small text-success mb-0 mt-1">{{ 'DASHBOARD.SESSIONS' | translate }}</p>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="stat-card p-4 shadow-sm border-0 rounded-4 bg-white">
-        <h6 class="text-muted small text-uppercase fw-bold">{{ 'DASHBOARD.TOTAL_VOLUME' | translate }}</h6>
-        <h3 class="fw-bold mb-0">
-          {{ entrenamientoService.totalVolume() | number }} <small class="fs-6">kg</small></h3>
-        <p class="small text-primary mb-0 mt-1">{{ 'DASHBOARD.LIFETIME' | translate }}</p>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="stat-card p-4 shadow-sm border-0 rounded-4 bg-white">
-        <h6 class="text-muted small text-uppercase fw-bold">{{ 'DASHBOARD.STREAK' | translate }}</h6>
-        <h3 class="fw-bold mb-0">{{ entrenamientoService.statsSignal().currentStreak }} <small class="fs-6">{{ 'DASHBOARD.DAYS' | translate }}</small></h3>
-        <p class="small text-warning mb-0 mt-1"><i class="bi bi-fire"></i> {{ 'DASHBOARD.KEEP_IT_UP' | translate }}</p>
-      </div>
+
+<div class="row g-4 mb-5">
+  <div class="col-md-4">
+    <div class="stat-card p-4 shadow-sm border-0 rounded-4 bg-white">
+      <h6 class="text-muted small text-uppercase fw-bold">{{ 'DASHBOARD.THIS_WEEK' | translate }}</h6>
+      <h3 class="fw-bold mb-0">{{ getWorkoutsThisWeek() }}</h3>
+      <p class="small text-success mb-0 mt-1">{{ 'DASHBOARD.SESSIONS' | translate }}</p>
     </div>
   </div>
+  <div class="col-md-4">
+    <div class="stat-card p-4 shadow-sm border-0 rounded-4 bg-white">
+      <h6 class="text-muted small text-uppercase fw-bold">{{ 'DASHBOARD.TOTAL_VOLUME' | translate }}</h6>
+      <h3 class="fw-bold mb-0">
+        {{ entrenamientoService.totalVolume() | number }} <small class="fs-6">kg</small></h3>
+      <p class="small text-primary mb-0 mt-1">{{ 'DASHBOARD.LIFETIME' | translate }}</p>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="stat-card p-4 shadow-sm border-0 rounded-4 bg-white">
+      <h6 class="text-muted small text-uppercase fw-bold">{{ 'DASHBOARD.STREAK' | translate }}</h6>
+      <h3 class="fw-bold mb-0">{{ entrenamientoService.statsSignal().currentStreak }} <small class="fs-6">{{
+          'DASHBOARD.DAYS' | translate }}</small></h3>
+      <p class="small text-warning mb-0 mt-1"><i class="bi bi-fire"></i> {{ 'DASHBOARD.KEEP_IT_UP' | translate }}</p>
+    </div>
+  </div>
+</div>
 
- <div class="modal-overlay" *ngIf="showModal" (click)="showModal = false">
-  
+<div class="modal-overlay" *ngIf="showModal" (click)="showModal = false">
+
   <div class="install-app-card rounded-4 p-4" (click)="$event.stopPropagation()">
-    
+
     <button class="close-btn" (click)="showModal = false">X</button>
-    
+
     <div class="d-flex flex-column align-items-center text-center gap-4">
       <div class="install-qr-frame">
         <img src="icons/kinetic-app.jpg" alt="QR" class="install-qr-image">
@@ -100,7 +123,7 @@
       <div class="install-app-content">
         <h5 class="fw-bold mb-2" style="color: #334155;">{{ 'INSTALL.TITLE' | translate }}</h5>
         <p class="text-muted small mb-4">{{ 'INSTALL.DESCRIPTION' | translate }}</p>
-        
+
         <div class="install-steps">
           <div class="install-step"><span class="install-step-number">1</span> {{ 'INSTALL.SCAN' | translate }}</div>
           <div class="install-step"><span class="install-step-number">2</span> {{ 'INSTALL.SHARE' | translate }}</div>
@@ -114,4 +137,3 @@
 <button class="btn btn-install-custom" (click)="showModal = true">
   {{ 'INSTALL.ANOTHER_DEVICE' | translate }}
 </button>
-
