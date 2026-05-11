@@ -45,11 +45,12 @@ export class HistorialComponent {
 
       void this.fetchUserWeightKg(currentUser.uid);
 
+      runInInjectionContext(this.injector, () => {
       const entriesRef = collection(this.firestore, 'food_entries');
       const entriesQuery = query(entriesRef, where('userId', '==', currentUser.uid));
+      return collectionData(entriesQuery, { idField: 'id' });
+      }).subscribe(entries => {
 
-      runInInjectionContext(this.injector, () => collectionData(entriesQuery, { idField: 'id' }))
-        .subscribe(entries => {
         const groupedNutrition = new Map<string, { calories: number; complete: boolean }>();
         const calorieTarget = this.entrenamientoService.statsSignal().dailyCaloriesTarget || 2000;
 
@@ -337,10 +338,14 @@ export class HistorialComponent {
   }
 
   private async fetchUserWeightKg(userId: string) {
-    const profileRef = doc(this.firestore, `user_nutrition/${userId}`);
-    const profileSnap = await runInInjectionContext(this.injector, () => getDoc(profileRef));
+    
+    const profileSnap = await runInInjectionContext(this.injector, () => {
+      const profileRef = doc(this.firestore, `user_nutrition/${userId}`);
+      return getDoc(profileRef);
+    });
     const weight = Number(profileSnap.data()?.['weight']);
     this.userWeightKg = Number.isFinite(weight) && weight > 0 ? weight : 70;
+    return this.userWeightKg;
   }
 
   getDaysTrainedThisMonth(): number {

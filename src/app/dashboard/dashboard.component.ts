@@ -1,6 +1,6 @@
 import { Component, inject, OnDestroy, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink, Router, RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { EntrenamientoService } from '../services/entrenamiento.service';
 import { NutricionService } from '../services/nutricion.service';
 import { computed } from '@angular/core';
@@ -12,7 +12,7 @@ import { DashboardService } from '../services/dashboard.service';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterLink, RouterModule, CalendarHeatmapComponent, TranslateModule],
+  imports: [CommonModule, RouterModule, CalendarHeatmapComponent, TranslateModule],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })

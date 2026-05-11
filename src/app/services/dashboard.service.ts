@@ -1,12 +1,13 @@
-import { Injectable, computed, inject, signal, effect } from '@angular/core';
+import { Injectable, computed, inject, signal, effect, runInInjectionContext, Injector } from '@angular/core';
 import { QuickAction } from '../models/dashboard.model';
-import { Firestore, doc, getDoc, setDoc, increment } from '@angular/fire/firestore';
+import { Firestore, doc, getDoc, setDoc, increment, collection, query, where, getDocs } from '@angular/fire/firestore';
 import { AuthService } from './auth.service';
 
 @Injectable({ providedIn: 'root' })
 export class DashboardService {
   private firestore = inject(Firestore);
   private authService = inject(AuthService);
+  private injector = inject(Injector);
 
   private sessionStartTime = signal<number | null>(null);
   public isSessionRunning = signal(false);
@@ -40,8 +41,6 @@ export class DashboardService {
       }
     });
 
-
-
     effect(() => {
       const user = this.authService.userSignal();
       if (user) {
@@ -53,41 +52,53 @@ export class DashboardService {
   }
 
   // --- MÉTODOS PRIVADOS DE FIREBASE ---
-  private getDayDocRef() {
-    const user = this.authService.userSignal();
-    if (!user) return null;
-    const today = new Date().toISOString().split('T')[0];
-    return doc(this.firestore, `users/${user.uid}/daily_activity/${today}`);
-  }
-
   private async loadDailyDataFromFirebase() {
-    const docRef = this.getDayDocRef();
-    if (!docRef) return;
+    const user = this.authService.userSignal();
+    if (!user) return;
 
     try {
-      const docSnap = await getDoc(docRef);
+      const today = new Date().toISOString().split('T')[0];
+      
+      // 1. Todo lo que toque Firebase (doc, getDoc) va dentro de este bloque
+      const docSnap = await runInInjectionContext(this.injector, () => {
+        const docRef = doc(this.firestore, `users/${user.uid}/daily_activity/${today}`);
+        return getDoc(docRef);
+      });
+
       if (docSnap.exists()) {
           this.dailyAccumulatedSeconds.set(docSnap.data()['total_seconds'] || 0);
       }
+
       const pending = parseInt(localStorage.getItem(this.pendingKey) || '0', 10);
+      
       if (pending > 0) {
         localStorage.removeItem(this.pendingKey);
         this.dailyAccumulatedSeconds.update(v => v + pending);
-        await setDoc(docRef, { total_seconds: increment(pending), last_updated: Date.now() }, { merge: true });
+
+        // 2. Para el setDoc, abrimos otro bloque de seguridad
+        await runInInjectionContext(this.injector, () => {
+          const docRef = doc(this.firestore, `users/${user.uid}/daily_activity/${today}`);
+          return setDoc(docRef, { 
+            total_seconds: increment(pending), 
+            last_updated: Date.now() 
+          }, { merge: true });
+        });
       }
-    } catch (e) { console.error("Error cargando Firebase", e); }
+    } catch (e) { 
+      console.error("Error cargando Firebase", e); 
+    }
   }
 
   private async syncSessionWithFirebase() {
-    const docRef = this.getDayDocRef();
+    const user = this.authService.userSignal();
     const secondsToSave = this.currentSessionSeconds();
-    if (!docRef || secondsToSave <= 0) return;
+    if (!user || secondsToSave <= 0) return;
 
     try {
-      await setDoc(docRef, {
+      await runInInjectionContext(this.injector, () => setDoc(doc(this.firestore, `users/${user.uid}/daily_activity/${new Date().toISOString().split('T')[0]}`), {
         total_seconds: increment(secondsToSave),
         last_updated: Date.now()
-      }, { merge: true });
+      }, { merge: true }));
 
       this.dailyAccumulatedSeconds.update(v => v + secondsToSave);
       this.currentSessionSeconds.set(0);
@@ -185,27 +196,41 @@ export class DashboardService {
 
   async loadWeeklyStats() {
     const user = this.authService.userSignal();
-    if (!user) return;
+  if (!user) return;
 
-    const now = new Date();
-    const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+  // 1. Calculamos el lunes (esto ya lo tienes y funciona)
+  const now = new Date();
+  const dayOfWeek = now.getDay();
+  const diffToMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+  const mondayDate = new Date(now);
+  mondayDate.setDate(now.getDate() - diffToMonday);
+  const mondayStr = mondayDate.toISOString().split('T')[0]; // Ejemplo: "2026-05-11"
+
+  try {
+    // 2. HACEMOS UNA SOLA CONSULTA (Query)
+    // Buscamos en la colección 'daily_activity' todos los que tengan ID >= lunes
+    const total = await runInInjectionContext(this.injector, async () => {
+    const activityRef = collection(this.firestore, `users/${user.uid}/daily_activity`);
+    const q = query(activityRef, where("__name__", ">=", mondayStr)); 
+    
+    const querySnapshot = await getDocs(q);
+    
     let total = 0;
+    querySnapshot.forEach((doc) => {
+      console.log("Día encontrado en Firebase:", doc.id, "Datos:", doc.data());
+      total += doc.data()['total_seconds'] || 0;
+    });
+    return total;
+  });
 
-    try {
-      for (let i = 0; i < 7; i++) {
-        const date = new Date(sevenDaysAgo.getTime() + i * 24 * 60 * 60 * 1000);
-        const dateStr = date.toISOString().split('T')[0];
-        const ref = doc(this.firestore, `users/${user.uid}/daily_activity/${dateStr}`);
-        const snap = await getDoc(ref);
-        if (snap.exists()) {
-          total += snap.data()['total_seconds'] || 0;
-        }
-      }
-      this.weeklyTrainingSeconds.set(total);
-    } catch (e) {
-      console.error("Error loading weekly stats", e);
-    }
+    this.weeklyTrainingSeconds.set(total);
+    // ¡Adiós errores amarillos! Al hacer una sola petición, Angular no se marea.
+
+  } catch (e) {
+    console.error("Error en la consulta:", e);
   }
+}
+   
 
   async loadMonthlyStats() {
     const user = this.authService.userSignal();
@@ -213,24 +238,33 @@ export class DashboardService {
 
     const now = new Date();
     const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
-    let total = 0;
+    //Calculamos cuántos días han pasado de lo que llevamos de mes
+    const monthStartStr = monthStart.toISOString().split('T')[0];
 
-    try {
-      const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
-      for (let i = 0; i < daysInMonth; i++) {
-        const date = new Date(monthStart.getTime() + i * 24 * 60 * 60 * 1000);
-        const dateStr = date.toISOString().split('T')[0];
-        const ref = doc(this.firestore, `users/${user.uid}/daily_activity/${dateStr}`);
-        const snap = await getDoc(ref);
-        if (snap.exists()) {
-          total += snap.data()['total_seconds'] || 0;
-        }
-      }
-      this.monthlyTrainingSeconds.set(total);
-    } catch (e) {
-      console.error("Error loading monthly stats", e);
-    }
+  console.log("--- Inicio de carga mensual ---");
+  console.log("Buscando registros desde el día:", monthStartStr);
+
+  try {
+    // 2. UNA SOLA QUERY: "Dame todo lo que sea de este mes en adelante"
+    const total = await runInInjectionContext(this.injector, async () => {  
+    const activityRef = collection(this.firestore, `users/${user.uid}/daily_activity`);
+    const q = query(activityRef, where("__name__", ">=", monthStartStr)); 
+    
+    const querySnapshot = await getDocs(q);
+
+    let total = 0;
+    querySnapshot.forEach((doc) => {
+      // Importante: aquí nos vendrán datos de todo el mes
+      total += doc.data()['total_seconds'] || 0;
+    });
+    return total;
+  });
+  this.monthlyTrainingSeconds.set(total);
+
+  } catch (e) {
+    console.error("Error cargando estadísticas mensuales", e);
   }
+}
 
   formatTrainingTime(seconds: number): string {
     const hours = Math.floor(seconds / 3600);

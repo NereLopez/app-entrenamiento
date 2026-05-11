@@ -42,14 +42,15 @@ export class NutricionService {
 
   const today = new Date().toISOString().split('T')[0];
   // Apuntamos a la misma ruta que el Dashboard para que se vean igual
-  const docRef = doc(this.firestore, `users/${user.uid}/daily_activity/${today}`);
-
   try {
     if (this.waterMl() < 2000) {
-      await setDoc(docRef, {
+      await runInInjectionContext (this.injector, () => {
+         const docRef = doc(this.firestore, `users/${user.uid}/daily_activity/${today}`);
+         return setDoc(docRef, {
         water_ml: increment(250),
         last_updated: Date.now()
       }, { merge: true });
+      });
 
       // Actualizamos localmente para que la gota cambie al instante
       this.waterMl.update(v => Math.min(v + 250, 2000));
@@ -62,10 +63,12 @@ export class NutricionService {
 // Función para cargar los datos de la nube al iniciar
 private async loadWaterFromFirebase(uid: string) {
   const today = new Date().toISOString().split('T')[0];
-  const docRef = doc(this.firestore, `users/${uid}/daily_activity/${today}`);
   
   try {
-    const docSnap = await getDoc(docRef);
+    const docSnap = await runInInjectionContext(this.injector, () => {
+      const docRef = doc(this.firestore, `users/${uid}/daily_activity/${today}`);
+      return getDoc(docRef);
+    });
     if (docSnap.exists()) {
       const data = docSnap.data();
       this.waterMl.set(data['water_ml'] || 0);
@@ -81,18 +84,17 @@ private async loadWaterFromFirebase(uid: string) {
     user(this.auth).subscribe(u => {
       this.resetUserState();
       if (u) {
-        this.fetchDailyMeals(); 
-        this.loadWaterFromFirebase(u.uid);
-        this.fetchUserProfile(u.uid);
+        runInInjectionContext(this.injector, () => {
+          this.fetchDailyMeals(); 
+          this.loadWaterFromFirebase(u.uid);
+          this.fetchUserProfile(u.uid);
+        });
       }
     });
     effect(() => {
       const isWorkoutComplete = this.entrenamientoService.isWorkoutCompletedToday();
-      console.log('NutricionService detectó cambio en entrenamiento:', isWorkoutComplete); 
       if (isWorkoutComplete) {
         this.isWorkoutDay.set(true);
-        console.log('Training Day! Ajusting nutrition goals...');    
-
       }
     });
 
@@ -133,9 +135,11 @@ private async loadWaterFromFirebase(uid: string) {
   });
 
   private async fetchUserProfile(userId: string) {  
-  // Aquí lo ideal es que el documento tenga como ID el UID del usuario
-  const docRef = doc(this.firestore, `user_nutrition/${userId}`);
-  const snap = await runInInjectionContext(this.injector, () => getDoc(docRef));
+    try {
+const snap = await runInInjectionContext(this.injector, () => {
+        const docRef = doc(this.firestore, `user_nutrition/${userId}`);
+        return getDoc(docRef);
+      });
 
   if (this.auth.currentUser?.uid !== userId) {
     return;
@@ -150,8 +154,10 @@ private async loadWaterFromFirebase(uid: string) {
     this.goal.set(data['goal']);
     this.activityLevel.set(data['activityLevel'] || 1.55);
   }
+} catch (e) {
+  console.error("Error cargando perfil de usuario", e);
 }
-
+  }
  
   public bmr = computed(() => {
     const w = this.weight();
@@ -206,6 +212,9 @@ private async loadWaterFromFirebase(uid: string) {
   const uid = this.auth.currentUser?.uid;
   if (!uid) return;
 
+  this.dailyMealsSubscription?.unsubscribe();
+  this.dailyMealsSubscription = runInInjectionContext(this.injector, () => {
+
   const today = new Date().setHours(0, 0, 0, 0);
   const colRef = collection(this.firestore, 'food_entries');
   const q = query(
@@ -213,16 +222,9 @@ private async loadWaterFromFirebase(uid: string) {
     where('userId', '==', uid), 
     where('date', '==', today)
   );
-
- 
-  this.dailyMealsSubscription?.unsubscribe();
-  this.dailyMealsSubscription = runInInjectionContext(
-    this.injector,
-    () => collectionData(q, { idField: 'id' })
-  ).subscribe((data) => {
-   
+  return collectionData(q, { idField: 'id' });
+  }).subscribe(data => {
     this.dailyMeals.set(data as FoodEntry[]);
-    console.log('Comidas del día cargadas:', data);
   });
 }
 
@@ -230,9 +232,10 @@ private async loadWaterFromFirebase(uid: string) {
   async saveToFirestore() {
     const uid = this.auth.currentUser?.uid;
     if (!uid) return;
-
-    const docRef = doc(this.firestore, `user_nutrition/${uid}`);
-    await runInInjectionContext(this.injector, () => setDoc(docRef, {
+      await runInInjectionContext(this.injector, () => {
+        const docRef = doc(this.firestore, `user_nutrition/${uid}`);
+  
+      return setDoc(docRef, {
       weight: this.weight(),
       height: this.height(),
       age: this.age(),
@@ -242,8 +245,9 @@ private async loadWaterFromFirebase(uid: string) {
       targetCalories: this.targetCalories(),
       macros: this.macros(),
       createdAt: new Date()
-    }, { merge: true }));  
-  }   
+    }, { merge: true });  
+  }); 
+}   
   
   async addFoodEntry(name: string, calories: number, type: any, p:number = 0, c: number = 0, f: number = 0) {
     const uid = this.auth.currentUser?.uid;
@@ -251,8 +255,6 @@ private async loadWaterFromFirebase(uid: string) {
     this.isLoading.set(true);
 
     try {
-      const colRef = collection(this.firestore, 'food_entries');
-
       const newEntry: FoodEntry = {
         name: name,
         calories: calories,
@@ -262,7 +264,10 @@ private async loadWaterFromFirebase(uid: string) {
         fats: f,
         date: new Date().setHours(0, 0, 0, 0)
       };
-      await addDoc(colRef, {...newEntry, userId: uid});
+      await runInInjectionContext(this.injector, () =>  {
+         const colRef = collection(this.firestore, 'food_entries');
+         return addDoc(colRef, {...newEntry, userId: uid});
+      });
       this.showToast('Meal guardada');
     } catch (error) {
       this.showToast('No se pudo guardar la comida', 'danger');
@@ -273,8 +278,11 @@ private async loadWaterFromFirebase(uid: string) {
   async deleteFoodEntry(id: string) {
     try {
       this.isLoading.set(true);
-      const docRef = doc(this.firestore, `food_entries/${id}`);
-      await deleteDoc(docRef);
+      
+      await runInInjectionContext(this.injector, () => {
+        const docRef = doc(this.firestore, `food_entries/${id}`);
+        return deleteDoc(docRef);
+      });
       this.showToast('Comida eliminada correctamente');
     } catch (error) {
       console.error('Error al eliminar la comida:', error);

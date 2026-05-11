@@ -141,8 +141,12 @@ export class EntrenamientoService {
 
   
   private async fetchUserStats(userId: string) {
-    const docRef = doc(this.firestore, `stats/${userId}`);
-    const snap = await runInInjectionContext(this.injector, () => getDoc(docRef));
+    
+    const snap = await runInInjectionContext(this.injector, () => {
+      const docRef = doc(this.firestore, `stats/${userId}`);
+      return getDoc(docRef);
+      
+    });
 
     if (this.auth.currentUser?.uid !== userId) {
       return;
@@ -163,16 +167,17 @@ export class EntrenamientoService {
   }
 
   private fetchHistory(userId: string) {
-    const ref = collection(this.firestore, 'workouts');
-    const q = query(ref, where('userId', '==', userId), orderBy('createdAt', 'desc'));
-    this.historySubscription?.unsubscribe();
-    this.historySubscription = runInInjectionContext(
-      this.injector,
-      () => collectionData(q, { idField: 'id' })
-    ).subscribe(async data => {
-      this.history.set(data);
-      await this.syncCaloriesBurnedToday(userId, data as any[]);
-    });
+        this.historySubscription?.unsubscribe();
+    this.historySubscription = runInInjectionContext(this.injector, () => {
+      const ref = collection(this.firestore, 'workouts');
+      const q = query(ref, where('userId', '==', userId), orderBy('createdAt', 'desc'));
+      return collectionData(q, { idField: 'id' }).subscribe(async data => {
+        this.history.set(data);
+    
+      await runInInjectionContext(this.injector, () => this.syncCaloriesBurnedToday(userId, data as any[])
+    );
+    });  
+  });
   }
 
   private getMetByIntensity(intensity: 'light' | 'moderate' | 'intense' = 'moderate'): number {
@@ -209,7 +214,7 @@ export class EntrenamientoService {
     const workouts = workoutsData ?? this.history();
     const todayStart = new Date().setHours(0, 0, 0, 0);
     const tomorrowStart = todayStart + 86400000;
-    const referenceWeightKg = (await this.getUserWeightKg(userId)) ?? 70;
+    const referenceWeightKg = await runInInjectionContext(this.injector, () => this.getUserWeightKg(userId)) ?? 70;
 
     const caloriesToday = workouts
       .filter(workout => {
@@ -231,7 +236,13 @@ export class EntrenamientoService {
     const nextStats = { ...current, caloriesBurnedToday: caloriesToday };
     this.statsSignal.set(nextStats);
     const statsRef = doc(this.firestore, `stats/${userId}`);
-    await setDoc(statsRef, { caloriesBurnedToday: caloriesToday }, { merge: true });
+
+    try {
+      await runInInjectionContext(this.injector, () => setDoc(statsRef, { caloriesBurnedToday: caloriesToday }, { merge: true }));
+      console.log("Calorias quemadas hoy sincronizadas:");
+    } catch (e) {
+      console.error("Error updating calories burned today", e);
+    }
   }
 
   
@@ -290,7 +301,11 @@ export class EntrenamientoService {
     // Avoid writing stale per-day burn here; it is recomputed from today's full history.
     const { caloriesBurnedToday, ...statsWithoutDailyBurn } = currentStats;
     void caloriesBurnedToday;
-    await setDoc(statsRef, statsWithoutDailyBurn, { merge: true });
+    try {
+      await runInInjectionContext(this.injector, () => setDoc(statsRef, statsWithoutDailyBurn, { merge: true }));
+    } catch (e) {
+      console.error("Error updating stats without daily burn", e);
+    }
     this.statsSignal.set(currentStats);
 
     // Force recompute after session save to avoid race conditions with live history updates.
@@ -318,7 +333,7 @@ export class EntrenamientoService {
 
     async deleteWorkout(workoutId: string) {
      const docRef = doc(this.firestore, `workouts/${workoutId}`);
-     await deleteDoc(docRef);
+     await runInInjectionContext(this.injector, () => deleteDoc(docRef));
   }
 
     async deleteExerciseFromWorkout(workoutId: string, exerciseIndex: number) {
@@ -333,7 +348,7 @@ export class EntrenamientoService {
       }
 
       const docRef = doc(this.firestore, `workouts/${workoutId}`);
-      await updateDoc(docRef, { exercises: nextExercises });
+      await runInInjectionContext(this.injector, () => updateDoc(docRef, { exercises: nextExercises }));
     }
 
   async saveFromForm(formData: any) {
@@ -348,7 +363,7 @@ export class EntrenamientoService {
         createdAt: Date.now()
       };
       
-      await addDoc(workoutsRef, newWorkout);
+      await runInInjectionContext(this.injector, () => addDoc(workoutsRef, newWorkout));
       
       await this.finalizeSession(formData.exercises || [], formData.intensity || 'moderate');
       

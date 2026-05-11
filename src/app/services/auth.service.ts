@@ -38,10 +38,14 @@ export class AuthService {
   }
 
   private fetchHistory(userId: string) {
-    const ref = collection(this.firestore, 'workouts');
-    const q = query(ref, where('userId', '==', userId), orderBy('createdAt', 'desc'));
-    runInInjectionContext(this.injector, () => collectionData(q, { idField: 'id' }))
-      .subscribe(data => this.history.set(data));
+    // Abrimos el contexto ANTES de definir la colección y la query
+    runInInjectionContext(this.injector, () => {
+      const ref = collection(this.firestore, 'workouts');
+      const q = query(ref, where('userId', '==', userId), orderBy('createdAt', 'desc'));
+      
+      // Retornamos el observable para el subscribe
+      return collectionData(q, { idField: 'id' });
+    }).subscribe(data => this.history.set(data));
   }
 
   async saveFromForm(formData: any) {
@@ -49,13 +53,17 @@ export class AuthService {
     if (!currentUser) return false;
 
     try {
-      const workoutsRef = collection(this.firestore, 'workouts');
-      const newWorkout = {
-        ...formData,
-        userId: currentUser.uid, // Guardamos el ID del usuario
-        createdAt: Date.now()
-      };
-      await addDoc(workoutsRef, newWorkout);
+      // Metemos la referencia y el guardado dentro del contexto
+      await runInInjectionContext(this.injector, () => {
+        const workoutsRef = collection(this.firestore, 'workouts');
+        const newWorkout = {
+          ...formData,
+          userId: currentUser.uid,
+          createdAt: Date.now()
+        };
+        return addDoc(workoutsRef, newWorkout);
+      });
+      
       return true;
     } catch (error) {
       console.error('Error saving workout:', error);
