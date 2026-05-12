@@ -80,7 +80,6 @@ export class DashboardComponent implements OnDestroy {
     return gender === 'female' ? 'DASHBOARD.WELCOME_FEMALE' : 'DASHBOARD.WELCOME_MALE';
   });
 
-  showModal: boolean = false;
   showInstallCard: boolean = true;
   closeInstallCard() {
     this.showInstallCard = false;

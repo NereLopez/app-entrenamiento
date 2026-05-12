@@ -237,15 +237,36 @@
 }
 
 .nutrition-check {
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: rgba(16, 185, 129, 0.14);
-  color: #059669;
-  font-size: 0.72rem;
+  background: #dcfce7;
+  border: 1px solid #6ee7b7;
+  color: #047857;
+  font-size: 0.78rem;
+}
+
+.nutrition-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #dcfce7;
+  border: 1px solid #6ee7b7;
+  color: #065f46;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.calendar-day.is-selected .nutrition-check {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.6);
+  color: #ffffff;
 }
 
 .day-volume {
@@ -439,4 +460,16 @@
 
 :host-context(.dark-mode) .exercise-kcal {
   color: #2dd4bf;
+}
+
+:host-context(.dark-mode) .nutrition-check {
+  background: rgba(16, 185, 129, 0.22);
+  border-color: rgba(52, 211, 153, 0.45);
+  color: #6ee7b7;
+}
+
+:host-context(.dark-mode) .nutrition-status-pill {
+  background: rgba(16, 185, 129, 0.2);
+  border-color: rgba(52, 211, 153, 0.5);
+  color: #a7f3d0;
 }

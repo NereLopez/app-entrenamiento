@@ -55,9 +55,6 @@
     },
     "INSTALL": {
         "TITLE": "Instalar Kinetic App",
-        "SCAN": "Escanear QR",
-        "SHARE": "Tocar Compartir",
-        "ADD": "Agregar a Inicio",
         "ANOTHER_DEVICE": "Instalar la app"
     },
     "FINISH_BTN": "Finalizar",

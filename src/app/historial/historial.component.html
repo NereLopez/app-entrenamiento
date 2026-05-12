@@ -142,22 +142,23 @@
 
       <div class="card border-0 shadow-sm rounded-4 selected-day-panel">
         @if (selectedCalendarSession) {
-          <div class="selected-day-header">
+          <div class="selected-day-header d-flex justify-content-between align-items-start mb-3">
             <div>
               <p class="selected-day-label">{{ 'HISTORY.CALENDAR.SELECTED_DAY' | translate }}</p>
               <h5 class="fw-bold mb-1 date-capitalize">{{ selectedCalendarSession.displayDate | date:dateFormat : '' : currentDateLocale }}</h5>
+                 @if (selectedCalendarNutrition?.complete) {
+                <div class="nutrition-status-pill">
+                  <i class="bi bi-apple me-1"></i> {{ 'HISTORY.CALENDAR.NUTRITION_DONE' | translate }}
+                </div>
+              }
               <p class="text-muted mb-0">{{ selectedCalendarSession.allExercises.length }} {{ 'HISTORY.CALENDAR.EXERCISES_LOGGED' | translate }}</p>
             </div>
 
             <div class="selected-day-actions">
-              @if (selectedCalendarNutrition?.complete) {
-                <div class="nutrition-badge">
-                  <i class="bi bi-apple me-1"></i> {{ 'HISTORY.CALENDAR.NUTRITION_DONE' | translate }}
-                </div>
-              }
+           
               <div class="selected-day-volume">{{ calculateVolume(selectedCalendarSession) }} kg</div>
               <button type="button" class="btn btn-sm text-danger border-0" (click)="deleteSession(selectedCalendarSession.id)">
-                <i class="bi bi-trash"></i>
+               
               </button>
             </div>
           </div>

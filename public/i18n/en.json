@@ -52,10 +52,7 @@
     },
     "INSTALL": {
         "TITLE": "Install Kinetic App",
-        "SCAN": "Scan QR",
-        "SHARE": "Tap Share",
-        "ADD": "Add Home",
-        "ANOTHER_DEVICE": "Install App on another device"
+        "ANOTHER_DEVICE": "Install App "
     },
     "FINISH_BTN": "Finish",
     "ADD_LIBRARY": "Add Exercise from Library",

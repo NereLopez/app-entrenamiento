@@ -5,6 +5,7 @@ import { Auth, user } from '@angular/fire/auth';
 import { EntrenamientoService } from './entrenamiento.service';
 import { ToastController } from '@ionic/angular/standalone';
 import { Subscription } from 'rxjs';
+import { DashboardService } from './dashboard.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +16,7 @@ export class NutricionService {
   private injector = inject(Injector);
   private entrenamientoService = inject(EntrenamientoService);
   private toastController = inject(ToastController);
-   
-
+  private dashboardService = inject(DashboardService);
 
   public weight = signal<number | null>(null);
   public height = signal<number | null>(null);
@@ -104,8 +104,10 @@ private async loadWaterFromFirebase(uid: string) {
 
     if(consumed > 0 && consumed >= (target * 0.8)) {
       this.isNutritionCompleteToday.set(true);
+      this.dashboardService.isNutritionCompleteToday.set(true);
     } else {
       this.isNutritionCompleteToday.set(false);
+      this.dashboardService.isNutritionCompleteToday.set(false);
     }
   });
   }

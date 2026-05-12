@@ -134,6 +134,58 @@ export class NutricionComponent implements OnInit {
     this.isPresetMenuOpen.set(false);
   }
 
+  onMealTypeChange(type: string) {
+    if (type) {
+      const mealType = type as 'breakfast' | 'lunch' | 'dinner' | 'snack';
+      this.selectedPresetType.set(mealType);
+      this.mealForm.get('type')?.setValue(mealType);
+    }
+  }
+
+  addMeal() {
+    if (this.mealForm.invalid) {
+      alert('Please fill out all required fields (Name and Calories)');
+      return;
+    }
+    const val = this.mealForm.value;
+    const rawName = (val.name || '').trim();
+
+    const matchedPreset = FOOD_PRESETS.find((preset) => {
+      const presetKey = preset.name;
+      const presetBaseName = preset.name.replace('NUTRITION.PRESET.', '');
+      const presetTranslated = this.getFoodDisplayName(preset.name);
+      const normalizedRaw = this.normalizeFoodName(rawName);
+
+      return (
+        this.normalizeFoodName(presetKey) === normalizedRaw ||
+        this.normalizeFoodName(presetBaseName) === normalizedRaw ||
+        this.normalizeFoodName(presetTranslated) === normalizedRaw
+      );
+    });
+
+    const nameToSave = matchedPreset
+      ? matchedPreset.name
+      : rawName.charAt(0).toUpperCase() + rawName.slice(1);
+
+    this.nutricionSvc.addFoodEntry(
+      nameToSave,
+      val.calories || 0,
+      val.type || 'breakfast',
+      val.protein || 0,
+      val.carbs || 0,
+      val.fats || 0
+    );
+
+    this.mealForm.reset({
+      name: '',
+      type: val.type,
+      calories: 0,
+      protein: 0,
+      carbs: 0,
+      fats: 0
+    });
+  }
+
   private syncFormWithService() {
     this.form.patchValue({
       age: this.nutricionSvc.age(),
@@ -180,32 +232,6 @@ export class NutricionComponent implements OnInit {
     return translated === key ? name : translated;
   }
 
-  applyPreset(
-    name: string,
-    caloriesInput: HTMLInputElement,
-    proteinInput: HTMLInputElement,
-    carbsInput: HTMLInputElement,
-    fatsInput: HTMLInputElement,
-    typeSelect?: HTMLSelectElement
-  ) {
-    const preset = FOOD_PRESETS.find(
-      (f: FoodPreset) => this.normalizeFoodName(f.name) === this.normalizeFoodName(name)
-    );
-
-
-
-    if (!preset) return;
-
-    caloriesInput.value = String(preset.calories);
-    proteinInput.value = String(preset.protein);
-    carbsInput.value = String(preset.carbs);
-    fatsInput.value = String(preset.fats);
-
-    if (typeSelect && preset.type) {
-      typeSelect.value = preset.type;
-    }
-  }
-
   private updateServiceFromForm() {
     const val = this.form.value;
     if (val.age) this.nutricionSvc.age.set(val.age);
@@ -213,14 +239,6 @@ export class NutricionComponent implements OnInit {
     if (val.height) this.nutricionSvc.height.set(val.height);
     if (val.gender) this.nutricionSvc.gender.set(val.gender as 'male' | 'female');
     if (val.goal) this.nutricionSvc.goal.set(val.goal as 'lose' | 'maintain' | 'gain');
-  }
-
-  onMealTypeChange(type: string) {
-    if (type) {
-      const mealType = type as 'breakfast' | 'lunch' | 'dinner' | 'snack';
-      this.selectedPresetType.set(mealType);
-this.mealForm.get('type')?.setValue(mealType);
-    }
   }
 
   async saveProfile() {
@@ -239,53 +257,10 @@ this.mealForm.get('type')?.setValue(mealType);
     }
   }
 
-  addMeal() {
-    if (this.mealForm.invalid) {
-      alert('Please fill out all required fields (Name and Calories)');
-      return;
-    }
-    const val = this.mealForm.value;
-    const rawName = (val.name || '').trim();
-
-    const matchedPreset = FOOD_PRESETS.find((preset) => {
-      const presetKey = preset.name;
-      const presetBaseName = preset.name.replace('NUTRITION.PRESET.', '');
-      const presetTranslated = this.getFoodDisplayName(preset.name);
-      const normalizedRaw = this.normalizeFoodName(rawName);
-
-      return (
-        this.normalizeFoodName(presetKey) === normalizedRaw ||
-        this.normalizeFoodName(presetBaseName) === normalizedRaw ||
-        this.normalizeFoodName(presetTranslated) === normalizedRaw
-      );
-    });
-
-    const nameToSave = matchedPreset
-      ? matchedPreset.name
-      : rawName.charAt(0).toUpperCase() + rawName.slice(1);
-
-    this.nutricionSvc.addFoodEntry(
-      nameToSave,
-      val.calories || 0,
-      val.type || 'breakfast',
-      val.protein || 0,
-      val.carbs || 0,
-      val.fats || 0
-    );
-
-    this.mealForm.reset({ 
-      type: val.type, 
-      calories: 0, 
-      protein: 0, 
-      carbs: 0, 
-      fats: 0
-     });
-  }
-
 
   async deleteMeal(id: string) {
-      if (confirm(this.translate.instant('NUTRITION.FORM.DELETE_CONFIRM'))) {
-        await this.nutricionSvc.deleteFoodEntry(id);
-      }
+    if (confirm(this.translate.instant('NUTRITION.FORM.DELETE_CONFIRM'))) {
+      await this.nutricionSvc.deleteFoodEntry(id);
     }
   }
+}

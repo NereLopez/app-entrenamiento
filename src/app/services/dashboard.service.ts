@@ -15,6 +15,7 @@ export class DashboardService {
   private sessionInterval: any = null;
 
   public dailyAccumulatedSeconds = signal(0);
+  public isNutritionCompleteToday = signal(false);
 
   private readonly pendingKey = 'Kinetic_pending_seconds';
 
@@ -68,7 +69,9 @@ export class DashboardService {
       });
 
       if (docSnap.exists()) {
-          this.dailyAccumulatedSeconds.set(docSnap.data()['total_seconds'] || 0);
+        const data = docSnap.data();
+        this.dailyAccumulatedSeconds.set(data['total_seconds'] || 0);
+        this.isNutritionCompleteToday.set(data['is_nutrition_complete'] || false);
       }
 
       const pending = parseInt(localStorage.getItem(this.pendingKey) || '0', 10);

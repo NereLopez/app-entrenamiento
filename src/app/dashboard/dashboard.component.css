@@ -68,102 +68,40 @@
 
 .btn-history i, .btn-history .text-primary {color: var(--dark-teal) !important;}
 
-.install-app-card {
-  background:
-    radial-gradient(circle at top right, rgba(45, 212, 191, 0.16), transparent 30%),
-    linear-gradient(135deg, #ffffff 0%, #f8fffd 100%);
-  border: 1px solid rgba(13, 148, 136, 0.08);
-  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
-}
 
-.install-device-only {display: block;}
 
-.install-qr-frame {
-  display: flex;
+.install-qr-corner {
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  width: 148px;
-  height: 148px;
-  padding: 10px;
-  border-radius: 28px;
-  background: var(--card-bg);
-  box-shadow:inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 12px 24px rgba(13, 148, 136, 0.12);
+  gap: 8px;
+  margin-top: 24px;
 }
 
-.install-qr-image {
-  width: 100%;
-  height: 100%;
+.install-qr-corner-image {
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  border: 1px solid rgba(13, 148, 136, 0.15);
+  box-shadow: 0 4px 12px rgba(13, 148, 136, 0.1);
   object-fit: cover;
-  border-radius: 20px;
-  background: #ffffff;
 }
 
-.install-app-content {flex: 1;}
-
-.install-badge {
-  display: inline-flex;
-  align-items: center;
-  padding: 6px 12px;
-  border-radius: 999px;
-  background: rgba(13, 148, 136, 0.1);
-  color: var(--primary-teal);
+.install-qr-label {
   font-size: 0.75rem;
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
-.install-steps {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.install-step {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  min-height: 44px;
-  padding: 10px 14px;
-  border-radius: 16px;
-  background: rgba(var(--main-text-rgb, 255, 255, 255), 0.72);
-  border: 1px solid var(--border-color);
-  color: var(--main-text);
   font-weight: 600;
-  backdrop-filter: blur(8px);
+  color: #0d9488;
+  white-space: nowrap;
 }
 
-.install-step-number {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: var(--main-gradient);
-  color: var(--main-text);
-  font-size: 0.75rem;
-  font-weight: 800;
-  flex-shrink: 0;
-}
-
-.btn-install-custom {
-  background: var(--main-gradient);
-  color: #ffffff ;
-  border: none ;
-  padding: 12px 24px;
-  border-radius: 18px;
-  font-weight: 700;
-  margin-top: 20px;
-  transition: all 0.3s ease;
-  width: 100%; 
-  max-width: 300px;
-}
-
-.btn-install-custom:hover {
-  transform: translateY(-2px);
-  filter: brightness(1.1);
-  cursor: pointer;
+@media (max-width: 768px) {
+  .install-qr-corner {
+    margin-top: 16px;
+    gap: 6px;
+  }
+  .install-qr-corner-image {
+    width: 48px;
+    height: 48px;
+  }
 }
 
 .level-badge {
@@ -311,6 +249,20 @@
   background: rgba(15, 23, 42, 0.72);
   border-color: #334155;
   color: #e2e8f0;
+}
+
+:host-context(.dark-mode) .install-qr-corner {
+  color: #2dd4bf;
+}
+
+:host-context(.dark-mode) .install-qr-corner-image {
+  background: #1e293b;
+  border-color: #334155;
+  box-shadow: 0 4px 12px rgba(2, 8, 23, 0.3);
+}
+
+:host-context(.dark-mode) .install-qr-label {
+  color: #2dd4bf;
 }
 
 .btn-outline-primary.active {
