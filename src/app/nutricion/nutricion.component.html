@@ -63,11 +63,8 @@
                 </defs>
                 <!-- Cap -->
                 <rect x="17" y="0" width="18" height="6" rx="3" class="bottle-cap"/>
-                <!-- Neck -->
                 <rect x="19" y="5" width="14" height="11" rx="3" class="bottle-glass"/>
-                <!-- Body background -->
                 <rect x="6" y="16" width="40" height="74" rx="11" class="bottle-glass"/>
-                <!-- Water fill -->
                 <rect
                   x="6"
                   [attr.y]="16 + 74 * (1 - nutricionSvc.waterMl() / 2000)"
@@ -76,7 +73,7 @@
                   class="bottle-water"
                   clip-path="url(#bodyClip)"
                 />
-                <!-- Shine -->
+              
                 <rect x="12" y="22" width="4" height="26" rx="2" class="bottle-shine"/>
               </svg>
               <span class="bottle-label">+250ml</span>
@@ -117,7 +114,7 @@
           @for (food of getFoodsByType(cat); track food.name) {
             <button type="button" 
                     class="preset-item {{food.type}}" 
-                    (click)="selectPreset(food, foodName, foodCals, fP, fC, fF, foodType)">
+                    (click)="selectPreset(food)">
               <i class="me-2" [ngClass]="mealIconClass(food.type)"></i>
               {{ getFoodDisplayName(food.name) }}
             </button>
@@ -130,17 +127,20 @@
 
   </div>
 
-  <div class="col-md-5">
-    <input #foodName type="text" class="form-control meal-name-input" [placeholder]=" 'NUTRITION.MEAL_LOGGER.PLACEHOLDER_NAME' | translate ">
-  </div>
+  <div [formGroup]="mealForm" class="card meal-logger-card mt-4">
+  
+  <div class="row g-2">
+    <div class="col-md-5">
+      <input formControlName="name" type="text" class="form-control meal-name-input" [placeholder]=" 'NUTRITION.MEAL_LOGGER.PLACEHOLDER_NAME' | translate ">
+    </div>
 
-  <div class="col-md-3">
-    <input #foodCals type="number" class="form-control meal-name-input" [placeholder]=" 'NUTRITION.MEAL_LOGGER.PLACEHOLDER_CALORIES' | translate ">
-  </div>
+    <div class="col-md-3">
+      <input formControlName="calories" type="number" class="form-control meal-name-input" [placeholder]=" 'NUTRITION.MEAL_LOGGER.PLACEHOLDER_CALORIES' | translate ">
+    </div>
 
-  <div class="col-md-4" style="position: relative;">
-    <input #foodType type="hidden" value="breakfast">
-    <!-- Trigger button wrapped in preset-group -->
+    <div class="col-md-4" style="position: relative;">
+      <input formControlName="type" type="hidden">
+      
     <div class="preset-group">
       <button type="button"
               class="preset-group-toggle w-100"
@@ -164,7 +164,7 @@
                   class="preset-group-toggle"
                   [class]="'preset-group-toggle ' + cat"
                   [class.active]="selectedPresetType() === cat"
-                  (click)="onMealTypeChange(cat); foodType.value = cat; isMealTypeDropdownOpen.set(false)">
+                  (click)="onMealTypeChange(cat); isMealTypeDropdownOpen.set(false)">
             <span class="preset-group-label">
               <span class="preset-group-icon">
                 <i [ngClass]="categoryIconClass(cat)"></i>
@@ -179,37 +179,39 @@
           </button>
         }
       </div>
-    }
+    }  </div>
   </div>
+
+<div class="row g-2 mt-2">
+    <div class="col-4">
+      <div class="input-group mb-0">
+        <span class="input-group-text badge-protein">P</span>
+        <input formControlName="protein" type="number" class="form-control" [placeholder]=" 'NUTRITION.MEAL_LOGGER.PLACEHOLDER_PROTEIN' | translate ">
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="input-group mb-0">
+        <span class="input-group-text badge-carbs">C</span>
+        <input formControlName="carbs" type="number" class="form-control" [placeholder]=" 'NUTRITION.MEAL_LOGGER.PLACEHOLDER_CARBS' | translate ">
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="input-group mb-0">
+        <span class="input-group-text badge-fats">F</span>
+        <input formControlName="fats" type="number" class="form-control" [placeholder]=" 'NUTRITION.MEAL_LOGGER.PLACEHOLDER_FATS' | translate ">
+      </div>
+    </div>
+  </div>
+
+  <button type="button" class="btn btn-success w-100 mt-3" 
+          (click)="addMeal()" 
+       [disabled]="mealForm.invalid || nutricionSvc.isLoading()">
+          {{ 'NUTRITION.FORM.ADD_MEAL' | translate }}
+  </button>
+
 </div>
-
-          <div class="row g-2 mt-2">
-  <div class="col-4">
-    <div class="input-group mb-0">
-      <span class="input-group-text badge-protein">P</span>
-      <input #fP type="number" class="form-control" [placeholder]=" 'NUTRITION.MEAL_LOGGER.PLACEHOLDER_PROTEIN' | translate ">
-    </div>
-  </div>
-  <div class="col-4">
-    <div class="input-group mb-0">
-      <span class="input-group-text badge-carbs">C</span>
-      <input #fC type="number" class="form-control" [placeholder]=" 'NUTRITION.MEAL_LOGGER.PLACEHOLDER_CARBS' | translate ">
-    </div>
-  </div>
-  <div class="col-4">
-    <div class="input-group mb-0">
-      <span class="input-group-text badge-fats">F</span>
-      <input #fF type="number" class="form-control" [placeholder]=" 'NUTRITION.MEAL_LOGGER.PLACEHOLDER_FATS' | translate ">
-    </div>
-  </div>
 </div>
-
-          <button type="button" class="btn btn-success w-100 mt-3" 
-            (click)="addMeal(foodName.value, +foodCals.value, foodType.value, +fP.value, +fC.value, +fF.value); 
-                     foodName.value=''; foodCals.value=''; fP.value=''; fC.value=''; fF.value='';" [disabled]="nutricionSvc.isLoading()">
-                      {{ 'NUTRITION.FORM.ADD_MEAL' | translate }}
-          </button>
-
+   
           <div class="meal-list mt-3">
             @for (meal of nutricionSvc.dailyMeals(); track meal.id) {
               <div class="meal-item d-flex justify-content-between align-items-center border-bottom py-2">
