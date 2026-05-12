@@ -45,6 +45,8 @@ export class DashboardService {
       const user = this.authService.userSignal();
       if (user) {
         this.loadDailyDataFromFirebase();
+        this.loadWeeklyStats();
+        this.loadMonthlyStats();
       } else {
         this.cleanupEverything();
       }
