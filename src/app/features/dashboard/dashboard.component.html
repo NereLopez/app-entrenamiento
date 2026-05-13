@@ -19,16 +19,16 @@
 
   <div class="flex-grow-1">
     <h5 class="fw-bold mb-1">
-      {{ welcomeKey() | translate:{ name: entrenamientoService.userName() } }}
+      {{ welcomeKey() | translate:{ name: trainingService.userName() } }}
     </h5>
 
     <div class="d-flex align-items-center gap-2 flex-wrap">
-      <span class="badge level-badge" [style.--xp-fill]="entrenamientoService.xpProgress() + '%'">
-        <i class="bi bi-lightning-fill me-1"></i> {{ entrenamientoService.userLevel() | translate }}
+      <span class="badge level-badge" [style.--xp-fill]="trainingService.xpProgress() + '%'">
+        <i class="bi bi-lightning-fill me-1"></i> {{ trainingService.userLevel() | translate }}
       </span>
       <small class="xp-badge fw-medium d-flex align-items-center">
         <i class="bi bi-star-fill me-1 text-warning"></i>
-        {{ entrenamientoService.statsSignal().experiencePoints }} XP
+        {{ trainingService.statsSignal().experiencePoints }} XP
       </small>
     </div>
   </div>
@@ -77,7 +77,7 @@
     <div class="stat-card stat-card-compact p-3 shadow-sm border-0 rounded-4 bg-white">
       <h6 class="text-muted text-uppercase fw-bold stat-card-label">{{ 'DASHBOARD.TOTAL_VOLUME' | translate }}</h6>
       <h3 class="fw-bold mb-0 stat-card-value">
-        {{ entrenamientoService.totalVolume() | number }} <small class="fs-6">kg</small></h3>
+        {{ trainingService.totalVolume() | number }} <small class="fs-6">kg</small></h3>
       <p class="stat-card-subtitle text-primary mb-0">{{ 'DASHBOARD.LIFETIME' | translate }}</p>
     </div>
   </div>
@@ -87,7 +87,7 @@
   <div class="col-md-6">
     <div class="stat-card stat-card-compact p-3 shadow-sm border-0 rounded-4 bg-white">
       <h6 class="text-muted text-uppercase fw-bold stat-card-label">{{ 'DASHBOARD.STREAK' | translate }}</h6>
-      <h3 class="fw-bold mb-0 stat-card-value">{{ entrenamientoService.statsSignal().currentStreak }} <small class="fs-6">{{
+      <h3 class="fw-bold mb-0 stat-card-value">{{ trainingService.statsSignal().currentStreak }} <small class="fs-6">{{
           'DASHBOARD.DAYS' | translate }}</small></h3>
       <p class="stat-card-subtitle text-warning mb-0"><i class="bi bi-fire"></i> {{ 'DASHBOARD.KEEP_IT_UP' | translate }}</p>
     </div>

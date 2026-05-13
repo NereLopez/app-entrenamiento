@@ -1,8 +1,8 @@
 import { Component, signal, ElementRef, viewChild, computed, inject, OnInit, effect, DestroyRef } from '@angular/core'; 
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import html2canvas from 'html2canvas';
-import { NutricionService } from '../../../services/nutricion.service';
-import { EntrenamientoService } from '../../../services/entrenamiento.service';
+import { NutritionService } from '../../../../services/nutrition.service';
+import { TrainingService } from '../../../../services/training.service';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 interface DayActivity {
@@ -19,12 +19,12 @@ interface DayActivity {
   styleUrl: './calendar-heatmap.component.css'
 })
 export class CalendarHeatmapComponent implements OnInit {
-  private nutricionSvc = inject(NutricionService);
+  private nutritionService = inject(NutritionService);
   private translate = inject(TranslateService);
-  private entrenamientoSvc = inject(EntrenamientoService);
+  private trainingService = inject(TrainingService);
   private destroyRef = inject(DestroyRef);
 
-  readonly userKey = computed(() => this.entrenamientoSvc.userSignal()?.uid || 'anonymous');
+  readonly userKey = computed(() => this.trainingService.userSignal()?.uid || 'anonymous');
   readonly shareArea = viewChild<ElementRef>('shareArea');
   isExporting = signal(false);
   weekOffset = signal(0);
@@ -34,10 +34,10 @@ export class CalendarHeatmapComponent implements OnInit {
   constructor() {
     // 1. Escuchamos cambios en tiempo real
     effect(() => {
-      if (this.entrenamientoSvc.isWorkoutCompletedToday()) {
+      if (this.trainingService.isWorkoutCompletedToday()) {
         this.checkAndSyncActivity();
       }
-      if (this.nutricionSvc.isNutritionCompleteToday()) {
+      if (this.nutritionService.isNutritionCompleteToday()) {
         this.checkAndSyncActivity();
       }
     });
@@ -103,10 +103,10 @@ readonly isAllProgressComplete = computed(() => {
     const todayIdx = this.todayIndex();
     const currentData = this.weeklyActivity();
     
-    if (this.entrenamientoSvc.isWorkoutCompletedToday() && !currentData[todayIdx].workout.completed) {
+    if (this.trainingService.isWorkoutCompletedToday() && !currentData[todayIdx].workout.completed) {
       this.applyAutomaticMark(todayIdx, 'workout');
     }
-        if (this.nutricionSvc.isNutritionCompleteToday() && !currentData[todayIdx].nutrition.completed) {
+        if (this.nutritionService.isNutritionCompleteToday() && !currentData[todayIdx].nutrition.completed) {
           this.applyAutomaticMark(todayIdx, 'nutrition');
   }
 }
@@ -135,7 +135,7 @@ private getWeekNumber(d: Date): number {
   const storageKey = `progress-${this.userKey()}-${year}-week-${targetWeek}`;  
   
   localStorage.setItem(storageKey, JSON.stringify(currentDays));
-  await this.entrenamientoSvc.syncWeeklyActivity(weekId, currentDays);
+  await this.trainingService.syncWeeklyActivity(weekId, currentDays);
   this.activityVersion.update(v => v + 1);
 }
 
@@ -186,7 +186,7 @@ private generateInitialActivity(): DayActivity[] {
     activity.intensity = activity.completed ? 3 : 0;
 
     if (index === this.todayIndex() && type === 'workout') {
-      this.entrenamientoSvc.isWorkoutCompletedToday.set(activity.completed);
+      this.trainingService.isWorkoutCompletedToday.set(activity.completed);
     }
     const targetWeek = this.getWeekNumber(new Date()) + this.weekOffset();
     const year = new Date().getFullYear();
@@ -194,7 +194,7 @@ private generateInitialActivity(): DayActivity[] {
     const storageKey = `progress-${this.userKey()}-${year}-week-${targetWeek}`;
 
     localStorage.setItem(storageKey, JSON.stringify(currentData));
-    await this.entrenamientoSvc.syncWeeklyActivity(weekId, currentData);
+    await this.trainingService.syncWeeklyActivity(weekId, currentData);
     this.activityVersion.update(v => v + 1); // Trigger immediate re-render after Firestore save
   }
       changeWeek(delta: number) {

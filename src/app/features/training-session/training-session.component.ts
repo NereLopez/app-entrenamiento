@@ -1,21 +1,21 @@
 import { Component, inject, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { EntrenamientoService } from '../services/entrenamiento.service';
+import { TrainingService } from '../../services/training.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
-  selector: 'app-nueva-sesion',
+  selector: 'app-training-session',
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule, TranslateModule],
-  templateUrl: './nueva-sesion.component.html',
-  styleUrl: './nueva-sesion.component.css',
+  templateUrl: './training-session.component.html',
+  styleUrls: ['./training-session.component.css'],
 })
-export class NuevaSesionComponent implements OnInit, OnDestroy {
+export class TrainingSessionComponent implements OnInit, OnDestroy {
   private fb = inject(FormBuilder);
   private translate = inject(TranslateService);
-  public entrenamientoService = inject(EntrenamientoService); 
+  public trainingService = inject(TrainingService); 
   
   public showLibrary = false;
   public showManualGroupMenu = false;
@@ -55,10 +55,10 @@ export class NuevaSesionComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    const exerciseName = this.entrenamientoService.selectedExercise();
+    const exerciseName = this.trainingService.selectedExercise();
     if (exerciseName) {
       this.addExercise(exerciseName);
-      this.entrenamientoService.selectedExercise.set(null);
+      this.trainingService.selectedExercise.set(null);
     }
   }
 
@@ -241,11 +241,11 @@ export class NuevaSesionComponent implements OnInit, OnDestroy {
       createdAt: Date.now()
     };
 
-    const success = await this.entrenamientoService.saveFromForm(sessionData);
+    const success = await this.trainingService.saveFromForm(sessionData);
     if (success) {
       this.exercises.clear();
       this.restTime = 60;
-      this.entrenamientoService.currentTab.set('dashboard');
+      this.trainingService.currentTab.set('dashboard');
     }
   }
 }

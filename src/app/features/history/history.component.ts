@@ -1,6 +1,6 @@
 import { Component, inject, effect, ElementRef, ViewChild, Injector, runInInjectionContext } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { EntrenamientoService } from '../services/entrenamiento.service'; 
+import { TrainingService } from '../../services/training.service'; 
 import { Chart, registerables } from 'chart.js';
 import { Firestore, collection, collectionData, query, where, doc, getDoc } from '@angular/fire/firestore';
 import { Auth, user } from '@angular/fire/auth';
@@ -16,7 +16,7 @@ Chart.register(...registerables);
   styleUrls: ['./history.component.css']
 })
 export class HistoryComponent {
-  public entrenamientoService = inject(EntrenamientoService);
+  public trainingService = inject(TrainingService);
   private firestore = inject(Firestore);
   private auth = inject(Auth);
   private injector = inject(Injector);
@@ -52,7 +52,7 @@ export class HistoryComponent {
       }).subscribe(entries => {
 
         const groupedNutrition = new Map<string, { calories: number; complete: boolean }>();
-        const calorieTarget = this.entrenamientoService.statsSignal().dailyCaloriesTarget || 2000;
+        const calorieTarget = this.trainingService.statsSignal().dailyCaloriesTarget || 2000;
 
         entries.forEach((entry: any) => {
           const dateKey = this.toDateKey(new Date(entry.date));
@@ -68,7 +68,7 @@ export class HistoryComponent {
 
     // Escucha cambios en el historial para redibujar gráficas automáticamente
     effect(() => {
-      const historyData = this.entrenamientoService.history();
+      const historyData = this.trainingService.history();
 
       if (historyData.length > 0 && !this.selectedDateKey) {
         this.selectedDateKey = this.groupedWorkouts[0]?.dateKey ?? null;
@@ -82,7 +82,7 @@ export class HistoryComponent {
       }
     });
     this.translate.onLangChange.subscribe(() => {
-      const historyData = this.entrenamientoService.history();
+      const historyData = this.trainingService.history();
       setTimeout(() => {
         if (this.statsChart && historyData.length > 0) this.renderChart(historyData);
         if (this.muscleChart ) this.renderMuscleChart();
@@ -92,17 +92,17 @@ export class HistoryComponent {
 
      async deleteSession(workoutId: string) {
       if (!confirm(this.translate.instant('HISTORY.CONFIRMATIONS.DELETE_SESSION'))) return;
-      await this.entrenamientoService.deleteWorkout(workoutId);
+      await this.trainingService.deleteWorkout(workoutId);
       // Después de eliminar, el efecto que escucha el historial se encargará de redibujar las gráficas automáticamente.
     }
 
     async deleteExercise(workoutId: string, exerciseIndex: number, exerciseName: string) {
       if (!confirm(this.translate.instant('HISTORY.CONFIRMATIONS.DELETE_EXERCISE', { exerciseName }))) return;
-      await this.entrenamientoService.deleteExerciseFromWorkout(workoutId, exerciseIndex);
+      await this.trainingService.deleteExerciseFromWorkout(workoutId, exerciseIndex);
     }
   
   get groupedWorkouts() {
-    const rawHistory = this.entrenamientoService.history();
+    const rawHistory = this.trainingService.history();
     const grouped = new Map<string, any>();
 
     rawHistory.forEach(workout => {
@@ -145,7 +145,7 @@ export class HistoryComponent {
   }
 
   get currentStreak(): number {
-    const history = this.entrenamientoService.history();
+    const history = this.trainingService.history();
     if (!history.length) return 0;
 
     const trainedDays = new Set<string>();
@@ -281,7 +281,7 @@ export class HistoryComponent {
 
   setMetric(metric: 'Volume' | 'Frequency') {
     this.currentMetric = metric;
-    const historyData = this.entrenamientoService.history();
+    const historyData = this.trainingService.history();
     if (historyData.length > 0) {
       this.renderChart(historyData);
     }
@@ -326,7 +326,7 @@ export class HistoryComponent {
   }
 
   getExerciseCalories(exercise: any): number {
-    const workout = this.entrenamientoService.history().find(w => w.id === exercise.workoutId);
+    const workout = this.trainingService.history().find(w => w.id === exercise.workoutId);
     if (!workout) return 0;
 
     const workoutCalories = this.getWorkoutCaloriesEstimate(workout);
@@ -354,7 +354,7 @@ export class HistoryComponent {
     
     const diasUnicos = new Set<string>();
 
-    this.entrenamientoService.history().forEach(workout => {
+    this.trainingService.history().forEach(workout => {
       const fecha = new Date(workout.createdAt);
       
       if (fecha.getMonth() === mesActual && fecha.getFullYear() === anioActual) {
@@ -371,7 +371,7 @@ export class HistoryComponent {
 
   getMuscleData() {
     const counts: { [key: string]: number } = {};
-    this.entrenamientoService.history().forEach(w => {
+    this.trainingService.history().forEach(w => {
       w.exercises?.forEach((ex: any) => {
         const group = ex.muscleGroup || ex.grupoMuscular || 'Default';
         counts[group] = (counts[group] || 0) + 1;

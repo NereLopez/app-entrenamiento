@@ -113,12 +113,15 @@
             "Pasta + Lean Beef": "Pasta con carne magra",
             "Quinoa Salad with Chickpeas": "Ensalada de quinoa con garbanzos",
             "Veggie Burger + Sweet Potato Fries": "Hamburguesa vegetariana con boniato",
-            "Chicken Caesar Wrap": "Wrap de pollo",
+            "Sushi Bowl": "Sushi",
             "Salmon with Quinoa": "Salmón con quinoa",
             "Steak + Potatoes": "Bistec con papas",
             "Chicken Stir Fry": "Salteado de pollo",
             "Shrimp Rice Bowl": "Arroz con camarones",
             "Veggie Omelette + Salad": "Tortilla de verduras + Ensalada",
+            "Pork Tenderloin + Veggies": "Lomo de cerdo con verduras",
+            "Lentil Soup + Bread": "Sopa de lentejas con pan",
+            "Baked Cod + Asparagus": "Bacalao al horno con espárragos",
             "Banana (1 medium)": "Banana (1 mediana)",
             "Apple (1 medium)": "Manzana (1 mediana)",
             "Almonds (1 oz)": "Almendras (1 oz)",
@@ -126,7 +129,8 @@
             "Protein Shake": "Batido de proteína",
             "Cottage Cheese (150g)": "Requesón (150g)",
             "Coffee + Protein Bar": "Café + Barra de proteína",
-            "Hummus + Veggies": "Hummus + Verduras"
+            "Hummus + Veggies": "Hummus + Verduras",
+            "Dark Chocolate (1 oz)": "Chocolate negro"
         },
         "FORM": {
             "ADD_MEAL": "Añadir comida",
@@ -137,7 +141,7 @@
         },
         "MEAL_TYPES": {
             "BREAKFAST": "Desayuno",
-            "LUNCH": "Almuerzo",
+            "LUNCH": "Comida",
             "DINNER": "Cena",
             "SNACK": "Snack"
         },

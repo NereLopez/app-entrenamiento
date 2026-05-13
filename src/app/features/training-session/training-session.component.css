@@ -1,5 +1,5 @@
 .container {
-  max-width: 800px /*!important;*/;
+  max-width: 800px;
   background: var(--bg-light);
   min-height: 100vh;
 }
@@ -126,9 +126,6 @@
     border-radius: 999px;
   }
   
-  .session-intensity > small {
-    font-size: 0.6rem;
-  }
 }
 
 .library-toggle-btn {
@@ -306,10 +303,14 @@
   --dm-bg-0: #0f172a;
   --dm-bg-1: #111827;
   --dm-bg-2: #1e293b;
+  --dm-bg-3: #1f2d43;
+  --dm-input-bg: #0f1b30;
   --dm-border: #334155;
   --dm-text: #e2e8f0;
   --dm-muted: #94a3b8;
   --dm-accent: #2dd4bf;
+  --dm-subtext: #cbd5e1;
+  --dm-highlight: #5eead4;
 }
 
 :host-context(.dark-mode) .container { background: var(--dm-bg-0); }
@@ -352,12 +353,12 @@
 }
 
 :host-context(.dark-mode) .library-toggle-text,
-:host-context(.dark-mode) .manual-group-option { color: #cbd5e1;}
+:host-context(.dark-mode) .manual-group-option { color: var(--dm-subtext);}
 
 :host-context(.dark-mode) .library-toggle-btn.is-open .library-toggle-text,
 :host-context(.dark-mode) .manual-group-option:hover,
 :host-context(.dark-mode) .manual-group-option.is-selected {
-  color: #5eead4;}
+  color: var(--dm-highlight);}
 
 :host-context(.dark-mode) .muscle-group-label,
 :host-context(.dark-mode) .manual-name-input::placeholder,
@@ -366,7 +367,7 @@
 
 :host-context(.dark-mode) .manual-name-input,
 :host-context(.dark-mode) .form-select-like {
-  background: #1f2d43;
+  background: var(--dm-bg-3);
   color: var(--dm-text);
   border: 1px solid #4b5e79 !important;
   box-shadow: inset 0 -2px 0 rgba(100, 116, 139, 0.85);
@@ -393,7 +394,7 @@
 
 :host-context(.dark-mode) .set-history-item {background: #23324a; color: #f8fafc;}
 
-:host-context(.dark-mode) .set-label {color: #cbd5e1;}
+:host-context(.dark-mode) .set-label {color: var(--dm-subtext);}
 
 :host-context(.dark-mode) .set-values { color: #f8fafc;}
 
@@ -407,7 +408,7 @@
 
 :host-context(.dark-mode) .exercise-list .input-group-text,
 :host-context(.dark-mode) .exercise-list .form-control {
-  background: #0f1b30 !important;
+  background: var(--dm-input-bg) !important;
   color: var(--dm-text) !important;
   border-color: #334155 !important;
   box-shadow: inset 0 -2px 0 rgba(71, 85, 105, 0.8);

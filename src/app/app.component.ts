@@ -2,8 +2,8 @@ import { Component, inject, effect, signal} from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterModule, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { LoginComponent } from './auth/login.component';
-import { EntrenamientoService } from './services/entrenamiento.service';
+import { LoginComponent } from './auth/login/login.component';
+import { TrainingService } from './services/training.service';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +14,7 @@ import { EntrenamientoService } from './services/entrenamiento.service';
 })
 export class AppComponent {
   title = 'app-entrenamiento';
-  public entrenamientoService = inject(EntrenamientoService);
+  public trainingService = inject(TrainingService);
   private translate = inject(TranslateService);
   tab: string = 'dashboard';
   darkMode = signal<boolean>(false);

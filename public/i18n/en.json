@@ -110,12 +110,15 @@
             "Pasta + Lean Beef": "Pasta + Lean Beef",
             "Quinoa Salad with Chickpeas": "Quinoa Salad with Chickpeas",
             "Veggie Burger + Sweet Potato Fries": "Veggie Burger + Sweet Potato Fries",
-            "Chicken Caesar Wrap": "Chicken Caesar Wrap",
+            "Sushi Bowl": "Sushi Bowl",
             "Salmon with Quinoa": "Salmon with Quinoa",
             "Steak + Potatoes": "Steak + Potatoes",
             "Chicken Stir Fry": "Chicken Stir Fry",
             "Shrimp Rice Bowl": "Shrimp Rice Bowl",
             "Veggie Omelette + Salad": "Veggie Omelette + Salad",
+            "Pork Tenderloin + Veggies": "Pork Tenderloin + Veggies",
+            "Lentil Soup + Bread": "Lentil Soup + Bread",
+            "Baked Cod + Asparagus": "Baked Cod + Asparagus",
             "Banana (1 medium)": "Banana (1 medium)",
             "Apple (1 medium)": "Apple (1 medium)",
             "Almonds (1 oz)": "Almonds (1 oz)",
@@ -123,7 +126,8 @@
             "Protein Shake": "Protein Shake",
             "Cottage Cheese (150g)": "Cottage Cheese (150g)",
             "Coffee + Protein Bar": "Coffee + Protein Bar",
-            "Hummus + Veggies": "Hummus + Veggies"
+            "Hummus + Veggies": "Hummus + Veggies",
+            "Dark Chocolate (1 oz)": "Dark Chocolate (1 oz)"
         },
         "FORM": {
             "ADD_MEAL": "Add Meal",

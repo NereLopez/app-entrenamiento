@@ -1,25 +1,25 @@
 import { Component, inject, OnInit, signal, effect, Injector } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
-import { NutricionService } from '../services/nutricion.service';
-import { FoodPreset } from '../models/nutricion.model';
-import { FOOD_PRESETS } from '../data/food-presets';
+import { NutritionService } from '../../services/nutrition.service';
+import { FoodPreset } from '../../models/nutrition.model';
+import { FOOD_PRESETS } from '../../data/food-presets';
 import { Router } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
-  selector: 'app-nutricion',
+  selector: 'app-nutrition',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, TranslateModule],
-  templateUrl: './nutricion.component.html',
-  styleUrl: './nutricion.component.css'
+  templateUrl: './nutrition.component.html',
+  styleUrl: './nutrition.component.css'
 })
-export class NutricionComponent implements OnInit {
+export class NutritionComponent implements OnInit {
   private fb = inject(FormBuilder);
   private injector = inject(Injector);
   private router = inject(Router);
   private translate = inject(TranslateService);
-  public nutricionSvc = inject(NutricionService);
+  public nutritionService = inject(NutritionService);
 
   public isEditing = false;
   public isSaving = signal(false);
@@ -28,9 +28,9 @@ export class NutricionComponent implements OnInit {
   public isPresetMenuOpen = signal(false);
   public isMealTypeDropdownOpen = signal(false);
   public selectedPresetLabel = signal('Choose a meal...');
-  public selectedPresetType = signal<'breakfast' | 'lunch' | 'dinner' | 'snack' | null>('breakfast');
+  public selectedPresetType = signal<'breakfast' | 'lunch' | 'snack' | 'dinner' | null>('breakfast');
   public foodPresets = FOOD_PRESETS;
-  public categories = ['breakfast', 'lunch', 'dinner', 'snack'];
+  public categories = ['breakfast', 'lunch', 'snack', 'dinner'];
   public activeCategory: string | null = null;
 
   public form = this.fb.group({
@@ -51,30 +51,30 @@ export class NutricionComponent implements OnInit {
   });
 
   navegar(ruta: string) {
-    if (ruta === '/nutricion') {
-      const gender = this.nutricionSvc.gender();
+    if (ruta === '/nutrition') {
+      const gender = this.nutritionService.gender();
       if (!gender) {
-        this.nutricionSvc.forceEditMode.set(true);
+        this.nutritionService.forceEditMode.set(true);
       }
     }
     this.router.navigateByUrl(ruta);
   }
 
   ngOnInit() {
-    if (this.nutricionSvc.forceEditMode()) {
+    if (this.nutritionService.forceEditMode()) {
       this.isEditing = true;
-      this.nutricionSvc.forceEditMode.set(false);
+      this.nutritionService.forceEditMode.set(false);
       console.log('Modo edicion activado por el dashboard y resteado');
     }
 
     this.syncFormWithService();
 
     effect(() => {
-      this.nutricionSvc.age();
-      this.nutricionSvc.weight();
-      this.nutricionSvc.height();
-      this.nutricionSvc.gender();
-      this.nutricionSvc.goal();
+      this.nutritionService.age();
+      this.nutritionService.weight();
+      this.nutritionService.height();
+      this.nutritionService.gender();
+      this.nutritionService.goal();
 
       if (!this.isEditing) {
         this.syncFormWithService();
@@ -94,7 +94,7 @@ export class NutricionComponent implements OnInit {
     return this.foodPresets.filter(f => f.type === type);
   }
 
-  mealIconClass(type: 'breakfast' | 'lunch' | 'dinner' | 'snack') {
+  mealIconClass(type: 'breakfast' | 'lunch' | 'snack' | 'dinner') {
     if (type === 'breakfast') return 'bi bi-sunrise-fill text-warning';
     if (type === 'lunch') return 'bi bi-sun-fill text-danger';
     if (type === 'dinner') return 'bi bi-moon-stars-fill text-primary';
@@ -129,7 +129,7 @@ export class NutricionComponent implements OnInit {
       type: food.type
     });
     this.selectedPresetLabel.set(displayName);
-    this.selectedPresetType.set(food.type);
+    this.selectedPresetType.set(food.type as 'breakfast' | 'lunch' | 'snack' | 'dinner');
     this.activeCategory = null;
     this.isPresetMenuOpen.set(false);
   }
@@ -167,32 +167,32 @@ export class NutricionComponent implements OnInit {
       ? matchedPreset.name
       : rawName.charAt(0).toUpperCase() + rawName.slice(1);
 
-    this.nutricionSvc.addFoodEntry(
-      nameToSave,
-      val.calories || 0,
-      val.type || 'breakfast',
-      val.protein || 0,
-      val.carbs || 0,
-      val.fats || 0
-    );
+ this.nutritionService.addFoodEntry(
+  nameToSave,
+  Number(val.calories),
+  val.type || 'breakfast',
+  val.protein ?? undefined,
+  val.carbs ?? undefined,
+  val.fats ?? undefined
+);
 
-    this.mealForm.reset({
-      name: '',
-      type: val.type,
-      calories: 0,
-      protein: 0,
-      carbs: 0,
-      fats: 0
-    });
+this.mealForm.reset({
+  name: '',
+  type: val.type || 'breakfast',
+  calories: null,
+  protein: null,
+  carbs: null,
+  fats: null
+});
   }
 
   private syncFormWithService() {
     this.form.patchValue({
-      age: this.nutricionSvc.age(),
-      weight: this.nutricionSvc.weight(),
-      height: this.nutricionSvc.height(),
-      gender: this.nutricionSvc.gender(),
-      goal: this.nutricionSvc.goal()
+      age: this.nutritionService.age(),
+      weight: this.nutritionService.weight(),
+      height: this.nutritionService.height(),
+      gender: this.nutritionService.gender(),
+      goal: this.nutritionService.goal()
     }, { emitEvent: false });
   }
 
@@ -234,11 +234,11 @@ export class NutricionComponent implements OnInit {
 
   private updateServiceFromForm() {
     const val = this.form.value;
-    if (val.age) this.nutricionSvc.age.set(val.age);
-    if (val.weight) this.nutricionSvc.weight.set(val.weight);
-    if (val.height) this.nutricionSvc.height.set(val.height);
-    if (val.gender) this.nutricionSvc.gender.set(val.gender as 'male' | 'female');
-    if (val.goal) this.nutricionSvc.goal.set(val.goal as 'lose' | 'maintain' | 'gain');
+    if (val.age) this.nutritionService.age.set(val.age);
+    if (val.weight) this.nutritionService.weight.set(val.weight);
+    if (val.height) this.nutritionService.height.set(val.height);
+    if (val.gender) this.nutritionService.gender.set(val.gender as 'male' | 'female');
+    if (val.goal) this.nutritionService.goal.set(val.goal as 'lose' | 'maintain' | 'gain');
   }
 
   async saveProfile() {
@@ -246,7 +246,7 @@ export class NutricionComponent implements OnInit {
       this.isSaving.set(true);
       this.updateServiceFromForm();
       try {
-        await this.nutricionSvc.saveToFirestore();
+        await this.nutritionService.saveToFirestore();
         this.isEditing = false;
       } catch (err) {
         console.error('Error al guardar:', err);
@@ -260,7 +260,7 @@ export class NutricionComponent implements OnInit {
 
   async deleteMeal(id: string) {
     if (confirm(this.translate.instant('NUTRITION.FORM.DELETE_CONFIRM'))) {
-      await this.nutricionSvc.deleteFoodEntry(id);
+      await this.nutritionService.deleteFoodEntry(id);
     }
   }
 }

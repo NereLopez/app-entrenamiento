@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { EntrenamientoService } from '../services/entrenamiento.service';
+import { TrainingService } from '../../services/training.service';
 import { Router } from '@angular/router';
 import { Auth, authState } from '@angular/fire/auth';
 import { take } from 'rxjs';
@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit {
   pass = '';
   isPending = false; 
   private auth = inject(Auth);
-  private trainingService = inject(EntrenamientoService);
+  private trainingService = inject(TrainingService);
   private router = inject(Router);
 
   ngOnInit() {
@@ -54,7 +54,7 @@ export class LoginComponent implements OnInit {
     this.isPending = true;
     try {
       await this.trainingService.signUp(cleanEmail, cleanPass);
-      alert('¡Cuenta creada con éxito! Ya puedes entrar.');
+      alert('Account created successfully! You can now sign in.');
      
     } catch (e: any) {
       alert('Error: ' + e.message);

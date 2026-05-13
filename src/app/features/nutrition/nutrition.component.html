@@ -13,31 +13,31 @@
         <div class="energy-header">
           <div class="energy-calories-col">
             <p class="label"> {{ 'NUTRITION.ENERGY.DAILY_TARGET' | translate }}</p>
-            <h1>{{ nutricionSvc.targetCalories() }} <span class="unit">kcal</span></h1>
-            <div class="goal-badge"> {{ 'NUTRITION.ENERGY.GOAL_LABEL' | translate:{ goal: (nutricionSvc.goal() === 'lose' ? ('NUTRITION.BIOMETRICS.GOAL_LOSE' | translate) : nutricionSvc.goal() === 'gain' ? ('NUTRITION.BIOMETRICS.GOAL_GAIN' | translate) : ('NUTRITION.BIOMETRICS.GOAL_MAINTAIN' | translate)) } }}</div>
+            <h1>{{ nutritionService.targetCalories() }} <span class="unit">kcal</span></h1>
+            <div class="goal-badge"> {{ 'NUTRITION.ENERGY.GOAL_LABEL' | translate:{ goal: (nutritionService.goal() === 'lose' ? ('NUTRITION.BIOMETRICS.GOAL_LOSE' | translate) : nutritionService.goal() === 'gain' ? ('NUTRITION.BIOMETRICS.GOAL_GAIN' | translate) : ('NUTRITION.BIOMETRICS.GOAL_MAINTAIN' | translate)) } }}</div>
 
             <div class="main-progress-container mt-4">
               <div class="d-flex justify-content-between mb-1" style="font-size: 0.85rem; opacity: 0.9;">
-                <span>{{ 'NUTRITION.ENERGY.CONSUMED' | translate }} <strong>{{ nutricionSvc.caloriesConsumed() }}</strong></span>
-                <span>{{ 'NUTRITION.ENERGY.REMAINING' | translate }} <strong>{{ nutricionSvc.targetCalories() - nutricionSvc.caloriesConsumed() }}</strong></span>
+                <span>{{ 'NUTRITION.ENERGY.CONSUMED' | translate }} <strong>{{ nutritionService.caloriesConsumed() }}</strong></span>
+                <span>{{ 'NUTRITION.ENERGY.REMAINING' | translate }} <strong>{{ nutritionService.targetCalories() - nutritionService.caloriesConsumed() }}</strong></span>
               </div>
               <div class="custom-progress-bg">
                 <div class="custom-progress-fill"
-                     [style.width.%]="(nutricionSvc.caloriesConsumed() / (nutricionSvc.targetCalories() || 1)) * 100"
-                     [class.over-limit]="nutricionSvc.caloriesConsumed() > nutricionSvc.targetCalories()">
+                     [style.width.%]="(nutritionService.caloriesConsumed() / (nutritionService.targetCalories() || 1)) * 100"
+                     [class.over-limit]="nutritionService.caloriesConsumed() > nutritionService.targetCalories()">
                 </div>
               </div>
               <small class="d-block mt-2 opacity-75">
-                {{ ((nutricionSvc.caloriesConsumed() / (nutricionSvc.targetCalories() || 1)) * 100).toFixed(0) }} {{ 'NUTRITION.ENERGY.PERCENTAGE' | translate }}
+                {{ ((nutritionService.caloriesConsumed() / (nutritionService.targetCalories() || 1)) * 100).toFixed(0) }} {{ 'NUTRITION.ENERGY.PERCENTAGE' | translate }}
               </small>
                             <div class="mt-3 pt-3" style="border-top: 1px solid rgba(0,0,0,0.1);">
                 <div class="d-flex justify-content-between mb-1" style="font-size: 0.85rem; opacity: 0.9;">
                   <span style="color: #2dd4bf;">
                     🔥 {{ 'NUTRITION.ENERGY.BURNED' | translate }} 
-                    <strong>{{ nutricionSvc.caloriesBurnedToday() }}</strong>
+                    <strong>{{ nutritionService.caloriesBurnedToday() }}</strong>
                   </span>
                   <span style="color: #e0e0e0;">
-                    ⚖️ {{ 'NUTRITION.ENERGY.NET' | translate }} <strong>{{ nutricionSvc.netCalories() }}</strong>
+                    ⚖️ {{ 'NUTRITION.ENERGY.NET' | translate }} <strong>{{ nutritionService.netCalories() }}</strong>
                   </span>
                 </div>
               </div>
@@ -46,13 +46,13 @@
 
           <div class="energy-water-col">
             <div class="water-label"><i class="bi bi-droplet-fill me-1"></i>{{ 'NUTRITION.WATER.TITLE' | translate }}</div>
-            <div class="water-ml-display">{{ nutricionSvc.waterMl() }}<span class="water-unit">ml</span></div>
+            <div class="water-ml-display">{{ nutritionService.waterMl() }}<span class="water-unit">ml</span></div>
             <div class="water-goal">/ 2000 ml</div>
             <button
               type="button"
               class="bottle-btn"
-              (click)="nutricionSvc.addWater()"
-              [disabled]="nutricionSvc.waterMl() >= 2000"
+              (click)="nutritionService.addWater()"
+              [disabled]="nutritionService.waterMl() >= 2000"
               aria-label="+250ml"
             >
               <svg viewBox="0 0 52 96" xmlns="http://www.w3.org/2000/svg" class="bottle-svg">
@@ -67,9 +67,9 @@
                 <rect x="6" y="16" width="40" height="74" rx="11" class="bottle-glass"/>
                 <rect
                   x="6"
-                  [attr.y]="16 + 74 * (1 - nutricionSvc.waterMl() / 2000)"
+                  [attr.y]="16 + 74 * (1 - nutritionService.waterMl() / 2000)"
                   width="40"
-                  [attr.height]="74 * (nutricionSvc.waterMl() / 2000)"
+                  [attr.height]="74 * (nutritionService.waterMl() / 2000)"
                   class="bottle-water"
                   clip-path="url(#bodyClip)"
                 />
@@ -205,7 +205,7 @@
 
   <button type="button" class="btn btn-success w-100 mt-3" 
           (click)="addMeal()" 
-       [disabled]="mealForm.invalid || nutricionSvc.isLoading()">
+       [disabled]="mealForm.invalid || nutritionService.isLoading()">
           {{ 'NUTRITION.FORM.ADD_MEAL' | translate }}
   </button>
 
@@ -213,14 +213,15 @@
 </div>
    
           <div class="meal-list mt-3">
-            @for (meal of nutricionSvc.dailyMeals(); track meal.id) {
+            @for (meal of nutritionService.dailyMeals(); track meal.id) {
               <div class="meal-item d-flex justify-content-between align-items-center border-bottom py-2">
                 <div class="d-flex align-items-center">
                   <i class="me-3 fs-5" [ngClass]="{
                     'bi bi-sunrise-fill text-warning': meal.type === 'breakfast',
                     'bi bi-sun-fill text-danger': meal.type === 'lunch',
-                    'bi bi-moon-stars-fill text-primary': meal.type === 'dinner',
-                    'bi bi-cup-hot-fill text-secondary': meal.type === 'snack'
+                    'bi bi-cup-hot-fill text-secondary': meal.type === 'snack',
+                    'bi bi-moon-stars-fill text-primary': meal.type === 'dinner'
+                    
                   }"></i>
                   <div>
                     <strong>{{ getFoodDisplayName(meal.name) }}</strong>
@@ -229,7 +230,7 @@
                 </div>
                 <div class="d-flex align-items-center gap-3">
                   <span class="text-success">+{{ meal.calories }} kcal</span>
-                  <button type="button" class="btn btn-link text-danger p-0" (click)="deleteMeal(meal.id!)" [disabled]="nutricionSvc.isLoading()">
+                  <button type="button" class="btn btn-link text-danger p-0" (click)="deleteMeal(meal.id!)" [disabled]="nutritionService.isLoading()">
                     <i class="bi bi-trash"></i>
                   </button>
                 </div>
@@ -245,16 +246,16 @@
             <h3>{{ 'NUTRITION.BIOMETRICS.TITLE' | translate }}</h3>
             <div class="metric-row">
               <span>{{ 'NUTRITION.BIOMETRICS.WEIGHT' | translate }}</span>
-              <span class="value-highlight">{{ nutricionSvc.weight() || '--' }} kg</span>
+              <span class="value-highlight">{{ nutritionService.weight() || '--' }} kg</span>
             </div>
-            <input type="range" class="weight-slider" [value]="nutricionSvc.weight()" (input)="onWeightSliderChange($event)" min="30" max="250">
+            <input type="range" class="weight-slider" [value]="nutritionService.weight()" (input)="onWeightSliderChange($event)" min="30" max="250">
 
             <div class="metric-row interactive-controls mt-3">
               <div class="mini-control">
                 <span class="label-sm">{{ 'NUTRITION.BIOMETRICS.AGE' | translate }}</span>
                 <div class="button-group">
                   <button type="button" (click)="adjust('age', -1)">-</button>
-                  <strong>{{ nutricionSvc.age() || '--' }}</strong>
+                  <strong>{{ nutritionService.age() || '--' }}</strong>
                   <button type="button" (click)="adjust('age', 1)">+</button>
                 </div>
               </div>
@@ -262,7 +263,7 @@
                 <span class="label-sm">{{ 'NUTRITION.BIOMETRICS.HEIGHT' | translate }}</span>
                 <div class="button-group">
                   <button type="button" (click)="adjust('height', -1)">-</button>
-                  <strong>{{ nutricionSvc.height() || '--' }}</strong>
+                  <strong>{{ nutritionService.height() || '--' }}</strong>
                   <button type="button" (click)="adjust('height', 1)">+</button>
                 </div>
               </div>
@@ -270,9 +271,9 @@
 
             <div class="goal-selector-mini mt-3">
               <p>{{ 'NUTRITION.BIOMETRICS.CURRENT_STRATEGY' | translate }}</p>
-              <div class="badge" [ngClass]="nutricionSvc.goal()">
-                {{ nutricionSvc.goal() === 'lose' ? ('NUTRITION.BIOMETRICS.GOAL_FAT_LOSS' | translate) : 
-                   nutricionSvc.goal() === 'gain' ? ('NUTRITION.BIOMETRICS.GOAL_MUSCLE_GAIN' | translate) : ('NUTRITION.BIOMETRICS.GOAL_MAINTENANCE' | translate) }}
+              <div class="badge" [ngClass]="nutritionService.goal()">
+                {{ nutritionService.goal() === 'lose' ? ('NUTRITION.BIOMETRICS.GOAL_FAT_LOSS' | translate) : 
+                   nutritionService.goal() === 'gain' ? ('NUTRITION.BIOMETRICS.GOAL_MUSCLE_GAIN' | translate) : ('NUTRITION.BIOMETRICS.GOAL_MAINTENANCE' | translate) }}
               </div>
             </div>
           </div>
@@ -285,11 +286,11 @@
                 <div class="macro-text">
                   <i class="bi bi-circle-fill me-2" style="color: #0d9488; font-size: 0.6rem;"></i>
                   <strong>{{ 'NUTRITION.MACROS.PROTEIN' | translate }}</strong><small>{{ 'NUTRITION.MACROS.PROTEIN_DESC' | translate }}</small></div>
-                <span class="macro-gram">{{ nutricionSvc.consumedMacros().protein }}g / {{ nutricionSvc.macros().protein }}g</span>
+                <span class="macro-gram">{{ nutritionService.consumedMacros().protein }}g / {{ nutritionService.macros().protein }}g</span>
               </div>
 
               <div class="progress-container">
-                <div class="progress-bar bg-protein" [style.width.%]="(nutricionSvc.consumedMacros().protein / nutricionSvc.macros().protein) * 100"></div>
+                <div class="progress-bar bg-protein" [style.width.%]="(nutritionService.consumedMacros().protein / nutritionService.macros().protein) * 100"></div>
               </div>
             </div>
 
@@ -298,10 +299,10 @@
                 <div class="macro-text">
                   <i class="bi bi-circle-fill me-2" style="color: #256ebc; font-size: 0.6rem;"></i>
                   <strong>{{ 'NUTRITION.MACROS.CARBS' | translate }}</strong><small>{{ 'NUTRITION.MACROS.CARBS_DESC' | translate }}</small></div>
-                <span class="macro-gram">{{ nutricionSvc.consumedMacros().carbs }}g / {{ nutricionSvc.macros().carbs }}g</span>
+                <span class="macro-gram">{{ nutritionService.consumedMacros().carbs }}g / {{ nutritionService.macros().carbs }}g</span>
               </div>
               <div class="progress-container">
-                <div class="progress-bar bg-carbs" [style.width.%]="(nutricionSvc.consumedMacros().carbs / nutricionSvc.macros().carbs) * 100"></div>
+                <div class="progress-bar bg-carbs" [style.width.%]="(nutritionService.consumedMacros().carbs / nutritionService.macros().carbs) * 100"></div>
               </div>
             </div>
 
@@ -310,10 +311,10 @@
                 <div class="macro-text">
                   <i class="bi bi-circle-fill me-2" style="color: #d97706; font-size: 0.6rem;"></i>
                   <strong>{{ 'NUTRITION.MACROS.FATS' | translate }}</strong><small>{{ 'NUTRITION.MACROS.FATS_DESC' | translate }}</small></div>
-                <span class="macro-gram">{{ nutricionSvc.consumedMacros().fats }}g / {{ nutricionSvc.macros().fats }}g</span>
+                <span class="macro-gram">{{ nutritionService.consumedMacros().fats }}g / {{ nutritionService.macros().fats }}g</span>
               </div>
               <div class="progress-container">
-                <div class="progress-bar bg-fats" [style.width.%]="(nutricionSvc.consumedMacros().fats / nutricionSvc.macros().fats) * 100"></div>
+                <div class="progress-bar bg-fats" [style.width.%]="(nutritionService.consumedMacros().fats / nutritionService.macros().fats) * 100"></div>
               </div>
             </div>
           </div>

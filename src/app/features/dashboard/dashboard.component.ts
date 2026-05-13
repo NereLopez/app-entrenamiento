@@ -1,12 +1,12 @@
 import { Component, inject, OnDestroy, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
-import { EntrenamientoService } from '../services/entrenamiento.service';
-import { NutricionService } from '../services/nutricion.service';
+import { TrainingService } from '../../services/training.service';
+import { NutritionService } from '../../services/nutrition.service';
 import { computed } from '@angular/core';
 import { CalendarHeatmapComponent } from './components/calendar-heatmap/calendar-heatmap.component';
 import { TranslateModule } from '@ngx-translate/core';
-import { DashboardService } from '../services/dashboard.service';
+import { DashboardService } from '../../services/dashboard.service';
 
 
 @Component({
@@ -18,8 +18,8 @@ import { DashboardService } from '../services/dashboard.service';
 })
 export class DashboardComponent implements OnDestroy {
   private router = inject(Router);
-  public entrenamientoService = inject(EntrenamientoService);
-  public nutricionService = inject(NutricionService);
+  public trainingService = inject(TrainingService);
+  public nutritionService = inject(NutritionService);
   public dashboardService = inject(DashboardService);
 
   public quickActions = this.dashboardService.quickActions;
@@ -33,12 +33,12 @@ export class DashboardComponent implements OnDestroy {
   }
 
   navegar(ruta: string) {
-    if (ruta === '/nutricion') {
-      const gender = this.nutricionService.gender();
+    if (ruta === '/nutrition') {
+      const gender = this.nutritionService.gender();
       if (!gender) {
-      this.nutricionService.forceEditMode.set(true);
+      this.nutritionService.forceEditMode.set(true);
     } else {
-      this.nutricionService.forceEditMode.set(false);
+      this.nutritionService.forceEditMode.set(false);
     }
   }
     this.router.navigate([ruta]);
@@ -55,7 +55,7 @@ export class DashboardComponent implements OnDestroy {
       return;
     }
     if (item.label === 'DASHBOARD.REGISTER_WATER') {
-      this.nutricionService.addWater();
+      this.nutritionService.addWater();
       this.waterJustAdded.set(true);
       if (this.waterFlashTimer) clearTimeout(this.waterFlashTimer);
       this.waterFlashTimer = setTimeout(() => this.waterJustAdded.set(false), 1800);
@@ -72,7 +72,7 @@ export class DashboardComponent implements OnDestroy {
   }
 
   readonly welcomeKey = computed(() => {
-    const gender = this.nutricionService.gender();
+    const gender = this.nutritionService.gender();
 
     if (!gender) {
       return 'DASHBOARD.WELCOME_NEUTRAL';
@@ -93,13 +93,13 @@ export class DashboardComponent implements OnDestroy {
   }
 
   startWithExercise(exerciseName?: string) {
-    this.entrenamientoService.selectedExercise.set(exerciseName || null);
+    this.trainingService.selectedExercise.set(exerciseName || null);
     this.router.navigate(['/training']);
   }
 
   getWorkoutsThisWeek(): number {
     const oneWeekAgo = Date.now() - (7 * 24 * 60 * 60 * 1000);
-    return this.entrenamientoService.history().filter((w: any) => {
+    return this.trainingService.history().filter((w: any) => {
       const fecha = w.createdAt instanceof Date ? w.createdAt.getTime() : new Date(w.createdAt).getTime();
       return fecha >= oneWeekAgo;
     }).length;
