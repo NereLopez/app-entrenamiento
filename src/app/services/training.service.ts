@@ -18,7 +18,7 @@ export interface UserStats {
 }
 
 @Injectable({ providedIn: 'root' })
-export class EntrenamientoService {
+export class TrainingService {
   private firestore = inject(Firestore);
   private auth = inject(Auth);
   private injector = inject(Injector);

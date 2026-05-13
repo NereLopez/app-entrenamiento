@@ -1,8 +1,8 @@
 import { Injectable, signal, computed, inject, effect, Injector, runInInjectionContext } from '@angular/core';
 import { Firestore, collection, addDoc, collectionData, query, where, increment, doc, deleteDoc, getDoc, setDoc } from '@angular/fire/firestore';
-import { FoodEntry } from '../models/nutricion.model';
+import { FoodEntry } from '../models/nutrition.model';
 import { Auth, user } from '@angular/fire/auth';
-import { EntrenamientoService } from './entrenamiento.service';
+import { TrainingService } from './training.service';
 import { ToastController } from '@ionic/angular/standalone';
 import { Subscription } from 'rxjs';
 import { DashboardService } from './dashboard.service';
@@ -10,11 +10,11 @@ import { DashboardService } from './dashboard.service';
 @Injectable({
   providedIn: 'root'
 })
-export class NutricionService {
+export class NutritionService {
   private firestore = inject(Firestore);
   private auth = inject(Auth);
   private injector = inject(Injector);
-  private entrenamientoService = inject(EntrenamientoService);
+  private trainingService = inject(TrainingService);
   private toastController = inject(ToastController);
   private dashboardService = inject(DashboardService);
 
@@ -92,7 +92,7 @@ private async loadWaterFromFirebase(uid: string) {
       }
     });
     effect(() => {
-      const isWorkoutComplete = this.entrenamientoService.isWorkoutCompletedToday();
+      const isWorkoutComplete = this.trainingService.isWorkoutCompletedToday();
       if (isWorkoutComplete) {
         this.isWorkoutDay.set(true);
       }
@@ -202,7 +202,7 @@ const snap = await runInInjectionContext(this.injector, () => {
   });
 
   public caloriesBurnedToday = computed(() => {
-    const stats = this.entrenamientoService.statsSignal();
+    const stats = this.trainingService.statsSignal();
     return stats.caloriesBurnedToday || 0;
   });
   public netCalories = computed(() => {

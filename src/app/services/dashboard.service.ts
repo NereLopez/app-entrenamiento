@@ -26,8 +26,8 @@ export class DashboardService {
 
   // --- ACCIONES RÁPIDAS ---
   readonly quickActions = computed<QuickAction[]>(() => [
-    { label: 'DASHBOARD.MY_DIET', subLabel: 'DASHBOARD.MY_DIET', icon: 'bi-apple', route: '/nutricion' },
-    { label: 'DASHBOARD.REGISTER_WATER', subLabel: 'DASHBOARD.REGISTER_WATER', icon: 'bi-cup-straw', route: '/nutricion' },
+    { label: 'DASHBOARD.MY_DIET', subLabel: 'DASHBOARD.MY_DIET', icon: 'bi-apple', route: '/nutrition' },
+    { label: 'DASHBOARD.REGISTER_WATER', subLabel: 'DASHBOARD.REGISTER_WATER', icon: 'bi-cup-straw', route: '/nutrition' },
     { label: 'DASHBOARD.WATCHLOCKER', subLabel: 'DASHBOARD.WATCHLOCKER', icon: 'bi-stopwatch', route: '/training' },
     { label: 'DASHBOARD.NEW_SESSION', subLabel: 'DASHBOARD.NEW_SESSION', icon: 'bi-plus-square', route: '/training' }
   ]);

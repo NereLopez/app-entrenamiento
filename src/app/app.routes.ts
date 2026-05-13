@@ -1,9 +1,9 @@
 import { Routes } from '@angular/router';
-import { NuevaSesionComponent } from './nueva-sesion/nueva-sesion.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { HistorialComponent } from './historial/historial.component';
-import { LoginComponent } from './auth/login.component';
-import { NutricionComponent } from './nutricion/nutricion.component';
+import { TrainingSessionComponent } from './features/training-session/training-session.component';
+import { DashboardComponent } from './features/dashboard/dashboard.component';
+import { HistoryComponent } from './features/history/history.component';
+import { LoginComponent } from './auth/login/login.component';
+import { NutritionComponent } from './features/nutrition/nutrition.component';
 import { authGuard } from './auth/auth.guard';
 
 
@@ -14,15 +14,15 @@ export const routes: Routes = [
   canActivate: [authGuard]
 },
 { path: 'training', 
-  component: NuevaSesionComponent, 
+  component: TrainingSessionComponent, 
   canActivate: [authGuard]
 },
-{ path: 'nutricion', 
-  component: NutricionComponent, 
+{ path: 'nutrition', 
+  component: NutritionComponent, 
   canActivate: [authGuard]
 },
-{ path: 'historial', 
- component: HistorialComponent,
+{ path: 'history', 
+ component: HistoryComponent,
  canActivate: [authGuard]
 },
 { path: 'login', component: LoginComponent},
