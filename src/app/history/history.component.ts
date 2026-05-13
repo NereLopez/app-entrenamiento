@@ -9,13 +9,13 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 Chart.register(...registerables);
 
 @Component({
-  selector: 'app-historial',
+  selector: 'app-history',
   standalone: true,
   imports: [CommonModule, TranslateModule],
-  templateUrl: './historial.component.html',
-  styleUrls: ['./historial.component.css']
+  templateUrl: './history.component.html',
+  styleUrls: ['./history.component.css']
 })
-export class HistorialComponent {
+export class HistoryComponent {
   public entrenamientoService = inject(EntrenamientoService);
   private firestore = inject(Firestore);
   private auth = inject(Auth);
@@ -486,7 +486,6 @@ renderChart(data: any[]) {
   });  
 }
 
-    
 
   renderMuscleChart() {
     const ctx = this.muscleChart.nativeElement.getContext('2d');

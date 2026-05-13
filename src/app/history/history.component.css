@@ -1,3 +1,13 @@
+:host {
+  --dm-surface: #1e293b;
+  --dm-surface-2: #0f172a;
+  --dm-border: #334155;
+  --dm-text: #e2e8f0;
+  --dm-muted: #94a3b8;
+  --dm-subtext: #cbd5e1;
+  --dm-accent: #2dd4bf;
+}
+
 .pr-card {
   background: var(--main-gradient); 
   position: relative;
@@ -395,19 +405,14 @@
   .selected-day-actions {flex-wrap: wrap;}
 }
 
-:host-context(.dark-mode) .card,
-:host-context(.dark-mode) .calendar-panel,
-:host-context(.dark-mode) .selected-day-panel,
-:host-context(.dark-mode) .selected-exercise-card {
-  background: #1e293b !important;
-  border-color: #334155 !important;
+:host-context(.dark-mode) :is(.card, .calendar-panel, .selected-day-panel, .selected-exercise-card) {
+  background: var(--dm-surface) !important;
+  border-color: var(--dm-border) !important;
 }
 
-:host-context(.dark-mode) .card-header,
-:host-context(.dark-mode) .card-header.bg-white,
-:host-context(.dark-mode) .selected-day-header {
-  background: #1e293b !important;
-  border-color: #334155 !important;
+:host-context(.dark-mode) :is(.card-header, .card-header.bg-white, .selected-day-header) {
+  background: var(--dm-surface) !important;
+  border-color: var(--dm-border) !important;
 }
 
 :host-context(.dark-mode) .calendar-panel,
@@ -415,37 +420,31 @@
   box-shadow: 0 12px 26px rgba(2, 8, 23, 0.35);
 }
 
-:host-context(.dark-mode) h5,
-:host-context(.dark-mode) h6,
-:host-context(.dark-mode) .fw-bold,
-:host-context(.dark-mode) .day-number,
-:host-context(.dark-mode) .selected-day-volume,
-:host-context(.dark-mode) .selected-exercise-card .text-dark,
-:host-context(.dark-mode) .selected-exercise-card .fw-bold {
-  color: #e2e8f0 !important;
+:host-context(.dark-mode) :is(h5, h6, .fw-bold, .day-number, .selected-day-volume, .selected-exercise-card .text-dark, .selected-exercise-card .fw-bold) {
+  color: var(--dm-text) !important;
 }
 
-:host-context(.dark-mode) .selected-day-label,
-:host-context(.dark-mode) .calendar-weekdays,
-:host-context(.dark-mode) .text-muted,
-:host-context(.dark-mode) .history-subtitle {
-  color: #94a3b8 !important;
+:host-context(.dark-mode) :is(.selected-day-label, .calendar-weekdays, .text-muted, .history-subtitle) {
+  color: var(--dm-muted) !important;
 }
 
 :host-context(.dark-mode) .calendar-day {
-  background: #0f172a;
-  border-color: #334155;
+  background: var(--dm-surface-2);
+  border-color: var(--dm-border);
 }
 
-:host-context(.dark-mode) .calendar-nav,
+:host-context(.dark-mode) .calendar-nav {
+  background: var(--dm-surface-2);
+  border-color: var(--dm-border);
+}
+
 :host-context(.dark-mode) .calendar-nav-btn {
-  background: #0f172a;
-  border-color: #334155;
+  background: var(--dm-surface-2);
 }
 
 :host-context(.dark-mode) .calendar-title,
 :host-context(.dark-mode) .calendar-nav-btn {
-  color: #cbd5e1;
+  color: var(--dm-subtext);
 }
 
 :host-context(.dark-mode) .selected-day-volume {
@@ -453,13 +452,13 @@
 }
 
 :host-context(.dark-mode) .set-pill {
-  background: #0f172a !important;
-  color: #cbd5e1 !important;
-  border-color: #334155 !important;
+  background: var(--dm-surface-2) !important;
+  color: var(--dm-subtext) !important;
+  border-color: var(--dm-border) !important;
 }
 
 :host-context(.dark-mode) .exercise-kcal {
-  color: #2dd4bf;
+  color: var(--dm-accent);
 }
 
 :host-context(.dark-mode) .nutrition-check {
