@@ -231,7 +231,7 @@ export class NuevaSesionComponent implements OnInit, OnDestroy {
     if (this.isResting) this.stopRest();
 
     if (this.exercises.length === 0) return;
-    if (!confirm('¿Terminar sesión?')) return;
+    if (!confirm(this.translate.instant('EXERCISES.CONFIRM_FINISH'))) return;
 
     const sessionData = {
       title: this.workoutForm.value.title,

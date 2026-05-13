@@ -180,6 +180,7 @@
             "ACTIVE": "Sesión activa",
             "COMPLETED": "Sesión completada"
         },
+        "CONFIRM_FINISH": "¿Terminar sesión?",
         "TITLE": "Biblioteca de ejercicios",
         "TITLES": {
             "TODAY": "Entrenamiento de hoy"

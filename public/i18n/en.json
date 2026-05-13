@@ -177,6 +177,7 @@
             "ACTIVE": "ACTIVE SESSION",
             "COMPLETED": "COMPLETED SESSION"
         },
+        "CONFIRM_FINISH": "Finish session?",
         "TITLE": "Exercise Library",
         "TITLES": {
             "TODAY": "Today's Workout"
