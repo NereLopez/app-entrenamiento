@@ -300,6 +300,30 @@ export class HistoryComponent {
     return total;
   }
 
+  getSetDisplay(set: any): string {
+    const durationSeconds = Number(set?.durationSeconds) || 0;
+    if (durationSeconds > 0) {
+      const minutes = Math.floor(durationSeconds / 60);
+      const seconds = durationSeconds % 60;
+      if (minutes > 0 && seconds > 0) {
+        return `${minutes}m ${seconds}s`;
+      }
+      if (minutes > 0) {
+        return `${minutes}m`;
+      }
+      return `${seconds}s`;
+    }
+
+    const reps = Number(set?.reps || set?.repetitions) || 0;
+    const weight = Number(set?.weight) || 0;
+
+    if (weight > 0) {
+      return `${weight}kg x ${reps}`;
+    }
+
+    return `${reps} reps`;
+  }
+
   private getMetByIntensity(intensity: 'light' | 'moderate' | 'intense' = 'moderate'): number {
     const map: Record<'light' | 'moderate' | 'intense', number> = {
       light: 4.5,

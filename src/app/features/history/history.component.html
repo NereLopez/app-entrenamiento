@@ -179,7 +179,7 @@
                   <small class="exercise-kcal">🔥 {{ getExerciseCalories(ex) }} kcal</small>
                   @for (set of ex.sets; track $index) {
                     <span class="badge bg-white text-secondary border set-pill">
-                      {{ set.weight }}kg x {{ set.reps }}
+                      {{ getSetDisplay(set) }}
                     </span>
                   }
                 </div>
