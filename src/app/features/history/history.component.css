@@ -160,7 +160,7 @@
 
 .calendar-weekdays {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
+  grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: 10px;
   margin-bottom: 12px;
   color: #64748b;
@@ -174,12 +174,13 @@
 
 .calendar-grid {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
+  grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: 10px;
 }
 
 .calendar-day {
   min-height: 78px;
+  min-width: 0;
   border: 1px solid #e2e8f0;
   border-radius: 18px;
   background: #f8fafc;
@@ -227,7 +228,9 @@
   min-height: 22px;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
+  max-width: 100%;
 }
 
 .day-dot {
@@ -239,8 +242,11 @@
 
 .muscle-dots {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   align-items: center;
   gap: 4px;
+  max-width: 26px;
 }
 
 .muscle-dot {
@@ -398,7 +404,38 @@
 
   .calendar-grid,.calendar-weekdays { gap: 6px;}
 
-  .calendar-day {min-height: 64px;padding: 8px 4px; border-radius: 14px;}
+  .calendar-panel { padding: 14px; }
+
+  .calendar-day {
+    min-height: 72px;
+    padding: 6px 2px;
+    border-radius: 12px;
+    gap: 2px;
+  }
+
+  .day-number { font-size: 0.92rem; }
+
+  .calendar-markers {
+    flex-direction: column;
+    gap: 2px;
+    min-height: 16px;
+  }
+
+  .muscle-dots {
+    max-width: 18px;
+    gap: 2px;
+  }
+
+  .muscle-dot {
+    width: 5px;
+    height: 5px;
+  }
+
+  .nutrition-check {
+    width: 14px;
+    height: 14px;
+    font-size: 0.56rem;
+  }
 
   .day-volume {font-size: 0.6rem;}
 
