@@ -34,10 +34,16 @@
   font-weight: 500;
 }
 
-.btn-light:hover {
+.btn-group .btn-light:not(.active):hover {
   background-color: var(--soft-teal-bg) !important;
   color: var(--primary-teal) !important; 
   transform: translateY(-1px);
+}
+
+:host-context(.dark-mode) .btn-group .btn-light:not(.active):hover {
+  background-color: white !important;
+  color: var(--primary-teal) !important;
+  transform: none;
 }
 
 .workout-master-brand {
