@@ -189,22 +189,52 @@ export class TrainingService {
     return metByIntensity[intensity] ?? 6.0;
   }
 
-  private getWorkoutCalories(workoutExercises: any[], intensity: 'light' | 'moderate' | 'intense', weightKg: number): number {
-    let totalSets = 0;
-    workoutExercises.forEach(exercise => {
-      exercise.sets?.forEach(() => {
-        totalSets += 1;
-      });
+ private getWorkoutCalories(workoutExercises: any[], intensity: 'light' | 'moderate' | 'intense', weightKg: number): number {
+  let totalSets = 0;
+  let totalMinutes = 0;
+  let totalReps = 0;
+  let totalWeightVolume = 0;
+  
+  workoutExercises.forEach(exercise => {
+    exercise.sets?.forEach((set: any) => {
+      totalSets += 1;
+      
+      const reps = Number(set.reps || set.repetitions) || 0;
+      const weight = Number(set.weight) || 0;
+      const durationSeconds = Number(set.durationSeconds) || 0;
+      
+      totalReps += reps;
+      totalWeightVolume += weight * reps;
+      
+      if (durationSeconds > 0) {
+        totalMinutes += durationSeconds / 60;
+      }
     });
+  });
 
-    if (totalSets === 0) {
-      return 0;
-    }
-
-    const estimatedMinutes = Math.max(15, Math.round(totalSets * 2.2));
-    const met = this.getMetByIntensity(intensity);
-    return Math.round(((met * 3.5 * weightKg) / 200) * estimatedMinutes);
+  if (totalSets === 0) {
+    return 0;
   }
+
+  // Use actual duration if available, otherwise estimate from sets
+  const estimatedMinutes = totalMinutes > 0 
+    ? Math.max(5, Math.round(totalMinutes)) 
+    : Math.max(15, Math.round(totalSets * 2.2));
+  
+  const met = this.getMetByIntensity(intensity);
+  
+  // Base calculation from duration and MET
+  let caloriesBurned = Math.round(((met * 3.5 * weightKg) / 200) * estimatedMinutes);
+  
+  // Adjust for actual reps and weight volume if available
+  if (totalReps > 0 && totalWeightVolume > 0) {
+    // Factor in intensity of weight lifted (relative to body weight)
+    const volumeIntensityFactor = Math.min(2, (totalWeightVolume / (weightKg * 100)) + 1);
+    caloriesBurned = Math.round(caloriesBurned * volumeIntensityFactor);
+  }
+  
+  return caloriesBurned;
+}
 
   private async syncCaloriesBurnedToday(userId: string, workoutsData?: any[]) {
     if (this.auth.currentUser?.uid !== userId) {
