@@ -167,7 +167,10 @@ export class DashboardService {
     this.watchlockerTimer = setInterval(() => {
       const next = this.watchlockerRemaining() - 1;
       this.watchlockerRemaining.set(next);
-      if (next === 3) this.playBeep(880, 0.2);
+      // Play beep at every second from 5 down to 0
+      if (next <= 5 && next >= 0) {
+        this.playBeep(880, 0.2);
+      }
       if (next <= 0) {
         this.stopWatchlockerCountdown();
         this.playBeep(1200, 0.35);
