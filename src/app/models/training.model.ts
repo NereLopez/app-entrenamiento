@@ -1,14 +1,17 @@
 
+export type ExerciseType = 'weight' | 'bodyweight' | 'time';
 
 export interface Set {
-    weight: number;
-    reps: number;
-    completed: boolean;
+    weight?: number;
+    reps?: number;
+    durationSeconds?: number;
+    completed?: boolean;
 }
 
 export interface Exercise {
     name: string;
     muscleGroup: 'Chest' | 'Back' | 'Legs' | 'Shoulders' | 'Arms' | 'Core';
+    exerciseType?: ExerciseType;
     sets: Set[];
     notes?: string;
 }
@@ -32,4 +35,6 @@ export interface UserStats {
   personalRecords: {
     [exerciseId: string]: number; 
   };
+
 }
+
