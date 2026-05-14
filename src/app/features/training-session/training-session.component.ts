@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { TrainingService } from '../../services/training.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { TranslateService } from '@ngx-translate/core';
+import { ExerciseType } from '../../models/training.model';
 
 @Component({
   selector: 'app-training-session',
@@ -35,13 +36,13 @@ export class TrainingSessionComponent implements OnInit, OnDestroy {
   private audioContext: AudioContext | null = null;
   
 
-  public exerciseLibrary = [
-    { muscle: 'Chest', exercises: ['Bench Press', 'Push-ups', 'Chest Flys'] },
-    { muscle: 'Back', exercises: ['Deadlift', 'Pull-ups', 'Rows'] },
-    { muscle: 'Legs', exercises: ['Squat', 'Lunge', 'Step-ups'] },
-    { muscle: 'Shoulders', exercises: ['Military Press', 'Lateral Raise', 'Upright Row'] },
-    { muscle: 'Arms', exercises: ['Bicep Curl', 'Tricep Extension', 'Hammer Curl'] },
-    { muscle: 'Core', exercises: ['Plank', 'Crunches', 'Russian Twist'] }
+  public exerciseLibrary: Array<{ muscle: string; exercises: Array<{ name: string; type: ExerciseType }> }> = [
+    { muscle: 'Chest', exercises: [{name: 'Bench Press', type: 'weight'}, {name: 'Push-ups', type: 'bodyweight'}, {name: 'Chest Flys', type: 'weight'} ] },
+    { muscle: 'Back', exercises: [{name: 'Deadlift', type: 'weight'}, {name: 'Pull-ups', type: 'bodyweight'}, {name: 'Rows', type: 'weight'}] },
+    { muscle: 'Legs', exercises: [{name: 'Squat', type: 'weight'}, {name: 'Lunge', type: 'bodyweight'}, {name: 'Step-ups', type: 'bodyweight'}] },
+    { muscle: 'Shoulders', exercises: [{name: 'Military Press', type: 'weight'}, {name: 'Lateral Raise', type: 'weight'}, {name: 'Upright Row', type: 'weight'}] },
+    { muscle: 'Arms', exercises: [{name: 'Bicep Curl', type: 'weight'}, {name: 'Tricep Extension', type: 'weight'}, {name: 'Hammer Curl', type: 'weight'}] },
+    { muscle: 'Core', exercises: [{name: 'Plank', type: 'time'}, {name: 'Crunches', type: 'bodyweight'}, {name: 'Russian Twist', type: 'bodyweight'}] }
   ];
 
   constructor() {
@@ -125,7 +126,43 @@ export class TrainingSessionComponent implements OnInit, OnDestroy {
     this.workoutForm.patchValue({ intensity: level });
   }
 
-  addExercise(name: string, group: string = 'Default') {
+  private inferExerciseType(name: string, group: string): ExerciseType {
+    const lowerName = name.toLowerCase();
+
+    if (
+      lowerName.includes('plank') ||
+      lowerName.includes('plancha') ||
+      lowerName.includes('wall sit') ||
+      lowerName.includes('hold') ||
+      lowerName.includes('isometric')
+    ) {
+      return 'time';
+    }
+
+    if (
+      lowerName.includes('push-up') ||
+      lowerName.includes('push up') ||
+      lowerName.includes('flexion') ||
+      lowerName.includes('dominada') ||
+      lowerName.includes('pull-up') ||
+      lowerName.includes('pull up') ||
+      lowerName.includes('crunch') ||
+      lowerName.includes('abdominal') ||
+      lowerName.includes('burpee') ||
+      lowerName.includes('mountain climber') ||
+      lowerName.includes('russian twist')
+    ) {
+      return 'bodyweight';
+    }
+
+    if (group.toLowerCase() === 'core') {
+      return 'bodyweight';
+    }
+
+    return 'weight';
+  }
+
+  addExercise(name: string, group: string = 'Default', type?: ExerciseType) {
     if (!name) return;
     /*let autoGroup = group;*/
 
@@ -148,9 +185,12 @@ export class TrainingSessionComponent implements OnInit, OnDestroy {
   }
 }
 
+    const resolvedType = type ?? this.inferExerciseType(name, finalGroup);
+
     const exerciseGroup = this.fb.group({
       name: [name, Validators.required],
       muscleGroup: [finalGroup],
+      exerciseType: [resolvedType],
       sets: this.fb.array([])
     });
 
@@ -164,19 +204,39 @@ export class TrainingSessionComponent implements OnInit, OnDestroy {
     return translated === key ? name : translated;
   }
 
-  addSet(index: number, weight: any, reps: any) {
-    const w = parseFloat(weight) || 0;
-    const r = parseInt(reps) || 0;
-    
-    if (r > 0) {
-      this.getSets(index).push(this.fb.group({
-        weight: [w],
-        reps: [r]
-      }));
-      // Lanzamos el cronómetro automáticamente al añadir la serie
-      this.startRest(60);
-    }
+addSet(index: number) {
+  // 1. Obtenemos el grupo del ejercicio para saber su tipo
+  const exerciseGroup = this.exercises.at(index);
+  const type = exerciseGroup.get('exerciseType')?.value || 'weight';
+  
+  let setGroup: FormGroup;
+
+  // 2. Creamos el grupo de la serie según el tipo
+  if (type === 'time') {
+    setGroup = this.fb.group({
+      durationSeconds: [null, [Validators.required, Validators.min(1)]],
+      completed: [false]
+    });
+  } else if (type === 'bodyweight') {
+    setGroup = this.fb.group({
+      reps: [null, [Validators.required, Validators.min(1)]],
+      completed: [false]
+    });
+  } else {
+    // Por defecto: weight
+    setGroup = this.fb.group({
+      weight: [null, [Validators.required, Validators.min(0)]],
+      reps: [null, [Validators.required, Validators.min(1)]],
+      completed: [false]
+    });
   }
+
+  // 3. Lo añadimos al FormArray de ese ejercicio
+  this.getSets(index).push(setGroup);
+  
+  // 4. Lanzamos el cronómetro
+  this.startRest(60);
+}
 
   startRest(seconds: number) {
     this.isResting = true;

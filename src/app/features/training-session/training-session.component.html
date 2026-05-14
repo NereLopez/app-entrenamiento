@@ -62,10 +62,10 @@
             <div class="d-flex flex-wrap gap-2">
            @for (ex of group.exercises; track ex) {
                 <button type="button" 
-                  (click)="addExercise(ex, group.muscle)"
+                  (click)="addExercise(ex.name, group.muscle, ex.type)"
                   class="btn btn-sm border-0 shadow-sm library-exercise-btn"
                   [style.backgroundColor]="getGroupColor(group.muscle)">
-                  {{ 'EXERCISES.NAMES.' + ex.replace(' ', '_').toUpperCase() | translate }}
+                  {{ 'EXERCISES.NAMES.' + ex.name.replace(' ', '_').toUpperCase() | translate }}
                 </button>
               }
             </div>
@@ -138,16 +138,11 @@
 
           <div class="card-body exercise-card-body pt-0">
             <div class="d-flex gap-2 mb-3 p-3 rounded-4 set-input-panel">
-              <div class="input-group input-group-sm">
-                <span class="input-group-text border-0 bg-white">{{ 'EXERCISES.METRICS.KG' | translate }}</span>
-                <input #wInput type="number" class="form-control border-0" placeholder="0">
-              </div>
-              <div class="input-group input-group-sm">
-                <span class="input-group-text border-0 bg-white">{{ 'EXERCISES.METRICS.REPS' | translate }}</span>
-                <input #rInput type="number" class="form-control border-0" placeholder="0">
-              </div>
+              <span class="small text-muted d-flex align-items-center">
+                Type: {{ ej.get('exerciseType')?.value || 'weight' }}
+              </span>
               <button type="button" 
-                      (click)="addSet(i, wInput.value, rInput.value); wInput.value=''; rInput.value=''" 
+                      (click)="addSet(i)" 
                       class="btn btn-success btn-sm px-3 rounded-3 shadow-sm fw-bold">
                 + {{ 'EXERCISES.BUTTONS.SET' | translate }}
               </button>
@@ -159,7 +154,26 @@
                      [style.border-color]="getGroupColor(ej.get('muscleGroup')?.value)">
                   <div class="d-flex align-items-center gap-3">
                     <span class="small fw-bold set-label">{{ 'EXERCISES.LABELS.SET_LABEL' | translate }} {{ j + 1 }}</span>
-                    <span class="fw-bold set-values">{{ set.get('weight')?.value }}{{ 'EXERCISES.METRICS.KG' | translate }} x {{ set.get('reps')?.value }}{{ 'EXERCISES.METRICS.REPS' | translate }}</span>
+                    @if (ej.get('exerciseType')?.value === 'time') {
+                      <div class="input-group input-group-sm">
+                        <span class="input-group-text border-0 bg-white">s</span>
+                        <input type="number" formControlName="durationSeconds" class="form-control border-0" placeholder="">
+                      </div>
+                    } @else if (ej.get('exerciseType')?.value === 'bodyweight') {
+                      <div class="input-group input-group-sm">
+                        <span class="input-group-text border-0 bg-white">{{ 'EXERCISES.METRICS.REPS' | translate }}</span>
+                        <input type="number" formControlName="reps" class="form-control border-0" placeholder="">
+                      </div>
+                    } @else {
+                      <div class="input-group input-group-sm">
+                        <span class="input-group-text border-0 bg-white">{{ 'EXERCISES.METRICS.KG' | translate }}</span>
+                        <input type="number" formControlName="weight" class="form-control border-0" placeholder="">
+                      </div>
+                      <div class="input-group input-group-sm">
+                        <span class="input-group-text border-0 bg-white">{{ 'EXERCISES.METRICS.REPS' | translate }}</span>
+                        <input type="number" formControlName="reps" class="form-control border-0" placeholder="">
+                      </div>
+                    }
                   </div>
                   <button type="button" (click)="getSets(i).removeAt(j)" class="btn btn-sm border-0 set-history-remove">
                     <i class="bi bi-x"></i>
