@@ -60,12 +60,41 @@ export class CalendarHeatmapComponent implements OnInit {
    readonly weeklyActivity = computed(() => {
     this.activityVersion(); // Dependencia para forzar actualización
     this.languageVersion(); // Dependencia para relocalizar etiquetas al cambiar idioma
+    this.trainingService.history(); // Recompute when workout history changes
   const targetWeek = this.getWeekNumber(new Date()) + this.weekOffset();
   const year = new Date().getFullYear();
   const storageKey = `progress-${this.userKey()}-${year}-week-${targetWeek}`;
   const savedData = localStorage.getItem(storageKey);
-  const baseData = savedData ? JSON.parse(savedData) as DayActivity[] : this.generateInitialActivity();
-  return this.withLocalizedLabels(baseData);
+    const baseData = savedData ? JSON.parse(savedData) as DayActivity[] : this.generateInitialActivity();
+
+    const merged = this.withLocalizedLabels(baseData).map(day => ({
+      ...day,
+      workout: { ...day.workout },
+      nutrition: { ...day.nutrition }
+    }));
+
+    const weekRange = this.getWeekRangeFromOffset(this.weekOffset());
+    this.trainingService.history().forEach((workout: any) => {
+      const dateValue = Number(workout?.createdAt);
+      if (!Number.isFinite(dateValue)) {
+        return;
+      }
+
+      const workoutDate = new Date(dateValue);
+      if (workoutDate < weekRange.monday || workoutDate > weekRange.sundayEnd) {
+        return;
+      }
+
+      const dayIndex = this.getMondayBasedDayIndex(workoutDate);
+      if (dayIndex < 0 || dayIndex > 6 || !merged[dayIndex]) {
+        return;
+      }
+
+      merged[dayIndex].workout.completed = true;
+      merged[dayIndex].workout.intensity = 3;
+    });
+
+    return merged;
 });
 
 readonly totalWorkoutProgress = computed(() => {
@@ -163,6 +192,26 @@ private generateInitialActivity(): DayActivity[] {
       });
     }
     return days;
+  }
+
+  private getWeekRangeFromOffset(offset: number): { monday: Date; sundayEnd: Date } {
+    const today = new Date();
+    const day = today.getDay();
+    const mondayDiff = day === 0 ? -6 : 1 - day;
+    const monday = new Date(today);
+    monday.setHours(0, 0, 0, 0);
+    monday.setDate(monday.getDate() + mondayDiff + offset * 7);
+
+    const sundayEnd = new Date(monday);
+    sundayEnd.setDate(monday.getDate() + 6);
+    sundayEnd.setHours(23, 59, 59, 999);
+
+    return { monday, sundayEnd };
+  }
+
+  private getMondayBasedDayIndex(date: Date): number {
+    const day = date.getDay();
+    return day === 0 ? 6 : day - 1;
   }
 
   private withLocalizedLabels(data: DayActivity[]): DayActivity[] {
