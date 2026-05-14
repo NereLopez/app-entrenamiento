@@ -225,11 +225,12 @@
 .day-number {font-weight: 800;color: #1e293b;}
 
 .calendar-markers {
-  min-height: 22px;
+  min-height: 16px;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: 2px;
   max-width: 100%;
 }
 
@@ -241,24 +242,25 @@
 }
 
 .muscle-dots {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  gap: 4px;
-  max-width: 26px;
+  display: grid;
+  grid-template-columns: repeat(2, 5px);
+  grid-auto-rows: 5px;
+  place-content: center;
+  gap: 2px;
+  min-height: 12px;
+  min-width: 12px;
 }
 
 .muscle-dot {
-  width: 7px;
-  height: 7px;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
   box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.8);
 }
 
 .nutrition-check {
-  width: 20px;
-  height: 20px;
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
   display: inline-flex;
   align-items: center;
@@ -266,7 +268,7 @@
   background: #dcfce7;
   border: 1px solid #6ee7b7;
   color: #047857;
-  font-size: 0.78rem;
+  font-size: 0.56rem;
 }
 
 .nutrition-status-pill {
@@ -415,27 +417,7 @@
 
   .day-number { font-size: 0.92rem; }
 
-  .calendar-markers {
-    flex-direction: column;
-    gap: 2px;
-    min-height: 16px;
-  }
-
-  .muscle-dots {
-    max-width: 18px;
-    gap: 2px;
-  }
-
-  .muscle-dot {
-    width: 5px;
-    height: 5px;
-  }
-
-  .nutrition-check {
-    width: 14px;
-    height: 14px;
-    font-size: 0.56rem;
-  }
+  .calendar-markers { min-height: 16px; }
 
   .day-volume {font-size: 0.6rem;}
 
