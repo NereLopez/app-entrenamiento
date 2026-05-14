@@ -8,6 +8,10 @@
   overflow: hidden;
 }
 
+.calendar-card {
+  border: 1px solid rgba(15, 23, 42, 0.08);
+}
+
 .day-label.is-today {
   color: var(--primary-teal) !important;
   opacity: 1 !important;
@@ -139,7 +143,8 @@
 }
 
 .motivation-message {
-  margin: 0;
+  margin-bottom: 0.25rem !important;
+  margin-top: 0 !important;
   font-size: 0.68rem;
   font-weight: 700;
   color: var(--primary-teal);
@@ -172,6 +177,29 @@
 
 :host-context(.dark-mode) .day-box:hover {
   filter: brightness(1.15);
+}
+
+:host-context(.dark-mode) .calendar-card {
+  background: #1e293b !important;
+  border-color: #334155 !important;
+  box-shadow: 0 12px 24px rgba(2, 8, 23, 0.35) !important;
+}
+
+:host-context(.dark-mode) h6.text-secondary {
+  color: #cbd5e1 !important;
+}
+
+:host-context(.dark-mode) .day-label {
+  color: #94a3b8 !important;
+}
+
+:host-context(.dark-mode) .rings-summary-container {
+  border-left-color: #475569;
+}
+
+:host-context(.dark-mode) .circle-bg,
+:host-context(.dark-mode) .circle-bg.inner {
+  stroke: #0f172a;
 }
 
 /* Workout intensity scale (dark mode) */

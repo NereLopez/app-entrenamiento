@@ -44,8 +44,9 @@
         "WORKOUT_SESSION": "Sesión de entrenamiento",
         "START": "¡Comenzar!",
         "STOP": "¡Detener!",
-        "TRAINING_TIME_LABEL": "Tiempo de entreno"
-       
+        "TRAINING_TIME_LABEL": "Tiempo de entreno",
+       "TOTAL_PROGRESS": "Progreso total",
+       "LIFETIME_POINTS": "Puntos totales"
 
     },
     "LEVELS": {

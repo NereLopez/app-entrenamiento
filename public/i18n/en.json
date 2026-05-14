@@ -43,7 +43,9 @@
         "LAST_EXERCISE": "Last Exercise",
         "WORKOUT_SESSION": "Workout Session",
         "START": "Start !",
-        "STOP": "Stop !"
+        "STOP": "Stop !",
+        "TOTAL_PROGRESS": "Total Progress",
+        "LIFETIME_POINTS": "Lifetime Points"
     },
     "LEVELS": {
         "BEGINNER": "Beginner",

@@ -1,39 +1,30 @@
-<div class="user-card d-flex align-items-center p-3 mb-4 shadow-sm rounded-4 dashboard-user-card border bg-white text-dark">
+<div class="user-card p-3 p-md-4 mb-4 shadow-sm rounded-4 dashboard-user-card border bg-white text-dark">
   
-  <div class="me-3 d-flex flex-column align-items-center justify-content-center flex-shrink-0 position-relative" 
-       style="gap: 0.5rem;">
-      <div (click)="dashboardService.isSessionRunning() ? dashboardService.stopSession() : dashboardService.startSession()"
-         style="width: 80px; height: 80px; border-radius: 50%; border: 3px solid #0d9488; cursor: pointer; transition: all 0.3s ease; background: rgba(13, 148, 136, 0.05); display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative;">
-      
-      <span class="fw-bold" style="font-size: 0.9rem; line-height: 1; margin-top: -4px;">
-        {{ dashboardService.displayTime() }}
-      </span>
-
-      <i class="bi" 
-        [ngClass]="dashboardService.isSessionRunning() ? 'bi-stop-fill text-danger' : 'bi-play-fill text-success'"
-         style="font-size: 1.2rem; position: absolute; bottom: 2px;"></i>
-    </div>
+  <div class="row align-items-center g-3 text-center">
     
-    <small class="fw-medium" style="font-size: 0.75rem; text-align: center; line-height: 1.3; white-space: normal; margin-top: 0.25rem; color: currentColor; opacity: 0.85;">{{ 'DASHBOARD.TODAY_SESSION' | translate }}</small>
-  </div>
+    <div class="col-12 col-md-4 text-md-start">
+      <h3 class="fw-bold mb-0" style="letter-spacing: -0.5px;">
+        {{ welcomeKey() | translate:{ name: trainingService.userName() } }}
+      </h3>
+    </div>
 
-  <div class="flex-grow-1">
-    <h5 class="fw-bold mb-1">
-      {{ welcomeKey() | translate:{ name: trainingService.userName() } }}
-    </h5>
-
-    <div class="d-flex align-items-center gap-2 flex-wrap">
-      <span class="badge level-badge" [style.--xp-fill]="trainingService.xpProgress() + '%'">
-        <i class="bi bi-lightning-fill me-1"></i> {{ trainingService.userLevel() | translate }}
-      </span>
-      <small class="xp-badge fw-medium d-flex align-items-center">
-        <i class="bi bi-star-fill me-1 text-warning"></i>
-        {{ trainingService.statsSignal().experiencePoints }} XP
+    <div class="col-12 col-md-4">
+      <div (click)="dashboardService.isSessionRunning() ? dashboardService.stopSession() : dashboardService.startSession()"
+           class="mx-auto"
+           style="width: 75px; height: 75px; border-radius: 50%; border: 3px solid #0d9488; cursor: pointer; background: rgba(13, 148, 136, 0.05); display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative;">
+        <span class="fw-bold" style="font-size: 0.85rem;">{{ dashboardService.displayTime() }}</span>
+        <i class="bi" [ngClass]="dashboardService.isSessionRunning() ? 'bi-stop-fill text-danger' : 'bi-play-fill text-success'" style="position: absolute; bottom: 5px;"></i>
+      </div>
+      <small class="text-muted fw-medium d-block mt-1" style="font-size: 0.65rem;">
+        {{ 'DASHBOARD.TODAY_SESSION' | translate }}
       </small>
     </div>
-  </div>
 
-  <app-calendar-heatmap class="dashboard-heatmap"></app-calendar-heatmap>
+    <div class="col-12 col-md-4 d-flex justify-content-center justify-content-md-end">
+      <app-calendar-heatmap class="dashboard-heatmap"></app-calendar-heatmap>
+    </div>
+
+  </div>
 </div>
 
 <div class="mb-5">
@@ -74,12 +65,27 @@
     </div>
   </div>
   <div class="col-md-6">
-    <div class="stat-card stat-card-compact p-3 shadow-sm border-0 rounded-4 bg-white">
-      <h6 class="text-muted text-uppercase fw-bold stat-card-label">{{ 'DASHBOARD.TOTAL_VOLUME' | translate }}</h6>
-      <h3 class="fw-bold mb-0 stat-card-value">
-        {{ trainingService.totalVolume() | number }} <small class="fs-6">kg</small></h3>
-      <p class="stat-card-subtitle text-primary mb-0">{{ 'DASHBOARD.LIFETIME' | translate }}</p>
+  <div class="stat-card stat-card-compact p-3 shadow-sm border-0 rounded-4 bg-white h-100">
+    
+    <div class="d-flex justify-content-between align-items-start mb-2">
+      <h6 class="text-muted text-uppercase fw-bold stat-card-label mb-0" style="font-size: 0.7rem;">
+        {{ 'DASHBOARD.TOTAL_PROGRESS' | translate }}
+      </h6>
+      
+      <span class="badge level-badge" [style.--xp-fill]="trainingService.xpProgress() + '%'" style="font-size: 0.65rem;">
+        <i class="bi bi-lightning-fill me-1"></i> {{ trainingService.userLevel() | translate }}
+      </span>
     </div>
+
+    <h3 class="fw-bold mb-0 stat-card-value">
+      <i class="bi bi-lightning-charge-fill text-warning me-1"></i>
+      {{ trainingService.statsSignal().experiencePoints | number }} 
+      <small class="fs-6 text-muted">XP</small>
+    </h3>
+    
+    <p class="text-primary small mb-0 mt-1" style="font-size: 0.75rem;">
+      {{ 'DASHBOARD.LIFETIME_POINTS' | translate }}
+    </p>
   </div>
 </div>
 
