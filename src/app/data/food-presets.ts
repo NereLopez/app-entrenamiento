@@ -8,7 +8,7 @@ export const FOOD_PRESETS: FoodPreset[] = [
     { name: 'NUTRITION.PRESET.Avocado Toast', calories: 290, protein: 8, carbs: 28, fats: 16, type: 'breakfast' },
     { name: 'NUTRITION.PRESET.Smoothie Bowl', calories: 350, protein: 20, carbs: 40, fats: 8, type: 'breakfast' },
     { name: 'NUTRITION.PRESET.Coffee + Milk', calories: 30, protein: 1, carbs: 3, fats: 1, type: 'breakfast' },
-    { name: 'NUTRITION.PRESET.Green Tea', calories: 0, protein: 0, carbs: 0, fats: 0, type: 'breakfast' },
+    { name: 'NUTRITION.PRESET.Bagel + Cream Cheese', calories: 270, protein: 9, carbs: 45, fats: 5, type: 'breakfast' },
 
     { name: 'NUTRITION.PRESET.Grilled Chicken Salad', calories: 450, protein: 40, carbs: 20, fats: 15, type: 'lunch' },
     { name: 'NUTRITION.PRESET.Turkey Sandwich', calories: 390, protein: 29, carbs: 36, fats: 12, type: 'lunch' },
