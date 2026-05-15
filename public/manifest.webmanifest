@@ -1,9 +1,9 @@
 {
-  "name": "app-entrenamiento",
-  "short_name": "app-entrenamiento",
+  "name": "Kinetic Training App",
+  "short_name": "KineticApp",
   "display": "standalone",
   "scope": "./",
-  "start_url": "./",
+  "start_url": "/index.html",
   "icons": [
     {
       "src": "icons/icon-72x72.png",
