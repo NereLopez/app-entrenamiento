@@ -45,8 +45,8 @@
 
 Para disfrutar de la experiencia completa en tu smartphone:
 1. Escanea el **Código QR** presente en el Dashboard.
-2. En iPhone: Pulsa **"Compartir"** y selecciona **"Añadir a la pantalla de inicio"**.
-3. En Android: Pulsa en el banner **"Instalar aplicación"** que aparecerá automáticamente.
+2. En iPhone (Safari): Pulsa **"Compartir"** y selecciona **"Añadir a la pantalla de inicio"**.
+3. En Android (Chrome): Pulsa en el banner **"Instalar aplicación"** que aparecerá automáticamente.
 
 ---
 
