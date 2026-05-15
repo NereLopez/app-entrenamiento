@@ -128,15 +128,15 @@ export class TrainingService {
 
   
   async signUp(email: string, pass: string) {
-    return createUserWithEmailAndPassword(this.auth, email, pass);
+    return runInInjectionContext(this.injector, () => createUserWithEmailAndPassword(this.auth, email, pass));
   }
 
   async login(email: string, pass: string) {
-    return signInWithEmailAndPassword(this.auth, email, pass);
+    return runInInjectionContext(this.injector, () => signInWithEmailAndPassword(this.auth, email, pass));
   }
 
   logout() {
-    return signOut(this.auth);
+    return runInInjectionContext(this.injector, () => signOut(this.auth));
   }
 
   

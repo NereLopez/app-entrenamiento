@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, runInInjectionContext, Injector } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TrainingService } from '../../services/training.service';
@@ -20,10 +20,13 @@ export class LoginComponent implements OnInit {
   private auth = inject(Auth);
   private trainingService = inject(TrainingService);
   private router = inject(Router);
+  private injector = inject(Injector);
 
   ngOnInit() {
-    authState(this.auth).pipe(take(1)).subscribe(user => {
-      if (user) this.router.navigate(['/dashboard']);
+    runInInjectionContext(this.injector, () => {
+      authState(this.auth).pipe(take(1)).subscribe(user => {
+        if (user) this.router.navigate(['/dashboard']);
+      });
     });
   }
 
