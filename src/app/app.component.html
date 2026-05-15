@@ -28,7 +28,9 @@
       </div>
        <button (click)="toogleDarkMode()" class="btn-theme-pill">
         <i [class]="darkMode() ? 'bi bi-sun-fill' : 'bi bi-moon-fill'"></i>
+        <span class="d-none d-sm-inline">
         {{ darkMode() ? ('APP.LIGHT_MODE' | translate) : ('APP.DARK_MODE' | translate) }}
+        </span>
       </button>
       <button (click)="trainingService.logout()" class="btn btn-sm btn-outline-danger border-0">
         <i class="bi bi-box-arrow-right fs-5"></i>

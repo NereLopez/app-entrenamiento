@@ -7,6 +7,7 @@ import { computed } from '@angular/core';
 import { CalendarHeatmapComponent } from './components/calendar-heatmap/calendar-heatmap.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { DashboardService } from '../../services/dashboard.service';
+import { AuthService } from '../../services/auth.service';
 
 
 @Component({
@@ -21,7 +22,7 @@ export class DashboardComponent implements OnDestroy {
   public trainingService = inject(TrainingService);
   public nutritionService = inject(NutritionService);
   public dashboardService = inject(DashboardService);
-
+  public authService = inject(AuthService);
   public quickActions = this.dashboardService.quickActions;
   public waterJustAdded = signal(false);
   public periodMode = signal<'week' | 'month'>('week');
@@ -32,6 +33,9 @@ export class DashboardComponent implements OnDestroy {
     this.dashboardService.loadMonthlyStats();
   }
 
+  navigateToWorkout() {
+    this.router.navigate(['/training']);
+  }
   navegar(ruta: string) {
     if (ruta === '/nutrition') {
       const gender = this.nutritionService.gender();

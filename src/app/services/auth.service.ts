@@ -79,5 +79,33 @@ private fetchHistory(userId: string) {
       console.error('Error saving workout:', error);
       return false;
     }
+    
+  }
+  // --- LÓGICA DE PÉRDIDA DE XP ---
+
+  getXPDecay(): number {
+    const list = this.history();
+    if (!list || list.length === 0) return 0;
+
+    const sorted = [...list].sort((a, b) => b.createdAt - a.createdAt);
+    const lastWorkout = sorted[0].createdAt; 
+    
+    const hoy = Date.now();
+    const unDiaMs = 24 * 60 * 60 * 1000;
+    const diasInactivo = Math.floor((hoy - lastWorkout) / unDiaMs);
+
+ 
+    if (diasInactivo > 4) {
+      return (diasInactivo - 4) * 25;
+    }
+    return 0;
+  }
+
+  getDaysInactive(): number {
+    const list = this.history();
+    if (list.length === 0) return 0;
+    const sorted = [...list].sort((a, b) => b.createdAt - a.createdAt);
+    const dias = Math.floor((Date.now() - sorted[0].createdAt) / (24 * 60 * 60 * 1000));
+    return dias;
   }
 }

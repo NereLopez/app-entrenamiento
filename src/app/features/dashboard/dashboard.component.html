@@ -8,6 +8,31 @@
       </h3>
     </div>
 
+    <div *ngIf="authService.getXPDecay() > 0"
+  class="col-12"
+  style="border-left: 4px solid #ff9800; border-radius: 8px; margin: 10px 0;">
+  <div class="p-3 d-flex align-items-center justify-content-between rounded-3 border">
+    <div class="d-flex align-items-center gap-3">
+      <span style="color: #ff9800; font-size: 1.2rem;">⏳</span>
+      <div>
+       <p class="mb-0 fw-semibold" style="font-size: 0.9rem;">
+  {{ 'DASHBOARD.XP_DECAY_TITLE' | translate }}
+</p>
+<p class="mb-0 text-muted" style="font-size: 0.8rem;">
+  {{ 'DASHBOARD.XP_DECAY_SUBTITLE' | translate:{ days: authService.getDaysInactive() } }}
+  <span style="color: #ff9800; font-weight: bold;">-{{ authService.getXPDecay() }} XP</span>
+</p>
+      </div>
+    </div>
+    <button (click)="navigateToWorkout()"
+      style="background: transparent; border: 1px solid #ff9800; color: #ff9800;
+             padding: 6px 12px; border-radius: 20px; font-size: 0.75rem;
+             font-weight: bold; cursor: pointer; white-space: nowrap;">
+      TRAIN NOW
+    </button>
+  </div>
+</div>
+
     <div class="col-12 col-md-4">
       <div (click)="dashboardService.isSessionRunning() ? dashboardService.stopSession() : dashboardService.startSession()"
            class="mx-auto"

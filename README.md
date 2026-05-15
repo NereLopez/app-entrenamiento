@@ -22,9 +22,10 @@
 * **Gestión de Hidratación Interactiva:** Widget personalizado con visualización de "botella dinámica" que se llena en tiempo real y persiste datos mediante servicios reactivos.
 * **Heatmap de Actividad:** Seguimiento visual del progreso semanal inspirado en los anillos de actividad.
 * **Experiencia PWA Nativa:** Instalable, con soporte offline y optimizada para eliminar la interfaz del navegador en iOS/Android.
-* **Direct QR Sync:** Sistema de enlace directo para transición fluida entre desktop y dispositivos móviles.
+* **Direct QR Sync:** Sistema de enlace directo mediante un código QR para una transición fluida e instalación instantánea en dispositvos móviles.
 * **Traducción Inteligente:** Arquitectura multi-idioma (Angular Translate) que permite la convivencia de claves de sistema y registros manuales de usuario sin errores de interfaz.
 * **Gestión de Entrenamientos:** Sistema de carga de ejercicios y rutinas conectado a servicios reactivos.
+* **Sistema de XP Dinámico(Decay System):** Algoritmo de fidelización que aplica una penalización diaria de XP basada en el historial de Firestore.
 * **Modo Oscuro:** Interfaz adaptativa diseñada para entrenamientos en cualquier condición de luz.
 
 
