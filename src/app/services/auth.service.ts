@@ -12,6 +12,7 @@ export class AuthService {
   history = signal<any[]>([]);
 
   constructor() {
+    runInInjectionContext(this.injector, () => {  
     user(this.auth).subscribe(u => {
       if (u) {
       this.userSignal.set(u);
@@ -21,32 +22,44 @@ export class AuthService {
         this.history.set([]);
       }
     });
-  }
+  });
+}
   
   async signUp(email: string, pass: string) {
-    return createUserWithEmailAndPassword(this.auth, email, pass);
+    return runInInjectionContext(this.injector, () => createUserWithEmailAndPassword(this.auth, email, pass));
   }
 
   async login(email: string, pass: string) {
-    return signInWithEmailAndPassword(this.auth, email, pass);
+    return runInInjectionContext(this.injector, () => signInWithEmailAndPassword(this.auth, email, pass));
   }
 
   async logout() {
-    await signOut(this.auth);
+    await runInInjectionContext(this.injector, () => signOut(this.auth));
     this.userSignal.set(null);
     this.history.set([]);
   }
 
-  private fetchHistory(userId: string) {
-    // Abrimos el contexto ANTES de definir la colección y la query
-    runInInjectionContext(this.injector, () => {
-      const ref = collection(this.firestore, 'workouts');
-      const q = query(ref, where('userId', '==', userId), orderBy('createdAt', 'desc'));
-      
-      // Retornamos el observable para el subscribe
-      return collectionData(q, { idField: 'id' });
-    }).subscribe(data => this.history.set(data));
-  }
+private fetchHistory(userId: string) {
+  if (!userId) return;
+
+  runInInjectionContext(this.injector, () => {
+    const ref = collection(this.firestore, 'workouts');
+    
+    // Simplificamos la query al máximo (quitamos el orderBy de momento)
+    const q = query(ref, where('userId', '==', userId));
+    
+    collectionData(q, { idField: 'id' }).subscribe({
+      next: (data) => {
+        console.log('✅ Historial cargado con éxito:', data.length, 'ejercicios');
+        this.history.set(data);
+      },
+      error: (err) => {
+        console.error('❌ Error persistente en history:', err.message);
+        // SI AQUÍ SIGUE DANDO ERROR, revisa que la colección se llame 'workouts'
+      }
+    });
+  });
+}
 
   async saveFromForm(formData: any) {
     const currentUser = this.userSignal();

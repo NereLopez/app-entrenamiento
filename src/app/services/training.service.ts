@@ -265,14 +265,17 @@ export class TrainingService {
 
     const nextStats = { ...current, caloriesBurnedToday: caloriesToday };
     this.statsSignal.set(nextStats);
-    const statsRef = doc(this.firestore, `stats/${userId}`);
 
-    try {
-      await runInInjectionContext(this.injector, () => setDoc(statsRef, { caloriesBurnedToday: caloriesToday }, { merge: true }));
+    await runInInjectionContext(this.injector, async () => {
+   
+  try {
+     const statsRef = doc(this.firestore, `stats/${userId}`);
+      await  setDoc(statsRef, { caloriesBurnedToday: caloriesToday }, { merge: true });
       console.log("Calorias quemadas hoy sincronizadas:");
     } catch (e) {
       console.error("Error updating calories burned today", e);
     }
+  });
   }
 
   
@@ -283,9 +286,7 @@ export class TrainingService {
     const userId = currentUser.uid;
     const statsRef = doc(this.firestore, `stats/${userId}`);
     
-    
     let currentStats = { ...this.statsSignal() };
-
     let newXP = 50; 
     let brokeRecord = false;
 
@@ -386,6 +387,7 @@ export class TrainingService {
     if (!currentUser) return false;
         
     try {
+      await runInInjectionContext(this.injector, async () => {
       const workoutsRef = collection(this.firestore, 'workouts');
       const newWorkout = {
         ...formData,
@@ -393,10 +395,10 @@ export class TrainingService {
         createdAt: Date.now()
       };
       
-      await runInInjectionContext(this.injector, () => addDoc(workoutsRef, newWorkout));
+      await addDoc(workoutsRef, newWorkout);
       
-      await runInInjectionContext(this.injector, () => this.finalizeSession(formData.exercises || [], formData.intensity || 'moderate'));
-      
+      await this.finalizeSession(formData.exercises || [], formData.intensity || 'moderate');
+    });
       return true;
     } catch (error) {
       console.error("Error saving workout:", error);
