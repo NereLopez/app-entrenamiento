@@ -1,10 +1,9 @@
 # Kinetic Training App
 
 <p align="center">
-  <img src="public/icons/login.png" width="250" alt="Kinetic Login Screen">
+  <img src="public/icons/login.png" width="150" alt="Kinetic Login Screen">
 </p>
 
-[🔗 Ver Repositorio en GitHub](https://github.com/NereLopez/app-entrenamiento/tree/master)
 
 **Kinetic** es una Aplicación Web Progresiva (PWA) diseñada para deportistas que buscan un seguimiento visual, rápido y profesional de sus entrenamientos. Desarrollada con **Angular 19**, integra análisis de datos en tiempo real y una experiencia de usuario optimizada para dispositivos móviles.
 
