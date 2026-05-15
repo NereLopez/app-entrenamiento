@@ -97,3 +97,34 @@
 :host-context(.dark-mode) .lang-btn {
   color: #94a3b8;
 }
+
+.brand-lockup {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-lockup-logo {
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  object-fit: cover;
+  box-shadow: 0 4px 10px rgba(13, 148, 136, 0.25);
+}
+
+.brand-lockup-text {
+  color: #0d9488 !important;
+  font-size: 1.5rem;
+  letter-spacing: -1px;
+}
+
+@media (max-width: 576px) {
+  .brand-lockup-logo {
+    width: 28px;
+    height: 28px;
+  }
+
+  .brand-lockup-text {
+    font-size: 1.25rem;
+  }
+}

@@ -6,7 +6,10 @@
 } @else if (trainingService.userSignal()) {
   <nav class="navbar bg-white border-bottom sticky-top mb-3">
     <div class="container d-flex justify-content-between align-items-center">
-      <span class="fw-bold" style="color: #0d9488 !important; font-size: 1.5rem; letter-spacing: -1px">Kinetic</span>
+      <div class="brand-lockup">
+        <img src="icons/icon-192x192.png" alt="Kinetic logo" class="brand-lockup-logo">
+        <span class="fw-bold brand-lockup-text">Kinetic</span>
+      </div>
 
       <div class="d-flex align-items-center gap-3">
       <div class="lang-switch" role="group" [attr.aria-label]="'APP.CHOOSE_LANGUAGE' | translate">
