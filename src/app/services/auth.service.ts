@@ -44,9 +44,7 @@ private fetchHistory(userId: string) {
 
   runInInjectionContext(this.injector, () => {
     const ref = collection(this.firestore, 'workouts');
-    
-    // Simplificamos la query al máximo (quitamos el orderBy de momento)
-    const q = query(ref, where('userId', '==', userId));
+        const q = query(ref, where('userId', '==', userId));
     
     collectionData(q, { idField: 'id' }).subscribe({
       next: (data) => {
@@ -54,9 +52,8 @@ private fetchHistory(userId: string) {
         this.history.set(data);
       },
       error: (err) => {
-        console.error('❌ Error persistente en history:', err.message);
-        // SI AQUÍ SIGUE DANDO ERROR, revisa que la colección se llame 'workouts'
-      }
+        console.error('❌ Error persistente en history:', err.message);    
+        }
     });
   });
 }

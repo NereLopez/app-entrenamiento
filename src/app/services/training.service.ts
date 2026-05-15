@@ -1,8 +1,8 @@
 import { Injectable, signal, inject, computed, Injector, runInInjectionContext } from '@angular/core';
-import { 
-  Firestore, collection, addDoc, query, where, orderBy, 
-  collectionData, doc, getDoc, setDoc, updateDoc, deleteDoc 
-} from '@angular/fire/firestore'; 
+import {
+  Firestore, collection, addDoc, query, where, orderBy,
+  collectionData, doc, getDoc, setDoc, updateDoc, deleteDoc
+} from '@angular/fire/firestore';
 import { Auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, user } from '@angular/fire/auth';
 import { Subscription } from 'rxjs';
 
@@ -37,20 +37,20 @@ export class TrainingService {
     } else {
       return 'LEVELS.BEGINNER';
     }
-    });
-    
-    public xpProgress = computed(() => {
-      const xp = this.statsSignal().experiencePoints;
-      if (xp >= 2000) return 100;
-      if (xp >= 500) return ((xp - 500) / 1500) * 100;
-      return (xp / 500) * 100; 
-      });
-  
+  });
+
+  public xpProgress = computed(() => {
+    const xp = this.statsSignal().experiencePoints;
+    if (xp >= 2000) return 100;
+    if (xp >= 500) return ((xp - 500) / 1500) * 100;
+    return (xp / 500) * 100;
+  });
+
 
   public isWorkoutCompletedToday = signal<boolean>(false);
   public isAuthReady = signal<boolean>(false);
   private historySubscription?: Subscription;
-  
+
   public statsSignal = signal<UserStats>({
     experiencePoints: 0,
     personalRecords: {},
@@ -73,7 +73,7 @@ export class TrainingService {
       this.resetUserState();
       if (u) {
         this.fetchHistory(u.uid);
-        this.fetchUserStats(u.uid); 
+        this.fetchUserStats(u.uid);
       }
     });
   }
@@ -94,8 +94,10 @@ export class TrainingService {
   }
 
   private async getUserWeightKg(userId: string): Promise<number | null> {
-    const profileRef = doc(this.firestore, `user_nutrition/${userId}`);
-    const profileSnap = await runInInjectionContext(this.injector, () => getDoc(profileRef));
+    const profileSnap = await runInInjectionContext(this.injector, () => {
+      const profileRef = doc(this.firestore, `user_nutrition/${userId}`);
+      return getDoc(profileRef);
+    });
 
     if (!profileSnap.exists()) {
       return null;
@@ -126,7 +128,7 @@ export class TrainingService {
     return total;
   });
 
-  
+
   async signUp(email: string, pass: string) {
     return runInInjectionContext(this.injector, () => createUserWithEmailAndPassword(this.auth, email, pass));
   }
@@ -139,13 +141,13 @@ export class TrainingService {
     return runInInjectionContext(this.injector, () => signOut(this.auth));
   }
 
-  
+
   private async fetchUserStats(userId: string) {
-    
+
     const snap = await runInInjectionContext(this.injector, () => {
       const docRef = doc(this.firestore, `stats/${userId}`);
       return getDoc(docRef);
-      
+
     });
 
     if (this.auth.currentUser?.uid !== userId) {
@@ -157,7 +159,7 @@ export class TrainingService {
       this.statsSignal.set(stats);
 
       const today = new Date().setHours(0, 0, 0, 0);
-      const lastSession = new Date(stats.lastSessionDate ||0).setHours(0, 0, 0, 0);
+      const lastSession = new Date(stats.lastSessionDate || 0).setHours(0, 0, 0, 0);
 
       // Keep stored streak/history intact; only toggle whether today's workout is already done.
       this.isWorkoutCompletedToday.set(today === lastSession);
@@ -167,17 +169,17 @@ export class TrainingService {
   }
 
   private fetchHistory(userId: string) {
-        this.historySubscription?.unsubscribe();
+    this.historySubscription?.unsubscribe();
     this.historySubscription = runInInjectionContext(this.injector, () => {
       const ref = collection(this.firestore, 'workouts');
       const q = query(ref, where('userId', '==', userId), orderBy('createdAt', 'desc'));
       return collectionData(q, { idField: 'id' }).subscribe(async data => {
         this.history.set(data);
-    
-      await runInInjectionContext(this.injector, () => this.syncCaloriesBurnedToday(userId, data as any[])
-    );
-    });  
-  });
+
+        await runInInjectionContext(this.injector, () => this.syncCaloriesBurnedToday(userId, data as any[])
+        );
+      });
+    });
   }
 
   private getMetByIntensity(intensity: 'light' | 'moderate' | 'intense' = 'moderate'): number {
@@ -189,52 +191,52 @@ export class TrainingService {
     return metByIntensity[intensity] ?? 6.0;
   }
 
- private getWorkoutCalories(workoutExercises: any[], intensity: 'light' | 'moderate' | 'intense', weightKg: number): number {
-  let totalSets = 0;
-  let totalMinutes = 0;
-  let totalReps = 0;
-  let totalWeightVolume = 0;
-  
-  workoutExercises.forEach(exercise => {
-    exercise.sets?.forEach((set: any) => {
-      totalSets += 1;
-      
-      const reps = Number(set.reps || set.repetitions) || 0;
-      const weight = Number(set.weight) || 0;
-      const durationSeconds = Number(set.durationSeconds) || 0;
-      
-      totalReps += reps;
-      totalWeightVolume += weight * reps;
-      
-      if (durationSeconds > 0) {
-        totalMinutes += durationSeconds / 60;
-      }
+  private getWorkoutCalories(workoutExercises: any[], intensity: 'light' | 'moderate' | 'intense', weightKg: number): number {
+    let totalSets = 0;
+    let totalMinutes = 0;
+    let totalReps = 0;
+    let totalWeightVolume = 0;
+
+    workoutExercises.forEach(exercise => {
+      exercise.sets?.forEach((set: any) => {
+        totalSets += 1;
+
+        const reps = Number(set.reps || set.repetitions) || 0;
+        const weight = Number(set.weight) || 0;
+        const durationSeconds = Number(set.durationSeconds) || 0;
+
+        totalReps += reps;
+        totalWeightVolume += weight * reps;
+
+        if (durationSeconds > 0) {
+          totalMinutes += durationSeconds / 60;
+        }
+      });
     });
-  });
 
-  if (totalSets === 0) {
-    return 0;
-  }
+    if (totalSets === 0) {
+      return 0;
+    }
 
-  // Use actual duration if available, otherwise estimate from sets
-  const estimatedMinutes = totalMinutes > 0 
-    ? Math.max(5, Math.round(totalMinutes)) 
-    : Math.max(15, Math.round(totalSets * 2.2));
-  
-  const met = this.getMetByIntensity(intensity);
-  
-  // Base calculation from duration and MET
-  let caloriesBurned = Math.round(((met * 3.5 * weightKg) / 200) * estimatedMinutes);
-  
-  // Adjust for actual reps and weight volume if available
-  if (totalReps > 0 && totalWeightVolume > 0) {
-    // Factor in intensity of weight lifted (relative to body weight)
-    const volumeIntensityFactor = Math.min(2, (totalWeightVolume / (weightKg * 100)) + 1);
-    caloriesBurned = Math.round(caloriesBurned * volumeIntensityFactor);
+    // Use actual duration if available, otherwise estimate from sets
+    const estimatedMinutes = totalMinutes > 0
+      ? Math.max(5, Math.round(totalMinutes))
+      : Math.max(15, Math.round(totalSets * 2.2));
+
+    const met = this.getMetByIntensity(intensity);
+
+    // Base calculation from duration and MET
+    let caloriesBurned = Math.round(((met * 3.5 * weightKg) / 200) * estimatedMinutes);
+
+    // Adjust for actual reps and weight volume if available
+    if (totalReps > 0 && totalWeightVolume > 0) {
+      // Factor in intensity of weight lifted (relative to body weight)
+      const volumeIntensityFactor = Math.min(2, (totalWeightVolume / (weightKg * 100)) + 1);
+      caloriesBurned = Math.round(caloriesBurned * volumeIntensityFactor);
+    }
+
+    return caloriesBurned;
   }
-  
-  return caloriesBurned;
-}
 
   private async syncCaloriesBurnedToday(userId: string, workoutsData?: any[]) {
     if (this.auth.currentUser?.uid !== userId) {
@@ -267,40 +269,40 @@ export class TrainingService {
     this.statsSignal.set(nextStats);
 
     await runInInjectionContext(this.injector, async () => {
-   
-  try {
-     const statsRef = doc(this.firestore, `stats/${userId}`);
-      await  setDoc(statsRef, { caloriesBurnedToday: caloriesToday }, { merge: true });
-      console.log("Calorias quemadas hoy sincronizadas:");
-    } catch (e) {
-      console.error("Error updating calories burned today", e);
-    }
-  });
+
+      try {
+        const statsRef = doc(this.firestore, `stats/${userId}`);
+        await setDoc(statsRef, { caloriesBurnedToday: caloriesToday }, { merge: true });
+        console.log("Calorias quemadas hoy sincronizadas:");
+      } catch (e) {
+        console.error("Error updating calories burned today", e);
+      }
+    });
   }
 
-  
+
   async finalizeSession(workoutExercises: any[], intensity: 'light' | 'moderate' | 'intense' = 'moderate') {
     const currentUser = this.userSignal();
     if (!currentUser) return;
 
     const userId = currentUser.uid;
     const statsRef = doc(this.firestore, `stats/${userId}`);
-    
+
     let currentStats = { ...this.statsSignal() };
-    let newXP = 50; 
+    let newXP = 50;
     let brokeRecord = false;
 
-    
+
     workoutExercises.forEach(exercise => {
       if (exercise.sets && exercise.sets.length > 0) {
-        
+
         const weights = exercise.sets.map((s: any) => Number(s.weight || 0));
         const sessionMaxWeight = Math.max(...weights);
         const exerciseKey = exercise.name.toLowerCase();
 
         if (sessionMaxWeight > (currentStats.personalRecords[exerciseKey] || 0)) {
           currentStats.personalRecords[exerciseKey] = sessionMaxWeight;
-          newXP += 25; 
+          newXP += 25;
           brokeRecord = true;
         }
       }
@@ -350,55 +352,60 @@ export class TrainingService {
     const currentUser = this.userSignal();
     if (!currentUser) return;
 
-    const statsRef = doc(this.firestore, `stats/${currentUser.uid}`);
-    await setDoc(
-      statsRef,
-      {
-        weeklyActivity: {
-          [weekId]: activity
-        }
-      },
-      { merge: true }
-    );
+    await runInInjectionContext(this.injector, () => {
+      const statsRef = doc(this.firestore, `stats/${currentUser.uid}`);
+      return setDoc(
+        statsRef,
+        {
+          weeklyActivity: {
+            [weekId]: activity
+          }
+        },
+        { merge: true }
+      );
+    });
   }
 
-    async deleteWorkout(workoutId: string) {
-     const docRef = doc(this.firestore, `workouts/${workoutId}`);
-     await runInInjectionContext(this.injector, () => deleteDoc(docRef));
-  }
-
-    async deleteExerciseFromWorkout(workoutId: string, exerciseIndex: number) {
-      const workout = this.history().find(entry => entry.id === workoutId);
-      if (!workout) return;
-
-      const nextExercises = (workout.exercises || []).filter((_: any, index: number) => index !== exerciseIndex);
-
-      if (nextExercises.length === 0) {
-        await runInInjectionContext(this.injector, () => this.deleteWorkout(workoutId));
-        return;
-      }
-
+  async deleteWorkout(workoutId: string) {
+    await runInInjectionContext(this.injector, () => {
       const docRef = doc(this.firestore, `workouts/${workoutId}`);
-      await runInInjectionContext(this.injector, () => updateDoc(docRef, { exercises: nextExercises }));
+      return deleteDoc(docRef);
+    });
+  }
+  async deleteExerciseFromWorkout(workoutId: string, exerciseIndex: number) {
+    const workout = this.history().find(entry => entry.id === workoutId);
+    if (!workout) return;
+
+    const nextExercises = (workout.exercises || []).filter((_: any, index: number) => index !== exerciseIndex);
+
+    if (nextExercises.length === 0) {
+      await this.deleteWorkout(workoutId);
+      return;
     }
+
+    await runInInjectionContext(this.injector, () => {
+      const docRef = doc(this.firestore, `workouts/${workoutId}`);
+      return updateDoc(docRef, { exercises: nextExercises });
+    });
+  }
 
   async saveFromForm(formData: any) {
     const currentUser = this.userSignal();
     if (!currentUser) return false;
-        
+
     try {
       await runInInjectionContext(this.injector, async () => {
-      const workoutsRef = collection(this.firestore, 'workouts');
-      const newWorkout = {
-        ...formData,
-        userId: currentUser.uid,
-        createdAt: Date.now()
-      };
-      
-      await addDoc(workoutsRef, newWorkout);
-      
-      await this.finalizeSession(formData.exercises || [], formData.intensity || 'moderate');
-    });
+        const workoutsRef = collection(this.firestore, 'workouts');
+        const newWorkout = {
+          ...formData,
+          userId: currentUser.uid,
+          createdAt: Date.now()
+        };
+
+        await addDoc(workoutsRef, newWorkout);
+
+        await this.finalizeSession(formData.exercises || [], formData.intensity || 'moderate');
+      });
       return true;
     } catch (error) {
       console.error("Error saving workout:", error);
