@@ -90,6 +90,34 @@ export class HistoryComponent {
     });
   }
 
+// CALCULAR XP PARA EL CALENDARIO
+  calculateDayXP(day: any): number {
+    // Primero comprobamos si el día tiene una sesión de entrenamiento
+    const session = day.session || day.workout || day;
+    if (!session || !session.allExercises) return 0;
+
+    let totalXP = 0;
+
+    session.allExercises.forEach((ex: any) => {
+      if (ex.sets) {
+        ex.sets.forEach((set: any) => {
+          const weight = Number(set.weight) || 0;
+          const reps = Number(set.reps) || 0;
+          
+          if (weight > 0) {
+            // Si hay peso: Volumen * 0.05 (ajusta este número si quieres más o menos puntos)
+            totalXP += Math.round(weight * reps * 0.05);
+          } else {
+            // Si es bodyweight (0kg): 2 puntos por cada repetición
+            totalXP += reps * 2;
+          }
+        });
+      }
+    });
+
+    return totalXP;
+  }
+
      async deleteSession(workoutId: string) {
       if (!confirm(this.translate.instant('HISTORY.CONFIRMATIONS.DELETE_SESSION'))) return;
       await this.trainingService.deleteWorkout(workoutId);

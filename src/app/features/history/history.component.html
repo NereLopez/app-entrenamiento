@@ -130,8 +130,14 @@
                       }
                     </div>
                   }
+
+                  <div *ngIf="calculateDayXP(day) > 0" class="mt-1">
+  <small style="color: #0d9488; font-size: 0.55rem; font-weight: 800; display: block;">
+    +{{ calculateDayXP(day) }} XP
+  </small>
+</div>
                 </div>
-                @if (day.session) {
+           @if (day.session) {
                   <small class="day-volume">{{ day.volume }}kg</small>
                 }
               }
@@ -156,7 +162,7 @@
 
             <div class="selected-day-actions">
            
-              <div class="selected-day-volume">{{ calculateVolume(selectedCalendarSession) }} kg</div>
+              <div class="selected-day-volume">{{ calculateDayXP(selectedCalendarSession) }} XP</div>
               <button type="button" class="btn btn-sm text-danger border-0" (click)="deleteSession(selectedCalendarSession.id)">
                
               </button>

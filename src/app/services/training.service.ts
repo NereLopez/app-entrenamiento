@@ -373,7 +373,7 @@ export class TrainingService {
       const nextExercises = (workout.exercises || []).filter((_: any, index: number) => index !== exerciseIndex);
 
       if (nextExercises.length === 0) {
-        await this.deleteWorkout(workoutId);
+        await runInInjectionContext(this.injector, () => this.deleteWorkout(workoutId));
         return;
       }
 
@@ -395,7 +395,7 @@ export class TrainingService {
       
       await runInInjectionContext(this.injector, () => addDoc(workoutsRef, newWorkout));
       
-      await this.finalizeSession(formData.exercises || [], formData.intensity || 'moderate');
+      await runInInjectionContext(this.injector, () => this.finalizeSession(formData.exercises || [], formData.intensity || 'moderate'));
       
       return true;
     } catch (error) {

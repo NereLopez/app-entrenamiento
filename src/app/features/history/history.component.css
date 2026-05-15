@@ -242,20 +242,27 @@
 }
 
 .muscle-dots {
-  display: grid;
-  grid-template-columns: repeat(2, 5px);
-  grid-auto-rows: 5px;
-  place-content: center;
-  gap: 2px;
-  min-height: 12px;
-  min-width: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; 
+  gap: 1px;               
+  width: 14px;            
+  
+  margin: 0 auto;          
 }
 
 .muscle-dot {
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.8);
+  flex: 0 0 auto;
+}
+
+.muscle-dots:has(> :nth-child(3):last-child) > :first-child {
+ margin-left: 3px;
+  margin-right: 3px;
+  margin-bottom: 1px;
 }
 
 .nutrition-check {
