@@ -1,4 +1,5 @@
 # Kinetic Training App - PWA de Alto Rendimiento Analítico
+![CI/CD Pipeline](https://github.com/NereLopez/app-entrenamiento.git/actions/workflows/deploy.yml/badge.svg)
 
 <p align="center">
   <img src="public/icons/login.png" width="150" alt="Kinetic Login Screen">
