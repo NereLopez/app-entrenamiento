@@ -1,0 +1,41 @@
+name: Pipeline de Despliegue Continuo (CI/CD)
+
+# 1. El robot escucha: Se activa solo cuando haces un "push" en la rama main
+on:
+  push:
+    branches:
+      - main
+
+# 2. Lista de tareas que va a ejecutar en la nube
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest # Abre un ordenador virtual con Linux (Ubuntu)
+
+    steps:
+      # Paso A: El robot clona el código de tu repositorio en su máquina virtual
+      - name: Descargar el codigo fuente
+        uses: actions/checkout@v4
+
+      # Paso B: Instala el entorno de Node.js necesario para compilar
+      - name: Configurar Node.js en el servidor
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      # Paso C: Descarga e instala las librerías del proyecto (Bootstrap, Chart.js, etc.)
+      - name: Instalar dependencias del package.json
+        run: npm ci
+
+      # Paso D: Compila el proyecto Angular/Ionic generando la carpeta de producción
+      - name: Compilar aplicacion para produccion
+        run: npx ng build --configuration production
+
+      # Paso E: El robot usa el token secreto para subir los archivos compilados a Firebase Hosting
+      - name: Desplegar activos en Firebase Hosting
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_TOKEN }}
+          projectId: app-entrenamiento-firebase 
+          channelId: live
