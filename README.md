@@ -16,6 +16,7 @@
 | *Acciones rápidas e idiomas*             | *Hidratación interactiva*               | *Análisis de datos* |
 
 La interfaz de usuario ha sido concebida bajo un estricto enfoque ergonómico en movilidad, implementando CSS3 Custom Properties para una mutación de temas adaptativa. El modo oscuro premium mitiga la fatiga ocular en salas de entrenamiento con condiciones de luz artificial complejas.
+
 ---
 
 
