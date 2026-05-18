@@ -4,7 +4,7 @@ name: Pipeline de Despliegue Continuo (CI/CD)
 on:
   push:
     branches:
-      - main
+      - master
 
 # 2. Lista de tareas que va a ejecutar en la nube
 jobs:
