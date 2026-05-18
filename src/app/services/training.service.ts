@@ -61,14 +61,11 @@ export class TrainingService {
   });
 
   constructor() {
-    // 1. "user(this.auth)" es una herramienta de Firebase que observa
-    // constantemente si alguien entra o sale de la sesión.
+    // 1. "user(this.auth)" es una herramienta de Firebase que observa constantemente si alguien entra o sale de la sesión.
     user(this.auth).subscribe(u => {
-      // 2. Si hay cambios, actualizamos tu "señal" (userSignal).
-      // Esto hace que toda la app se entere de que el usuario ha cambiado.
+      // 2. Si hay cambios, actualizamos tu "señal" (userSignal). Esto hace que toda la app se entere de que el usuario ha cambiado.
       this.userSignal.set(u);
-      // 3. Si el usuario existe (u), le pedimos al servicio que vaya
-      // a la base de datos a buscar su historial y sus estadísticas.
+      // 3. Si el usuario existe (u), le pedimos al servicio que vaya a la base de datos a buscar su historial y sus estadísticas.
       this.isAuthReady.set(true);
       this.resetUserState();
       if (u) {
