@@ -20,7 +20,7 @@ jobs:
       - name: Configurar Node.js en el servidor
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: 'npm'
 
       # Paso C: Descarga e instala las librerías del proyecto (Bootstrap, Chart.js, etc.)
