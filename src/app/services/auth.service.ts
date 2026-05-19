@@ -48,11 +48,11 @@ private fetchHistory(userId: string) {
     
     collectionData(q, { idField: 'id' }).subscribe({
       next: (data) => {
-        console.log('✅ Historial cargado con éxito:', data.length, 'ejercicios');
+        console.log('✅ History loaded successfully:', data.length, 'workouts');
         this.history.set(data);
       },
       error: (err) => {
-        console.error('❌ Error persistente en history:', err.message);    
+        console.error('❌ Persistent error in history:', err.message);    
         }
     });
   });
@@ -63,7 +63,7 @@ private fetchHistory(userId: string) {
     if (!currentUser) return false;
 
     try {
-      // Metemos la referencia y el guardado dentro del contexto
+      // Put the reference and the save operation inside the context
       await runInInjectionContext(this.injector, () => {
         const workoutsRef = collection(this.firestore, 'workouts');
         const newWorkout = {
@@ -81,7 +81,7 @@ private fetchHistory(userId: string) {
     }
     
   }
-  // --- LÓGICA DE PÉRDIDA DE XP ---
+  // --- LOGIC OF XP DECAY ---
 
   getXPDecay(): number {
     const list = this.history();

@@ -53,7 +53,6 @@ export class AppComponent {
   toogleDarkMode() {
     const newMode = !this.darkMode();
     this.darkMode.set(newMode);
-    // Guardamos el nuevo estado
     localStorage.setItem('theme', newMode ? 'dark' : 'light');
   }
 

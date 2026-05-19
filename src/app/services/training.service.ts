@@ -61,11 +61,11 @@ export class TrainingService {
   });
 
   constructor() {
-    // 1. "user(this.auth)" es una herramienta de Firebase que observa constantemente si alguien entra o sale de la sesión.
+    // 1. "user(this.auth)" is a Firebase tool that constantly observes if someone logs in or out.
     user(this.auth).subscribe(u => {
-      // 2. Si hay cambios, actualizamos tu "señal" (userSignal). Esto hace que toda la app se entere de que el usuario ha cambiado.
+      // 2. If there are changes, we update your "signal" (userSignal). This made it so the whole app knows the user has changed.
       this.userSignal.set(u);
-      // 3. Si el usuario existe (u), le pedimos al servicio que vaya a la base de datos a buscar su historial y sus estadísticas.
+      // 3. If the user exists (u), we ask the service to go to the database to fetch their history and stats.
       this.isAuthReady.set(true);
       this.resetUserState();
       if (u) {
@@ -270,7 +270,7 @@ export class TrainingService {
       try {
         const statsRef = doc(this.firestore, `stats/${userId}`);
         await setDoc(statsRef, { caloriesBurnedToday: caloriesToday }, { merge: true });
-        console.log("Calorias quemadas hoy sincronizadas:");
+        console.log("Calories burned today synchronized:");
       } catch (e) {
         console.error("Error updating calories burned today", e);
       }

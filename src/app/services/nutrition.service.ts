@@ -37,11 +37,11 @@ export class NutritionService {
   public waterArray = computed(() => Array.from({ length: 8 }, (_, i) => i < this.waterGlasses()));
 
  async addWater() {
-  const user = this.auth.currentUser; // Usamos tu variable 'auth'
+  const user = this.auth.currentUser; // We use your 'auth' variable
   if (!user) return;
 
   const today = new Date().toISOString().split('T')[0];
-  // Apuntamos a la misma ruta que el Dashboard para que se vean igual
+  // We point to the same path as the Dashboard so they look the same
   try {
     if (this.waterMl() < 2000) {
       await runInInjectionContext (this.injector, () => {
@@ -52,15 +52,15 @@ export class NutritionService {
       }, { merge: true });
       });
 
-      // Actualizamos localmente para que la gota cambie al instante
+      // We update locally so the drop changes instantly
       this.waterMl.update(v => Math.min(v + 250, 2000));
     }
   } catch (e) {
-    console.error("Error al guardar agua en Firebase", e);
+    console.error("Error saving water in Firebase", e);
   }
 }
 
-// Función para cargar los datos de la nube al iniciar
+// Function to load data from the cloud at startup
 private async loadWaterFromFirebase(uid: string) {
   const today = new Date().toISOString().split('T')[0];
   
@@ -76,11 +76,11 @@ private async loadWaterFromFirebase(uid: string) {
       this.waterMl.set(0);
     }
   } catch (e) { 
-    console.error("Error cargando agua de Firebase", e); 
+    console.error("Error loading water from Firebase", e); 
   }
 }
   constructor (){
-    // Escuchamos cuando el usuario se loguea para cargar sus comidas
+    // We listen when the user logs in to load their meals
     user(this.auth).subscribe(u => {
       this.resetUserState();
       if (u) {
@@ -157,7 +157,7 @@ const snap = await runInInjectionContext(this.injector, () => {
     this.activityLevel.set(data['activityLevel'] || 1.55);
   }
 } catch (e) {
-  console.error("Error cargando perfil de usuario", e);
+  console.error("Error loading user profile", e);
 }
   }
  
@@ -270,9 +270,9 @@ const snap = await runInInjectionContext(this.injector, () => {
          const colRef = collection(this.firestore, 'food_entries');
          return addDoc(colRef, {...newEntry, userId: uid});
       });
-      this.showToast('Meal guardada');
+      this.showToast('Meal saved');
     } catch (error) {
-      this.showToast('No se pudo guardar la comida', 'danger');
+      this.showToast('Could not save the meal', 'danger');
     } finally {
       this.isLoading.set(false);
     }
@@ -285,10 +285,10 @@ const snap = await runInInjectionContext(this.injector, () => {
         const docRef = doc(this.firestore, `food_entries/${id}`);
         return deleteDoc(docRef);
       });
-      this.showToast('Comida eliminada correctamente');
+      this.showToast('Meal deleted successfully');
     } catch (error) {
-      console.error('Error al eliminar la comida:', error);
-      this.showToast('No se pudo eliminar la comida', 'danger');
+      console.error('Error deleting meal:', error);
+      this.showToast('Could not delete the meal', 'danger');
     } finally {
       this.isLoading.set(false);
     }

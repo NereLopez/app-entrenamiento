@@ -11,7 +11,7 @@ import { HttpClient, provideHttpClient } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader, TRANSLATE_HTTP_LOADER_CONFIG } from '@ngx-translate/http-loader';
 
-// Función para cargar archivos de traducción
+// Function to load translation files
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader();
 }

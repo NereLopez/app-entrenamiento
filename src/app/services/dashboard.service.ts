@@ -24,7 +24,7 @@ export class DashboardService {
   private watchlockerTimer: ReturnType<typeof setInterval> | null = null;
   private audioContext: AudioContext | null = null;
 
-  // --- ACCIONES RÁPIDAS ---
+  // --- QUICK ACTIONS ---
   readonly quickActions = computed<QuickAction[]>(() => [
     { label: 'DASHBOARD.MY_DIET', subLabel: 'DASHBOARD.MY_DIET', icon: 'bi-apple', route: '/nutrition' },
     { label: 'DASHBOARD.REGISTER_WATER', subLabel: 'DASHBOARD.REGISTER_WATER', icon: 'bi-cup-straw', route: '/nutrition' },
@@ -54,7 +54,7 @@ export class DashboardService {
     });
   }
 
-  // --- MÉTODOS PRIVADOS DE FIREBASE ---
+  // --- PRIVATE FIREBASE METHODS ---
   private async loadDailyDataFromFirebase() {
     const user = this.authService.userSignal();
     if (!user) return;
@@ -62,7 +62,7 @@ export class DashboardService {
     try {
       const today = new Date().toISOString().split('T')[0];
       
-      // 1. Todo lo que toque Firebase (doc, getDoc) va dentro de este bloque
+      // 1. Everything related to Firebase (doc, getDoc) goes inside this block
       const docSnap = await runInInjectionContext(this.injector, () => {
         const docRef = doc(this.firestore, `users/${user.uid}/daily_activity/${today}`);
         return getDoc(docRef);
@@ -80,7 +80,7 @@ export class DashboardService {
         localStorage.removeItem(this.pendingKey);
         this.dailyAccumulatedSeconds.update(v => v + pending);
 
-        // 2. Para el setDoc, abrimos otro bloque de seguridad
+        // 2. For the setDoc, we open another secure block
         await runInInjectionContext(this.injector, () => {
           const docRef = doc(this.firestore, `users/${user.uid}/daily_activity/${today}`);
           return setDoc(docRef, { 
@@ -90,7 +90,7 @@ export class DashboardService {
         });
       }
     } catch (e) { 
-      console.error("Error cargando Firebase", e); 
+      console.error("Error loading Firebase", e); 
     }
   }
 
@@ -107,9 +107,9 @@ export class DashboardService {
 
       this.dailyAccumulatedSeconds.update(v => v + secondsToSave);
       this.currentSessionSeconds.set(0);
-      // Reseteamos el inicio de sesión para que no siga sumando lo ya guardado
+      // Reset the session start time so it doesn't continue adding the already saved time
       if (this.sessionInterval) this.sessionStartTime.set(Date.now());
-    } catch (e) { console.error("Error guardando", e); }
+    } catch (e) { console.error("Error saving", e); }
   }
 
   startSession() {
@@ -198,7 +198,7 @@ export class DashboardService {
     } catch (e) { console.error("Audio error", e); }
   }
 
-  // --- STATS PARA SEMANAL/MENSUAL ---
+  // --- WEEKLY/MONTHLY STATS ---
   public weeklyTrainingSeconds = signal(0);
   public monthlyTrainingSeconds = signal(0);
 
@@ -206,17 +206,17 @@ export class DashboardService {
     const user = this.authService.userSignal();
   if (!user) return;
 
-  // 1. Calculamos el lunes (esto ya lo tienes y funciona)
+  // 1. Calculate Monday (this is already working)
   const now = new Date();
   const dayOfWeek = now.getDay();
   const diffToMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
   const mondayDate = new Date(now);
   mondayDate.setDate(now.getDate() - diffToMonday);
-  const mondayStr = mondayDate.toISOString().split('T')[0]; // Ejemplo: "2026-05-11"
+  const mondayStr = mondayDate.toISOString().split('T')[0]; // Example: "2026-05-11"
 
   try {
-    // 2. HACEMOS UNA SOLA CONSULTA (Query)
-    // Buscamos en la colección 'daily_activity' todos los que tengan ID >= lunes
+    // 2. MAKE A SINGLE QUERY
+    // We look in the 'daily_activity' collection for all entries with ID >= Monday
     const total = await runInInjectionContext(this.injector, async () => {
     const activityRef = collection(this.firestore, `users/${user.uid}/daily_activity`);
     const q = query(activityRef, where("__name__", ">=", mondayStr)); 
@@ -225,17 +225,17 @@ export class DashboardService {
     
     let total = 0;
     querySnapshot.forEach((doc) => {
-      console.log("Día encontrado en Firebase:", doc.id, "Datos:", doc.data());
+      console.log("Day found in Firebase:", doc.id, "Data:", doc.data());
       total += doc.data()['total_seconds'] || 0;
     });
     return total;
   });
 
     this.weeklyTrainingSeconds.set(total);
-    // ¡Adiós errores amarillos! Al hacer una sola petición, Angular no se marea.
+    // Goodbye yellow warnings! By making a single request, Angular doesn't get confused.
 
   } catch (e) {
-    console.error("Error en la consulta:", e);
+    console.error("Error in the query:", e);
   }
 }
    
@@ -246,14 +246,14 @@ export class DashboardService {
 
     const now = new Date();
     const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
-    //Calculamos cuántos días han pasado de lo que llevamos de mes
+    // Calculate how many days have passed in the current month
     const monthStartStr = monthStart.toISOString().split('T')[0];
 
-  console.log("--- Inicio de carga mensual ---");
-  console.log("Buscando registros desde el día:", monthStartStr);
+  console.log("--- Start of monthly load ---");
+  console.log("Looking for records from the day:", monthStartStr);
 
   try {
-    // 2. UNA SOLA QUERY: "Dame todo lo que sea de este mes en adelante"
+    // 2. A SINGLE QUERY: "Give me everything from this month onwards"
     const total = await runInInjectionContext(this.injector, async () => {  
     const activityRef = collection(this.firestore, `users/${user.uid}/daily_activity`);
     const q = query(activityRef, where("__name__", ">=", monthStartStr)); 
@@ -262,7 +262,7 @@ export class DashboardService {
 
     let total = 0;
     querySnapshot.forEach((doc) => {
-      // Importante: aquí nos vendrán datos de todo el mes
+      // Important: here we will get data for the entire month
       total += doc.data()['total_seconds'] || 0;
     });
     return total;
@@ -270,7 +270,7 @@ export class DashboardService {
   this.monthlyTrainingSeconds.set(total);
 
   } catch (e) {
-    console.error("Error cargando estadísticas mensuales", e);
+    console.error("Error loading monthly stats", e);
   }
 }
 

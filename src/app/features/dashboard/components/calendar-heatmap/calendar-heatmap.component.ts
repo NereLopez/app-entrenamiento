@@ -28,11 +28,11 @@ export class CalendarHeatmapComponent implements OnInit {
   readonly shareArea = viewChild<ElementRef>('shareArea');
   isExporting = signal(false);
   weekOffset = signal(0);
-  private activityVersion = signal(0); // Para forzar actualización cuando se detecta cambio externo
+  private activityVersion = signal(0); // To force update when external change is detected
   private languageVersion = signal(0);
 
   constructor() {
-    // 1. Escuchamos cambios en tiempo real
+    // 1. listen changes in real time
     effect(() => {
       if (this.trainingService.isWorkoutCompletedToday()) {
         this.checkAndSyncActivity();
@@ -58,8 +58,8 @@ export class CalendarHeatmapComponent implements OnInit {
   });
 
    readonly weeklyActivity = computed(() => {
-    this.activityVersion(); // Dependencia para forzar actualización
-    this.languageVersion(); // Dependencia para relocalizar etiquetas al cambiar idioma
+    this.activityVersion(); 
+    this.languageVersion(); 
     this.trainingService.history(); // Recompute when workout history changes
   const targetWeek = this.getWeekNumber(new Date()) + this.weekOffset();
   const year = new Date().getFullYear();
@@ -155,7 +155,7 @@ private getWeekNumber(d: Date): number {
   }
 
   private async applyAutomaticMark(index: number, type: 'workout' | 'nutrition') {
-    const currentDays = JSON.parse(JSON.stringify(this.weeklyActivity())); // Deep copy para evitar mutaciones directas
+    const currentDays = JSON.parse(JSON.stringify(this.weeklyActivity())); // Deep copy to avoid direct mutation
     currentDays[index][type] = { completed: true, intensity: 3 };
   
   const weekId = this.getCurrentWeekId();
@@ -229,7 +229,7 @@ private generateInitialActivity(): DayActivity[] {
     return lang;
   }
   async toggleDayActivity(index: number, type: 'workout' | 'nutrition') {
-    const currentData =JSON.parse(JSON.stringify(this.weeklyActivity())); // Deep copy para evitar mutaciones directas
+    const currentData =JSON.parse(JSON.stringify(this.weeklyActivity())); // Deep copy to avoid direct mutation
     const activity = currentData[index][type];
     activity.completed = !activity.completed;
     activity.intensity = activity.completed ? 3 : 0;
