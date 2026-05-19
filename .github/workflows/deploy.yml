@@ -1,6 +1,6 @@
 name: Pipeline de Despliegue Continuo (CI/CD)
 
-# 1. El robot escucha: Se activa solo cuando haces un "push" en la rama main
+# 1. El robot escucha: Se activa solo cuando haces un "push" en la rama master
 on:
   push:
     branches:
