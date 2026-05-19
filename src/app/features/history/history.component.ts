@@ -66,7 +66,7 @@ export class HistoryComponent {
         });
     });
 
-    // Escucha cambios en el historial para redibujar gráficas automáticamente
+    // Listen for changes in the history to automatically redraw charts
     effect(() => {
       const historyData = this.trainingService.history();
 
@@ -90,9 +90,9 @@ export class HistoryComponent {
     });
   }
 
-// CALCULAR XP PARA EL CALENDARIO
+// CALCULATE XP FOR THE CALENDAR
   calculateDayXP(day: any): number {
-    // Primero comprobamos si el día tiene una sesión de entrenamiento
+    // First, check if the day has a workout session
     const session = day.session || day.workout || day;
     if (!session || !session.allExercises) return 0;
 
@@ -105,10 +105,10 @@ export class HistoryComponent {
           const reps = Number(set.reps) || 0;
           
           if (weight > 0) {
-            // Si hay peso: Volumen * 0.05 (ajusta este número si quieres más o menos puntos)
+            // If there's weight: Volume * 0.05 (adjust this number if you want more or fewer points)
             totalXP += Math.round(weight * reps * 0.05);
           } else {
-            // Si es bodyweight (0kg): 2 puntos por cada repetición
+            // If it's bodyweight (0kg): 2 points per repetition
             totalXP += reps * 2;
           }
         });
@@ -121,7 +121,7 @@ export class HistoryComponent {
      async deleteSession(workoutId: string) {
       if (!confirm(this.translate.instant('HISTORY.CONFIRMATIONS.DELETE_SESSION'))) return;
       await this.trainingService.deleteWorkout(workoutId);
-      // Después de eliminar, el efecto que escucha el historial se encargará de redibujar las gráficas automáticamente.
+      // After deleting, the effect that listens to the history will automatically redraw the charts.
     }
 
     async deleteExercise(workoutId: string, exerciseIndex: number, exerciseName: string) {
@@ -139,7 +139,7 @@ export class HistoryComponent {
       
       if (!grouped.has(dateKey)) {
         grouped.set(dateKey, {
-          id: workout.id, // Usamos el ID original para el toggle
+          id: workout.id, // Use the original ID for the toggle
           dateKey,
           dateGroup: dateKey,
           displayDate: workoutDate,
@@ -150,7 +150,7 @@ export class HistoryComponent {
           })),
         });
       } else {
-        // Si el día ya existe en el mapa, añadimos los ejercicios a la lista de ese día
+        // If the day already exists in the map, add the exercises to that day's list
         grouped.get(dateKey).allExercises.push(
           ...(workout.exercises || []).map((exercise: any, exerciseIndex: number) => ({
             ...exercise,
@@ -161,7 +161,7 @@ export class HistoryComponent {
       }
     });
 
-    // Devolvemos el array ordenado por fecha descendente (más reciente primero)
+    // Return the array sorted by descending date (most recent first)
     return Array.from(grouped.values()).sort((a, b) => b.displayDate - a.displayDate);
   }
 
@@ -270,7 +270,7 @@ export class HistoryComponent {
     return this.currentDateLocale === 'es' ? 'EEEE, d MMMM' : 'EEEE, MMM d';
   }
 
-  // --- MÉTODOS DE CÁLCULO ---
+  // --- CALCULATION METHODS ---
 
   private translateMuscleGroup(group: string): string {
     const key = `EXERCISES.MUSCLE.${group.toUpperCase()}`;
@@ -317,7 +317,7 @@ export class HistoryComponent {
 
   calculateVolume(session: any): number {
     let total = 0;
-    // Sumamos sobre 'allExercises' que contiene todos los ejercicios del día agrupado
+    // Sum over 'allExercises' which contains all exercises per day grouped
     const exercisesToSum = session.allExercises || session.exercises;
     
     exercisesToSum?.forEach((ex: any) => {
@@ -410,7 +410,7 @@ export class HistoryComponent {
       const fecha = new Date(workout.createdAt);
       
       if (fecha.getMonth() === mesActual && fecha.getFullYear() === anioActual) {
-        // Formateamos a YYYY-MM-DD para contar días únicos
+        // Format to YYYY-MM-DD to count unique days
         const diaString = this.toDateKey(fecha);
         diasUnicos.add(diaString);
       }
@@ -419,7 +419,7 @@ export class HistoryComponent {
     return diasUnicos.size;
   }
 
-  // --- GRÁFICAS ---
+  // --- CHARTS ---
 
   getMuscleData() {
     const counts: { [key: string]: number } = {};
@@ -438,7 +438,7 @@ export class HistoryComponent {
       labels: translatedLabels,
       datasets: [{
         data: Object.values(counts),
-        // Colores vibrantes y diferenciados (Sincronizados con Nueva Sesión)
+        // Vibrant and differentiated colors (Synchronized with New Session)
         backgroundColor: dynamycColors,
         borderWidth: 2,
         hoverOffset: 15,
@@ -453,28 +453,28 @@ renderChart(data: any[]) {
 
   const isVolume = this.currentMetric === 'Volume';
   
-  // 1. Agrupamos los datos por FECHA (Día)
+  // 1. Group the data by DATE (Day)
   const groupedData = new Map<string, number>();
   
   data.forEach(w => {
     const dateKey = this.toDateKey(new Date(w.createdAt));
     
     if (isVolume) {
-      // Si es volumen, sumamos los kilos de ese día
+      // If it's volume, sum the kilos for that day
       groupedData.set(dateKey, (groupedData.get(dateKey) || 0) + this.calculateVolume(w));
     } else {
-      // Si es frecuencia, sumamos el total de ejercicios realizados ese día
+      // If it's frequency, sum the total exercises performed that day
       const exerciseCount = Array.isArray(w.exercises) ? w.exercises.length : 0;
       groupedData.set(dateKey, (groupedData.get(dateKey) || 0) + exerciseCount);
     }
   });
 
-  // 2. Convertimos el Map a arrays ordenados por fecha ascendente
+  // 2. Convert the Map to arrays sorted by ascending date
   const sortedEntries = Array.from(groupedData.entries()).sort(([dateA], [dateB]) => dateA.localeCompare(dateB));
   const labels = sortedEntries.map(([dateKey]) => this.formatDateForChart(dateKey));
   const chartData = sortedEntries.map(([, value]) => value);
 
-  // 3. Renderizamos
+  // 3. Render
   const chartLabel = isVolume 
     ? this.translate.instant('HISTORY.METRICS.VOLUME') + ' (kg)'
     : this.translate.instant('HISTORY.METRICS.FREQUENCY');

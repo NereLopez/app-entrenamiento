@@ -29,7 +29,7 @@ export class TrainingSessionComponent implements OnInit, OnDestroy {
   ];
   public workoutForm: FormGroup; 
   
-  // Lógica del Cronómetro
+  // Stopwatch logic
   public isResting = false;
   public restTime = 60;
   private timer: any;
@@ -205,13 +205,13 @@ export class TrainingSessionComponent implements OnInit, OnDestroy {
   }
 
 addSet(index: number) {
-  // 1. Obtenemos el grupo del ejercicio para saber su tipo
+  // 1. Get the group of exercises to determine its type
   const exerciseGroup = this.exercises.at(index);
   const type = exerciseGroup.get('exerciseType')?.value || 'weight';
   
   let setGroup: FormGroup;
 
-  // 2. Creamos el grupo de la serie según el tipo
+  // 2. Create the set group based on the type
   if (type === 'time') {
     setGroup = this.fb.group({
       durationSeconds: [null, [Validators.required, Validators.min(1)]],
@@ -223,7 +223,7 @@ addSet(index: number) {
       completed: [false]
     });
   } else {
-    // Por defecto: weight
+    // By default: weight
     setGroup = this.fb.group({
       weight: [null, [Validators.required, Validators.min(0)]],
       reps: [null, [Validators.required, Validators.min(1)]],
@@ -231,10 +231,10 @@ addSet(index: number) {
     });
   }
 
-  // 3. Lo añadimos al FormArray de ese ejercicio
+  // 3. Add it to the FormArray of that exercise
   this.getSets(index).push(setGroup);
   
-  // 4. Lanzamos el cronómetro
+  // 4. Start the timer
   this.startRest(60);
 }
 
