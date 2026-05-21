@@ -6,7 +6,7 @@
 </p>
 
 
-**Kinetic** es una Aplicación Web Progresiva (PWA) enfocada en el seguimiento de entrenamientos, nutrición y progreso físico. Desarrollada sobre **Angular 19**, arquitectura basada en **Signals**, y **Firebase**, con un enfoque mobile-first y optimización para dispositivos móviles.
+**Kinetic** es una Aplicación Web Progresiva (PWA) enfocada en el seguimiento de entrenamientos, nutrición y progreso físico. Desarrollada sobre **Angular 19**, arquitectura basada en **Signals** y **Firebase**, con un enfoque mobile-first y optimización para dispositivos móviles.
 
 
 ### 🌓 Interfaz y Experiencia de Usuario (Mobile-First)
@@ -47,30 +47,30 @@ La interfaz de usuario ha sido concebida bajo un estricto enfoque ergonómico en
 * **Visualization y PWA:** 
     - Chart.js 
     - ng2-charts
-    - Anugular Service Worker 
+    - Angular Service Worker 
 
 ---
 
 ## 💡 Aspectos técnicos destacados
 
-* 🧠 Estado reactiv con Angular Signals
+* **🧠 Estado reactivo con Angular Signals:**
 La aplicación utiliza Signals y `computed ()` para gestionar cálculos derivados como calorías, metabolismo basal y objetivos nutricionales.
 
-* 🎛️ Formularios dinámicos
+* **🎛️ Formularios dinámicos:** 
 Los entrenamientos se construyen mediante **`FormArray`**, permitiendo adaptar dinámicamente los campos según el tipo de ejercicio.
 
-* 🔊 Optimización de datos
+* **🔊 Optimización de datos:**
 Se utilizan estructuras como `Set`y `Map`para mejorar el rendimiento en cálculos de rachas, calendario y estadísticas.
 
-* 🧭 Experiencia mobile-first
-La aplicación fue diseñada principalmente para smartphones, incluyendo:
+* **🧭 Experiencia mobile-first:**
+- La aplicación fue diseñada principalmente para smartphones, incluyendo:
   - Navegación táctil
   - Instalación como app
   - Soporte offline
   - Modo oscuro
   - Idiomas español e inglés
 
-* 📱 Instalación (Modo PWA)
+* **📱 Instalación (Modo PWA):**
 
 Para disfrutar de la experiencia completa en tu smartphone:
 1. Escanea el **Código QR** presente en el Dashboard desde tu dispositivo móvil.
