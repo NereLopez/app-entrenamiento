@@ -1,4 +1,4 @@
-# Kinetic Training App - PWA de Alto Rendimiento Analítico
+# Kinetic Training App - Fitness Tracking PWA 
 ![CI/CD Pipeline](https://github.com/NereLopez/app-entrenamiento/actions/workflows/deploy.yml/badge.svg?branch=master)
 
 <p align="center">
@@ -6,7 +6,7 @@
 </p>
 
 
-**Kinetic** es una Aplicación Web Progresiva (PWA) enfocada en el seguimiento de entrenamientos, nutrición y progreso físico. Desarrollada sobre **Angular 19**, arquitectura basada en **Signals** y **Firebase**, con un enfoque mobile-first y optimización para dispositivos móviles.
+**Kinetic** es una Aplicación Web Progresiva (PWA) enfocada en el seguimiento de entrenamientos, nutrición y progreso físico. Desarrollada con **Angular 19** y **Firebase**, utilizando **Angular Signals** para la gestión reactiva del estado. 
 
 
 ### 🌓 Interfaz y Experiencia de Usuario (Mobile-First)
@@ -16,7 +16,7 @@
 | ![Dashboard](public/icons/dashboard.png) | ![Nutrición](public/icons/nutricion.png) | ![Progreso](public/icons/graficos.png) |
 | *Acciones rápidas e idiomas*             | *Hidratación interactiva*               | *Análisis de datos* |
 
-La interfaz de usuario ha sido concebida bajo un estricto enfoque ergonómico en movilidad, implementando CSS3 Custom Properties para una mutación de temas adaptativa. El modo oscuro premium mitiga la fatiga ocular en salas de entrenamiento con condiciones de luz artificial complejas.
+La interfaz está diseñada con un enfoque mobile-first, priorizando la experiencia en smartphones mediante diseño responsive, soporte offline y modo oscuro.
 
 ---
 
@@ -36,15 +36,18 @@ La interfaz de usuario ha sido concebida bajo un estricto enfoque ergonómico en
 ## 🛠️ Stack Tecnológico
 
 * **Frontend:** 
+
     - Angular 19
-    - TypeSript
+    - TypeScript
     - Angular Signals
     - RxJS
     - Bootstrap 5
 * **Backend y base de datos:** 
+
     - Firebase Authentication
     - Cloud Firestore
 * **Visualization y PWA:** 
+
     - Chart.js 
     - ng2-charts
     - Angular Service Worker 
@@ -53,26 +56,28 @@ La interfaz de usuario ha sido concebida bajo un estricto enfoque ergonómico en
 
 ## 💡 Aspectos técnicos destacados
 
-* **🧠 Estado reactivo con Angular Signals:**
-La aplicación utiliza Signals y `computed ()` para gestionar cálculos derivados como calorías, metabolismo basal y objetivos nutricionales.
+### 🧠 Estado reactivo con Angular Signals
+La aplicación utiliza Signals y `computed()` para gestionar cálculos derivados como calorías, metabolismo basal y objetivos nutricionales.
 
-* **🎛️ Formularios dinámicos:** 
+### 🎛️ Formularios dinámicos
 Los entrenamientos se construyen mediante **`FormArray`**, permitiendo adaptar dinámicamente los campos según el tipo de ejercicio.
 
-* **🔊 Optimización de datos:**
-Se utilizan estructuras como `Set`y `Map`para mejorar el rendimiento en cálculos de rachas, calendario y estadísticas.
+### 🔊 Optimización de datos
+Se utilizan estructuras como `Set` y `Map` para mejorar el rendimiento en cálculos de rachas, calendario y estadísticas.
 
-* **🧭 Experiencia mobile-first:**
+### 🧭 Experiencia mobile-first
 - La aplicación fue diseñada principalmente para smartphones, incluyendo:
+
   - Navegación táctil
   - Instalación como app
   - Soporte offline
   - Modo oscuro
   - Idiomas español e inglés
 
-* **📱 Instalación (Modo PWA):**
+## 📱 Instalación (Modo PWA)
 
 Para disfrutar de la experiencia completa en tu smartphone:
+
 1. Escanea el **Código QR** presente en el Dashboard desde tu dispositivo móvil.
 2. En iPhone (Safari): Pulsa **"Compartir"** y selecciona **"Añadir a la pantalla de inicio"**.
 3. En Android (Chrome): Pulsa en el banner **"Instalar aplicación"** que aparecerá automáticamente.
@@ -86,14 +91,19 @@ Para ejecutar el proyecto localmente:
 1. Clonar el repositorio e instalar las dependencias de Node:
    ```bash
    npm install
+   ```
 2. Iniciar el servidor de desarrollo local:
     ```bash
     ng serve
-3. Acceder al entorno a través de  http://localhost:4200
-
+    ```
+3. Acceder al entorno:
+    ``bash
+    http://localhost:4200
+    ```
 ---
 
 ## 📚 Lo que aprendí con este proyecto
+
 - Arquitectura moderna en Angular
 - Gestión de estado reactivo
 - Formularios complejos
@@ -105,6 +115,7 @@ Para ejecutar el proyecto localmente:
 ---
 
 ## 🔮 Próximas mejoras
+
 - Backend propio con NestJS
 - Migración a PostgreSQL
 - Roles de usuario
