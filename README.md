@@ -37,20 +37,20 @@ La interfaz está diseñada con un enfoque mobile-first, priorizando la experien
 
 * **Frontend:** 
 
-    - Angular 19
-    - TypeScript
-    - Angular Signals
-    - RxJS
-    - Bootstrap 5
+    - **`Angular 19`**
+    - **`TypeScript`**
+    - **`Angular Signals`**
+    - **`RxJS`**
+    - **`Bootstrap 5`**
 * **Backend y base de datos:** 
 
-    - Firebase Authentication
-    - Cloud Firestore
+    - **`Firebase Authentication`**
+    - **`Cloud Firestore`**
 * **Visualization y PWA:** 
 
-    - Chart.js 
-    - ng2-charts
-    - Angular Service Worker 
+    - **`Chart.js`** 
+    - **`ng2-charts`**
+    - **`Angular Service Worker`** 
 
 ---
 
