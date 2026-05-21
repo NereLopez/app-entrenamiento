@@ -53,24 +53,24 @@ La interfaz de usuario ha sido concebida bajo un estricto enfoque ergonómico en
 
 ## 💡 Aspectos técnicos destacados
 
-### 🧠  Estado reactiv con Angular Signals
+* 🧠 Estado reactiv con Angular Signals
 La aplicación utiliza Signals y `computed ()` para gestionar cálculos derivados como calorías, metabolismo basal y objetivos nutricionales.
 
-### 🎛️ Formularios dinámicos
+* 🎛️ Formularios dinámicos
 Los entrenamientos se construyen mediante **`FormArray`**, permitiendo adaptar dinámicamente los campos según el tipo de ejercicio.
 
-### 🔊 Optimización de datos
+* 🔊 Optimización de datos
 Se utilizan estructuras como `Set`y `Map`para mejorar el rendimiento en cálculos de rachas, calendario y estadísticas.
 
-### 🧭 Experiencia mobile-first
+* 🧭 Experiencia mobile-first
 La aplicación fue diseñada principalmente para smartphones, incluyendo:
-    - Navegación táctil
-    - Instalación como app
-    - Soporte offline
-    - Modo oscuro
-    - Idiomas español e inglés
+  - Navegación táctil
+  - Instalación como app
+  - Soporte offline
+  - Modo oscuro
+  - Idiomas español e inglés
 
-## 📱 Instalación (Modo PWA)
+* 📱 Instalación (Modo PWA)
 
 Para disfrutar de la experiencia completa en tu smartphone:
 1. Escanea el **Código QR** presente en el Dashboard desde tu dispositivo móvil.
@@ -105,12 +105,14 @@ Para ejecutar el proyecto localmente:
 ---
 
 ## 🔮 Próximas mejoras
-Backend propio con NestJS
-Migración a PostgreSQL
-Roles de usuario
-Panel de administración
-Testing
-Docker y despliegue automatizado
+- Backend propio con NestJS
+- Migración a PostgreSQL
+- Roles de usuario
+- Panel de administración
+- Testing
+- Docker y despliegue automatizado
+
+---
 
 Desarrollado por Nerea Elvira López-2026. Proyecto Final de DAM
 
