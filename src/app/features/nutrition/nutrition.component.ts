@@ -23,7 +23,7 @@ export class NutritionComponent implements OnInit {
 
   public isEditing = false;
   public isSaving = signal(false);
-  public forceEditMode = signal(false); // Para forzar modo edición si no hay datos
+  public forceEditMode = signal(false); //  force edit mode if no data
 
   public isPresetMenuOpen = signal(false);
   public isMealTypeDropdownOpen = signal(false);
