@@ -97,7 +97,7 @@ Para ejecutar el proyecto localmente:
     ng serve
     ```
 3. Acceder al entorno:
-    ``bash
+    ```bash
     http://localhost:4200
     ```
 ---
