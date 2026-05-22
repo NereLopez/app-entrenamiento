@@ -78,7 +78,7 @@ Se utilizan estructuras como `Set` y `Map` para mejorar el rendimiento en cálcu
 
 Para disfrutar de la experiencia completa en tu smartphone:
 
-1. Escanea el **Código QR** presente en el Dashboard desde tu dispositivo móvil.
+1. Escanea el [QR](public/icons/kinetic-app.jpg)
 2. En iPhone (Safari): Pulsa **"Compartir"** y selecciona **"Añadir a la pantalla de inicio"**.
 3. En Android (Chrome): Pulsa en el banner **"Instalar aplicación"** que aparecerá automáticamente.
 
@@ -125,7 +125,7 @@ Para ejecutar el proyecto localmente:
 
 ---
 
-Desarrollado por Nerea Elvira López-2026. Proyecto Final de DAM
+Desarrollado por Nerea Elvira López 2026. Proyecto Final de DAM
 
 
 
